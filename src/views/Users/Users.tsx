@@ -8,7 +8,7 @@ export const Users: NextPage = () => {
   return (
     <>
       <Head>
-        <title>One | Users</title>
+        <title>ONE | Users</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Main>

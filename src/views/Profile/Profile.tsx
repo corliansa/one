@@ -10,7 +10,7 @@ export const Profile: NextPage = () => {
   return (
     <>
       <Head>
-        <title>One | Profile</title>
+        <title>ONE | Profile</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Main>

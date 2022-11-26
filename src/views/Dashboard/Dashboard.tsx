@@ -8,7 +8,7 @@ export const Dashboard: NextPage = () => {
   return (
     <>
       <Head>
-        <title>One</title>
+        <title>ONE</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Main>
