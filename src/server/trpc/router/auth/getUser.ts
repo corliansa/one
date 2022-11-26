@@ -1,8 +1,8 @@
 import { protectedProcedure } from "../../trpc";
 
-export const getUser = protectedProcedure.query(({ ctx }) => {
+export const getUser = protectedProcedure.query(async ({ ctx }) => {
   const userId = ctx.session.user.id;
-  return ctx.prisma.user.findUniqueOrThrow({
+  return await ctx.prisma.user.findUniqueOrThrow({
     where: {
       id: userId,
     },

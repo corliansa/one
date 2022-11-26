@@ -21,10 +21,9 @@ export const Dashboard: NextPage = () => {
 
           <CardView>
             <Card
-              href="https://create.t3.gg/en/usage/first-steps"
-              title="First Steps"
-              desc="Just the basics - Everything you need to know to set up your
-                database and authentication."
+              href="/profile"
+              title="Profile"
+              desc="Edit your profile data"
             />
             <Card
               href="https://create.t3.gg/en/introduction"
