@@ -1,7 +1,7 @@
-import { updateUser } from "./auth/updateUser";
+import { updateUser } from "./user/updateUser";
 import { router } from "../trpc";
-import { getSession } from "./auth/getSession";
-import { getUser } from "./auth/getUser";
+import { getSession } from "./user/getSession";
+import { getUser } from "./user/getUser";
 
 export const userRouter = router({
   getSession,

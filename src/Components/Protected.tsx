@@ -1,25 +1,29 @@
 import { useSession } from "next-auth/react";
+import type { Role } from "@prisma/client";
+
+type RoleType = keyof typeof Role;
 
 export const Protected: React.FC<{
   children: React.ReactNode;
-  role?: "ADMIN" | "USER";
+  roles?: RoleType[];
+  hideIfNotAuthorized?: boolean;
 }> = (props) => {
   const { data: session, status } = useSession();
 
   if (status === "loading") {
-    return <p>Loading...</p>;
+    return props?.hideIfNotAuthorized ? null : <p>Loading...</p>;
   }
 
   if (status === "unauthenticated") {
-    return <p>Unauthenticated</p>;
+    return props?.hideIfNotAuthorized ? null : <p>Unauthenticated</p>;
   }
 
-  if (!session) {
-    return <p>Unauthorized</p>;
+  if (!session || !session.user) {
+    return props?.hideIfNotAuthorized ? null : <p>Unauthorized</p>;
   }
 
-  if (props.role && !session.user?.role.includes(props.role)) {
-    return <p>Forbidden</p>;
+  if (props.roles && !props.roles.includes(session.user.role as RoleType)) {
+    return props?.hideIfNotAuthorized ? null : <p>Forbidden</p>;
   }
 
   return <>{props.children}</>;

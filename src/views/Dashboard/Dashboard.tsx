@@ -25,12 +25,6 @@ export const Dashboard: NextPage = () => {
               title="Profile"
               desc="Edit your profile data"
             />
-            <Card
-              href="https://create.t3.gg/en/introduction"
-              title="Documentation"
-              desc="Learn more about Create T3 App, the libraries it uses, and how
-              to deploy it."
-            />
           </CardView>
         </Container>
       </Main>
@@ -39,7 +33,7 @@ export const Dashboard: NextPage = () => {
 };
 
 const CardView: React.FC<{ children: React.ReactNode }> = (props) => (
-  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8" {...props} />
+  <div className="flex gap-4 sm:grid-cols-2 md:gap-8" {...props} />
 );
 
 const Card: React.FC<{ href: string; title: string; desc: string }> = (
