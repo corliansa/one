@@ -1,3 +1,4 @@
+import { getUserById } from "./user/getUserById";
 import { updateUser } from "./user/updateUser";
 import { router } from "../trpc";
 import { getSession } from "./user/getSession";
@@ -9,4 +10,5 @@ export const userRouter = router({
   getUser,
   updateUser,
   getUsers,
+  getUserById,
 });

@@ -1,5 +1,6 @@
 import { type NextPage } from "next";
 import Head from "next/head";
+import Link from "next/link";
 import { Back, Card, Container, Main, Protected } from "../../Components";
 import { trpc } from "../../utils/trpc";
 
@@ -20,11 +21,13 @@ export const Users: NextPage = () => {
             <Protected roles={["ADMIN"]}>
               <div className="grid-col-1 grid gap-4">
                 {users.map((user) => (
-                  <Card key={user.id}>
-                    <h2 className="text-2xl font-bold">{user.name}</h2>
-                    <p>{user.email}</p>
-                    <p>{user.role}</p>
-                  </Card>
+                  <Link key={user.id} href={`/users/${user.id}`}>
+                    <Card>
+                      <h2 className="text-2xl font-bold">{user.name}</h2>
+                      <p>{user.email}</p>
+                      <p>{user.role}</p>
+                    </Card>
+                  </Link>
                 ))}
               </div>
             </Protected>
