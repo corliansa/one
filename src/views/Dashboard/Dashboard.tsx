@@ -38,14 +38,14 @@ export const Dashboard: NextPage = () => {
 };
 
 const CardView: React.FC<{ children: React.ReactNode }> = (props) => (
-  <div className="flex gap-4 sm:grid-cols-2 md:gap-8" {...props} />
+  <div className="grid grid-cols-2 gap-4" {...props} />
 );
 
 const Card: React.FC<{ href: string; title: string; desc: string }> = (
   props
 ) => (
   <Link
-    className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
+    className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/20 p-4 text-white hover:bg-white/30"
     href={props.href}
   >
     <h3 className="text-2xl font-bold">{props.title} →</h3>
@@ -66,7 +66,7 @@ const AuthShowcase: React.FC = () => {
         )}
       </p>
       <button
-        className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
+        className="rounded-full bg-white/20 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/30"
         onClick={sessionData ? () => signOut() : () => signIn("google")}
       >
         {sessionData ? "Sign out" : "Sign in"}

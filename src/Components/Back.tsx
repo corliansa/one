@@ -5,9 +5,9 @@ export const Back: React.FC = () => {
   return (
     <a
       onClick={() => router.back()}
-      className="cursor-pointer rounded bg-white/10 p-1 text-6xl"
+      className="cursor-pointer rounded bg-white/20 p-1 text-6xl"
     >
-      〱
+      ←
     </a>
   );
 };

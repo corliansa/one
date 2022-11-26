@@ -18,13 +18,15 @@ export const Users: NextPage = () => {
           </h1>
           {!isLoading && users && (
             <Protected roles={["ADMIN"]}>
-              {users.map((user) => (
-                <Card key={user.id}>
-                  <h2 className="text-2xl font-bold">{user.name}</h2>
-                  <p>{user.email}</p>
-                  <p>{user.role}</p>
-                </Card>
-              ))}
+              <div className="grid-col-1 grid gap-4">
+                {users.map((user) => (
+                  <Card key={user.id}>
+                    <h2 className="text-2xl font-bold">{user.name}</h2>
+                    <p>{user.email}</p>
+                    <p>{user.role}</p>
+                  </Card>
+                ))}
+              </div>
             </Protected>
           )}
         </Container>
