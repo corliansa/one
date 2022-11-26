@@ -1,8 +1,6 @@
-import type { Role } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
+import type { RoleType } from "../../types";
 import type { Context } from "../trpc/context";
-
-type RoleType = keyof typeof Role;
 
 export const authorize = (ctx: Context, roles: RoleType[]) => {
   if (!ctx.session || !ctx.session.user || !ctx.session.user.role) {

@@ -1,6 +1,7 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import { Back, Card, Container, Main, Protected } from "../../Components";
+import { capitalize } from "../../utils/capitalize";
 import { trpc } from "../../utils/trpc";
 
 export const User: NextPage<{ userId: string }> = ({ userId }) => {
@@ -24,8 +25,8 @@ export const User: NextPage<{ userId: string }> = ({ userId }) => {
                 <h2 className="text-2xl font-bold">{user.name}</h2>
                 {[
                   { label: "Email", value: user.email },
-                  { label: "Role", value: user.role },
-                  { label: "Status", value: user.status },
+                  { label: "Role", value: capitalize(user.role) },
+                  { label: "Status", value: capitalize(user.status) },
                   {
                     label: "Verified",
                     value: user.verification === "VERIFIED" ? "Yes" : "No",

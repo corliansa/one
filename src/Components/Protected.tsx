@@ -1,7 +1,5 @@
 import { useSession } from "next-auth/react";
-import type { Role } from "@prisma/client";
-
-type RoleType = keyof typeof Role;
+import type { RoleType } from "../types";
 
 export const Protected: React.FC<{
   children: React.ReactNode;
