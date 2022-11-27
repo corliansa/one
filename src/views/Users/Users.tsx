@@ -2,7 +2,14 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Back, Card, Container, Main, Protected } from "../../Components";
+import {
+  Back,
+  Card,
+  Container,
+  Main,
+  Protected,
+  Select,
+} from "../../Components";
 import type { RoleType, StatusType, VerificationType } from "../../types";
 import { Statuses } from "../../types";
 import { Verifications } from "../../types";
@@ -103,12 +110,3 @@ export const Users: NextPage = () => {
     </>
   );
 };
-
-export const Select: React.FC<React.SelectHTMLAttributes<HTMLSelectElement>> = (
-  props
-) => (
-  <select
-    className="mt-1 mb-2 rounded-lg bg-white/20 px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[#7eb0ff] focus:ring-opacity-50 disabled:bg-gray-900/20"
-    {...props}
-  />
-);

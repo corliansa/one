@@ -37,9 +37,19 @@ export const Dashboard: NextPage = () => {
   );
 };
 
-const CardView: React.FC<{ children: React.ReactNode }> = (props) => (
-  <div className="grid grid-cols-2 gap-4" {...props} />
-);
+const CardView: React.FC<{ children: React.ReactNode }> = (props) => {
+  const { data: session } = useSession();
+  return (
+    <div
+      className={`grid ${
+        (session && session.user && session?.user.role !== "USER")
+          ? "grid-cols-2"
+          : "grid-cols-1"
+      } gap-4`}
+      {...props}
+    />
+  );
+};
 
 const Card: React.FC<{ href: string; title: string; desc: string }> = (
   props

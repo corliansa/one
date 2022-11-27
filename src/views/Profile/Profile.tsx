@@ -1,7 +1,15 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
-import { Back, Card, Container, Main, Protected } from "../../Components";
+import {
+  Back,
+  Card,
+  Container,
+  Input,
+  Main,
+  Protected,
+} from "../../Components";
+import { capitalize } from "../../utils/capitalize";
 import type { RouterOutputs } from "../../utils/trpc";
 import { trpc } from "../../utils/trpc";
 
@@ -25,8 +33,8 @@ export const Profile: NextPage = () => {
                   <h2 className="text-2xl font-bold">{user.name}</h2>
                   {[
                     { label: "Email", value: user.email },
-                    { label: "Role", value: user.role },
-                    { label: "Status", value: user.status },
+                    { label: "Role", value: capitalize(user.role) },
+                    { label: "Status", value: capitalize(user.status) },
                     {
                       label: "Verified",
                       value: user.verification === "VERIFIED" ? "Yes" : "No",
@@ -62,15 +70,6 @@ export const Profile: NextPage = () => {
     </>
   );
 };
-
-export const Input: React.FC<React.InputHTMLAttributes<HTMLInputElement>> = (
-  props
-) => (
-  <input
-    className="mt-1 mb-2 w-full rounded-lg bg-white/20 px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-[#7eb0ff] focus:ring-opacity-50 disabled:bg-gray-900/20"
-    {...props}
-  />
-);
 
 export const Form: React.FC<{
   user: RouterOutputs["user"]["getUser"];
@@ -116,8 +115,13 @@ export const Form: React.FC<{
       <Input
         type="submit"
         value="Submit"
-        onClick={() =>
-          updateUser({ name, birthDate: new Date(birthDate), occupation, city })
+        onClick={async () =>
+          await updateUser({
+            name,
+            birthDate: new Date(birthDate),
+            occupation,
+            city,
+          })
         }
         disabled={isLoading}
       />

@@ -1,3 +1,4 @@
+import { updateUserById } from "./user/updateUserById";
 import { getUserById } from "./user/getUserById";
 import { updateUser } from "./user/updateUser";
 import { router } from "../trpc";
@@ -11,4 +12,5 @@ export const userRouter = router({
   updateUser,
   getUsers,
   getUserById,
+  updateUserById,
 });
