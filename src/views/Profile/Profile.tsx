@@ -76,7 +76,7 @@ export const Form: React.FC<{
 }> = ({ user }) => {
   const [name, setName] = useState(user.name ?? "");
   const [birthDate, setBirthDate] = useState(
-    (user?.birthDate ?? new Date()).toISOString().slice(0, 10)
+    user?.birthDate ? (user?.birthDate).toISOString().slice(0, 10) : ""
   );
   const [occupation, setOccupation] = useState(user?.occupation ?? "");
   const [city, setCity] = useState(user?.city ?? "");
@@ -118,7 +118,7 @@ export const Form: React.FC<{
         onClick={async () =>
           await updateUser({
             name,
-            birthDate: new Date(birthDate),
+            birthDate: birthDate ? new Date(birthDate) : undefined,
             occupation,
             city,
           })
