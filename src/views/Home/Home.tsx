@@ -6,6 +6,7 @@ import Head from "next/head";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { Logo } from "../../Components/Logo";
 
 const navigation = [
   { name: "About", href: "#" },
@@ -63,11 +64,7 @@ export const Home = () => {
               <div className="flex lg:min-w-0 lg:flex-1" aria-label="Global">
                 <Link href="/" className="-m-1.5 p-1.5">
                   <span className="sr-only">ONE</span>
-                  <img
-                    className="h-8"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                    alt=""
-                  />
+                  <Logo />
                 </Link>
               </div>
               <div className="flex lg:hidden">
@@ -106,11 +103,7 @@ export const Home = () => {
                   <div className="flex">
                     <Link href="/" className="-m-1.5 p-1.5">
                       <span className="sr-only">ONE</span>
-                      <img
-                        className="h-8"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                        alt=""
-                      />
+                      <Logo />
                     </Link>
                   </div>
                   <div className="flex">

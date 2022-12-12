@@ -5,3 +5,5 @@ export * from "./Card";
 export * from "./Back";
 export * from "./Select";
 export * from "./Input";
+export * from "./Logo";
+export * from "./Base";
