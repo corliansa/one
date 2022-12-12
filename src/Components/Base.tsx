@@ -220,7 +220,7 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
                 <Bars3BottomLeftIcon className="h-6 w-6" aria-hidden="true" />
               </button>
               <div className="flex flex-1 justify-between px-4 md:px-0">
-                <div className="flex flex-1 items-end pb-2">
+                <div className="flex flex-1 items-center">
                   <p className="text-md font-medium text-gray-500">
                     {sessionData?.user?.name
                       ? `Welcome, ${sessionData?.user?.name}`
@@ -258,7 +258,7 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
                         {userNavigation.map((item) => (
                           <Menu.Item key={item.name}>
                             {({ active }) => (
-                              <a
+                              <Link
                                 href={item.href}
                                 className={classNames(
                                   active ? "bg-gray-100" : "",
@@ -266,7 +266,7 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
                                 )}
                               >
                                 {item.name}
-                              </a>
+                              </Link>
                             )}
                           </Menu.Item>
                         ))}

@@ -18,7 +18,7 @@ export const User: NextPage<{ userId: string }> = ({ userId }) => {
         <title>ONE | User Detail</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Base title={user?.name ?? "User"}>
+      <Base title={user?.name ?? " "}>
         <div className="py-4">
           <Protected
             roles={["ADMIN"]}
@@ -26,7 +26,7 @@ export const User: NextPage<{ userId: string }> = ({ userId }) => {
             redirectTo="/dashboard"
           >
             {!isLoading && user && (
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <Card>
                   {[
                     { label: "Email", value: user.email },

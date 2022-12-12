@@ -1,14 +1,7 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
-import {
-  Back,
-  Card,
-  Container,
-  Input,
-  Main,
-  Protected,
-} from "../../Components";
+import { Base, Card, Input, Protected } from "../../Components";
 import { capitalize } from "../../utils/capitalize";
 import type { RouterOutputs } from "../../utils/trpc";
 import { trpc } from "../../utils/trpc";
@@ -21,16 +14,13 @@ export const Profile: NextPage = () => {
         <title>ONE | Profile</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Main>
-        <Container>
-          <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-            <Back /> <span className="text-[#7eb0ff]">Profile</span>
-          </h1>
-          {!isLoading && user && (
-            <Protected>
+      <Base title="Profile">
+        <div className="py-4">
+          <Protected hideIfNotAuthorized>
+            {!isLoading && user && (
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <Card key={user.id}>
-                  <h2 className="text-2xl font-bold">{user.name}</h2>
+                  <h2 className="text-xl font-semibold">{user.name}</h2>
                   {[
                     { label: "Email", value: user.email },
                     { label: "Role", value: capitalize(user.role) },
@@ -63,10 +53,10 @@ export const Profile: NextPage = () => {
                 </Card>
                 <Form user={user} />
               </div>
-            </Protected>
-          )}
-        </Container>
-      </Main>
+            )}
+          </Protected>
+        </div>
+      </Base>
     </>
   );
 };
@@ -88,43 +78,45 @@ export const Form: React.FC<{
     });
   return (
     <Card>
-      Name
-      <Input
-        defaultValue={user?.name || ""}
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      Birth Date
-      <Input
-        type="date"
-        value={birthDate}
-        onChange={(e) => setBirthDate(e.target.value)}
-      />
-      Occupation
-      <Input
-        defaultValue={user?.occupation || ""}
-        value={occupation}
-        onChange={(e) => setOccupation(e.target.value)}
-      />
-      City
-      <Input
-        defaultValue={user?.city || ""}
-        value={city}
-        onChange={(e) => setCity(e.target.value)}
-      />
-      <Input
-        type="submit"
-        value="Submit"
-        onClick={async () =>
-          await updateUser({
-            name,
-            birthDate: birthDate ? new Date(birthDate) : undefined,
-            occupation,
-            city,
-          })
-        }
-        disabled={isLoading}
-      />
+      <div className="flex flex-col">
+        Name
+        <Input
+          defaultValue={user?.name || ""}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        Birth Date
+        <Input
+          type="date"
+          value={birthDate}
+          onChange={(e) => setBirthDate(e.target.value)}
+        />
+        Occupation
+        <Input
+          defaultValue={user?.occupation || ""}
+          value={occupation}
+          onChange={(e) => setOccupation(e.target.value)}
+        />
+        City
+        <Input
+          defaultValue={user?.city || ""}
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
+        />
+        <Input
+          type="submit"
+          value="Submit"
+          onClick={async () =>
+            await updateUser({
+              name,
+              birthDate: birthDate ? new Date(birthDate) : undefined,
+              occupation,
+              city,
+            })
+          }
+          disabled={isLoading}
+        />
+      </div>
     </Card>
   );
 };

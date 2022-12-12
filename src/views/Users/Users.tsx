@@ -26,7 +26,7 @@ export const Users: NextPage = () => {
       </Head>
       <Base title="Users list">
         <div className="py-4">
-          <div className="flex flex-col gap-2 rounded-lg bg-white/20 sm:flex-row">
+          <div className="flex flex-col gap-0 rounded-lg bg-white/20 sm:flex-row sm:gap-2">
             <Select
               onChange={(e) =>
                 replace({
