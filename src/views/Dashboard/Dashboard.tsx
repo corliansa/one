@@ -1,8 +1,6 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
-import { signIn, signOut, useSession } from "next-auth/react";
-import { Base, Container, Main, Protected } from "../../Components";
+import { Base } from "../../Components";
 
 export const Dashboard: NextPage = () => {
   return (

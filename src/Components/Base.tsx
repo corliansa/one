@@ -43,6 +43,7 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
       name: "Users",
       href: "/users",
       icon: UsersIcon,
+      roles: ["ADMIN"],
     },
     // {
     //   name: "Documents",
@@ -122,29 +123,37 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
                   </div>
                   <div className="mt-5 h-0 flex-1 overflow-y-auto">
                     <nav className="space-y-1 px-2">
-                      {navigation.map((item) => (
-                        <Link
-                          key={item.name}
-                          href={item.href}
-                          className={classNames(
-                            router.pathname === item.href
-                              ? "bg-gray-100 text-gray-900"
-                              : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
-                            "group flex items-center rounded-md py-2 px-2 text-base font-medium"
-                          )}
-                        >
-                          <item.icon
+                      {navigation
+                        .filter(
+                          (item) =>
+                            !item.roles ||
+                            item.roles
+                              .concat("USER")
+                              .includes(sessionData?.user?.role || "ADMIN")
+                        )
+                        .map((item) => (
+                          <Link
+                            key={item.name}
+                            href={item.href}
                             className={classNames(
                               router.pathname === item.href
-                                ? "text-gray-500"
-                                : "text-gray-400 group-hover:text-gray-500",
-                              "mr-4 h-6 w-6 flex-shrink-0"
+                                ? "bg-gray-100 text-gray-900"
+                                : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
+                              "group flex items-center rounded-md py-2 px-2 text-base font-medium"
                             )}
-                            aria-hidden="true"
-                          />
-                          {item.name}
-                        </Link>
-                      ))}
+                          >
+                            <item.icon
+                              className={classNames(
+                                router.pathname === item.href
+                                  ? "text-gray-500"
+                                  : "text-gray-400 group-hover:text-gray-500",
+                                "mr-4 h-6 w-6 flex-shrink-0"
+                              )}
+                              aria-hidden="true"
+                            />
+                            {item.name}
+                          </Link>
+                        ))}
                     </nav>
                   </div>
                 </Dialog.Panel>
@@ -165,29 +174,37 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
             </div>
             <div className="mt-5 flex flex-grow flex-col">
               <nav className="flex-1 space-y-1 px-2 pb-4">
-                {navigation.map((item) => (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className={classNames(
-                      router.pathname === item.href
-                        ? "bg-gray-100 text-gray-900"
-                        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
-                      "group flex items-center rounded-md py-2 px-2 text-sm font-medium"
-                    )}
-                  >
-                    <item.icon
+                {navigation
+                  .filter(
+                    (item) =>
+                      !item.roles ||
+                      item.roles
+                        .concat("USER")
+                        .includes(sessionData?.user?.role || "ADMIN")
+                  )
+                  .map((item) => (
+                    <Link
+                      key={item.name}
+                      href={item.href}
                       className={classNames(
                         router.pathname === item.href
-                          ? "text-gray-500"
-                          : "text-gray-400 group-hover:text-gray-500",
-                        "mr-3 h-6 w-6 flex-shrink-0"
+                          ? "bg-gray-100 text-gray-900"
+                          : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
+                        "group flex items-center rounded-md py-2 px-2 text-sm font-medium"
                       )}
-                      aria-hidden="true"
-                    />
-                    {item.name}
-                  </Link>
-                ))}
+                    >
+                      <item.icon
+                        className={classNames(
+                          router.pathname === item.href
+                            ? "text-gray-500"
+                            : "text-gray-400 group-hover:text-gray-500",
+                          "mr-3 h-6 w-6 flex-shrink-0"
+                        )}
+                        aria-hidden="true"
+                      />
+                      {item.name}
+                    </Link>
+                  ))}
               </nav>
             </div>
           </div>
@@ -206,7 +223,7 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
               </button>
               <div className="flex flex-1 justify-between px-4 md:px-0">
                 <div className="flex flex-1 items-center">
-                  <p className="text-xl font-medium text-gray-500">
+                  <p className="text-lg font-medium text-gray-500">
                     {sessionData?.user?.name
                       ? `Welcome, ${sessionData?.user?.name}`
                       : "Welcome"}
@@ -278,15 +295,9 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
             <main className="flex-1">
               <div className="py-6">
                 <div className="px-4 sm:px-6 md:px-0">
-                  <h1 className="text-2xl font-semibold text-gray-900">
-                    {title}
-                  </h1>
+                  <h1 className="text-3xl font-bold text-gray-900">{title}</h1>
                 </div>
-                <div className="px-4 sm:px-6 md:px-0">
-                  {/* Replace with your content */}
-                  {children}
-                  {/* /End replace */}
-                </div>
+                <div className="px-4 sm:px-6 md:px-0">{children}</div>
               </div>
             </main>
           </div>

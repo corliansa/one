@@ -2,14 +2,7 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import {
-  Back,
-  Card,
-  Container,
-  Main,
-  Protected,
-  Select,
-} from "../../Components";
+import { Base, Card, Protected, Select } from "../../Components";
 import type { RoleType, StatusType, VerificationType } from "../../types";
 import { Statuses } from "../../types";
 import { Verifications } from "../../types";
@@ -31,12 +24,9 @@ export const Users: NextPage = () => {
         <title>ONE | Users</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Main>
-        <Container>
-          <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-            <Back /> <span className="text-[#7eb0ff]">Users list</span>
-          </h1>
-          <div className="flex flex-col gap-2 rounded-lg bg-white/20 p-4 sm:flex-row">
+      <Base title="Users list">
+        <div className="py-4">
+          <div className="flex flex-col gap-2 rounded-lg bg-white/20 sm:flex-row">
             <Select
               onChange={(e) =>
                 replace({
@@ -86,27 +76,28 @@ export const Users: NextPage = () => {
               ))}
             </Select>
           </div>
-          {!isLoading && users && (
-            <Protected roles={["ADMIN"]}>
-              <div className="grid-col-1 grid gap-4">
+          <Protected roles={["ADMIN"]}>
+            {!isLoading && users && (
+              <div className="grid gap-2 py-4">
                 {users.map((user) => (
-                  <Link key={user.id} href={`/users/${user.id}`}>
-                    <Card>
-                      <h2 className="text-2xl font-bold">{user.name}</h2>
-                      <p>{user.email}</p>
-                      <p>
-                        {capitalize(user.role)} |{" "}
-                        {capitalize(user.verification)} |{" "}
-                        {capitalize(user.status)}
-                      </p>
-                    </Card>
+                  <Link
+                    key={user.id}
+                    href={`/users/${user.id}`}
+                    className="flex h-32 w-full flex-col justify-center rounded-lg border-2 border-dashed p-6"
+                  >
+                    <h2 className="text-xl font-semibold">{user.name}</h2>
+                    <p>{user.email}</p>
+                    <p>
+                      {capitalize(user.role)} | {capitalize(user.verification)}{" "}
+                      | {capitalize(user.status)}
+                    </p>
                   </Link>
                 ))}
               </div>
-            </Protected>
-          )}
-        </Container>
-      </Main>
+            )}
+          </Protected>
+        </div>
+      </Base>
     </>
   );
 };
