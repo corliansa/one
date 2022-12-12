@@ -171,7 +171,11 @@ export const Home = () => {
                   <div className="mt-8 flex gap-x-4 sm:justify-center">
                     <a
                       onClick={() =>
-                        sessionData ? push("/dashboard") : signIn("google")
+                        sessionData
+                          ? push("/dashboard")
+                          : signIn("google", {
+                              callbackUrl: `${window.location.origin}/dashboard`,
+                            })
                       }
                       className="inline-block cursor-pointer rounded-lg bg-pink-600 px-4 py-1.5 text-base font-semibold leading-7 text-white shadow-sm ring-1 ring-pink-600 hover:bg-pink-700 hover:ring-pink-700"
                     >
