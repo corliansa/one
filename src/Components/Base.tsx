@@ -127,9 +127,9 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
                         .filter(
                           (item) =>
                             !item.roles ||
-                            item.roles
-                              .concat("USER")
-                              .includes(sessionData?.user?.role || "ADMIN")
+                            item.roles.includes(
+                              sessionData?.user?.role || "ADMIN"
+                            )
                         )
                         .map((item) => (
                           <Link
@@ -178,9 +178,7 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
                   .filter(
                     (item) =>
                       !item.roles ||
-                      item.roles
-                        .concat("USER")
-                        .includes(sessionData?.user?.role || "ADMIN")
+                      item.roles.includes(sessionData?.user?.role || "ADMIN")
                   )
                   .map((item) => (
                     <Link
@@ -222,8 +220,8 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
                 <Bars3BottomLeftIcon className="h-6 w-6" aria-hidden="true" />
               </button>
               <div className="flex flex-1 justify-between px-4 md:px-0">
-                <div className="flex flex-1 items-center">
-                  <p className="text-lg font-medium text-gray-500">
+                <div className="flex flex-1 items-end pb-2">
+                  <p className="text-md font-medium text-gray-500">
                     {sessionData?.user?.name
                       ? `Welcome, ${sessionData?.user?.name}`
                       : "Welcome"}

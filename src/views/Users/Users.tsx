@@ -76,23 +76,38 @@ export const Users: NextPage = () => {
               ))}
             </Select>
           </div>
-          <Protected roles={["ADMIN"]}>
+          <Protected
+            roles={["ADMIN"]}
+            hideIfNotAuthorized
+            redirectTo="/dashboard"
+          >
             {!isLoading && users && (
               <div className="grid gap-2 py-4">
-                {users.map((user) => (
-                  <Link
-                    key={user.id}
-                    href={`/users/${user.id}`}
-                    className="flex h-32 w-full flex-col justify-center rounded-lg border-2 border-dashed p-6"
-                  >
-                    <h2 className="text-xl font-semibold">{user.name}</h2>
-                    <p>{user.email}</p>
-                    <p>
-                      {capitalize(user.role)} | {capitalize(user.verification)}{" "}
-                      | {capitalize(user.status)}
-                    </p>
-                  </Link>
-                ))}
+                {users.length === 0 ? (
+                  <Card>
+                    <p>No users found</p>
+                  </Card>
+                ) : (
+                  <>
+                    {users.map((user) => (
+                      <Link key={user.id} href={`/users/${user.id}`}>
+                        <Card>
+                          <div className="flex h-20 flex-col justify-center">
+                            <h2 className="text-xl font-semibold">
+                              {user.name}
+                            </h2>
+                            <p>{user.email}</p>
+                            <p>
+                              {capitalize(user.role)} |{" "}
+                              {capitalize(user.verification)} |{" "}
+                              {capitalize(user.status)}
+                            </p>
+                          </div>
+                        </Card>
+                      </Link>
+                    ))}
+                  </>
+                )}
               </div>
             )}
           </Protected>
