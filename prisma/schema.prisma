@@ -73,4 +73,8 @@ model User {
   affiliation   String[]     @default([])
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
+
+  @@index([role])
+  @@index([status])
+  @@index([verification])
 }
