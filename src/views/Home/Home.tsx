@@ -6,14 +6,12 @@ import Head from "next/head";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Logo } from "../../Components/Logo";
+import { Footer, Logo } from "../../Components";
 
 const navigation = [
   { name: "About", href: "#" },
   { name: "Contact", href: "#" },
-  { name: "Privacy", href: "#" },
-  { name: "T&C", href: "#" },
-  { name: "Impressum", href: "#" },
+  { name: "FAQ", href: "#" },
 ];
 
 export const Home = () => {
@@ -227,6 +225,7 @@ export const Home = () => {
           </div>
         </main>
       </div>
+      <Footer />
     </>
   );
 };
