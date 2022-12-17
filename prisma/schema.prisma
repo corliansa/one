@@ -70,6 +70,7 @@ model User {
   birthDate     DateTime?
   occupation    String?
   city          String?
+  fieldOfWork   String?
   affiliation   String[]     @default([])
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
