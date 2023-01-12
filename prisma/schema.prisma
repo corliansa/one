@@ -74,8 +74,18 @@ model User {
   affiliation   String[]     @default([])
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
+  Audit         Audit[]
 
   @@index([role])
   @@index([status])
   @@index([verification])
+}
+
+model Audit {
+  id        String   @id @default(cuid()) @map("_id") // @db.ObjectId
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  action    String
+  input     Json?
+  createdAt DateTime @default(now())
 }
