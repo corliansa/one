@@ -88,7 +88,13 @@ export const Home = () => {
               </div>
               <div className="hidden lg:flex lg:min-w-0 lg:flex-1 lg:justify-end">
                 <a
-                  onClick={() => (sessionData ? signOut() : signIn("google"))}
+                  onClick={() =>
+                    sessionData
+                      ? signOut()
+                      : signIn("google", {
+                          callbackUrl: `${window.location.origin}/dashboard`,
+                        })
+                  }
                   className="inline-block cursor-pointer rounded-lg px-3 py-1.5 text-sm font-semibold leading-6 text-gray-900 shadow-sm ring-1 ring-gray-900/10 hover:ring-gray-900/20"
                 >
                   {sessionData ? "Sign out" : "Sign in"}
@@ -131,7 +137,11 @@ export const Home = () => {
                     <div className="py-6">
                       <a
                         onClick={() =>
-                          sessionData ? signOut() : signIn("google")
+                          sessionData
+                            ? signOut()
+                            : signIn("google", {
+                                callbackUrl: `${window.location.origin}/dashboard`,
+                              })
                         }
                         className="-mx-3 block cursor-pointer rounded-lg py-2.5 px-3 text-base font-semibold leading-6 text-gray-900 hover:bg-gray-400/10"
                       >

@@ -1,8 +1,9 @@
+import { Select } from "evergreen-ui";
 import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Base, Card, Protected, Select } from "../../Components";
+import { Base, Card, Protected } from "../../Components";
 import type { RoleType, StatusType, VerificationType } from "../../types";
 import { Statuses } from "../../types";
 import { Verifications } from "../../types";

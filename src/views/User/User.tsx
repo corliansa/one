@@ -1,7 +1,8 @@
+import { Button, FormField, SelectField, TagInput } from "evergreen-ui";
 import { type NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
-import { Base, Card, Input, Protected, Select } from "../../Components";
+import { Base, Card, Protected } from "../../Components";
 import type { RoleType, StatusType, VerificationType } from "../../types";
 import { Roles, Statuses, Verifications } from "../../types";
 import { capitalize } from "../../utils/capitalize";
@@ -44,9 +45,19 @@ export const User: NextPage<{ userId: string }> = ({ userId }) => {
                     {
                       label: "Affiliation",
                       value:
-                        user.affiliation.length > 0
-                          ? user.affiliation.join(" ,")
-                          : "N/A",
+                        user.affiliation.length > 0 ? (
+                          <ul className="list-disc pl-4">
+                            {user.affiliation
+                              .sort((a, b) => b.length - a.length)
+                              .map((affiliation) => (
+                                <li key={affiliation}>
+                                  {affiliation.replace("_", " ")}
+                                </li>
+                              ))}
+                          </ul>
+                        ) : (
+                          "N/A"
+                        ),
                     },
                     { label: "City", value: user.city ?? "N/A" },
                   ].map(({ label, value }) => (
@@ -76,6 +87,9 @@ export const Form: React.FC<{
     user.verification ?? "UNVERIFIED"
   );
   const [status, setStatus] = useState(user.status ?? "ACTIVE");
+  const [affiliation, setAffiliation] = useState<string[]>(
+    user.affiliation ?? []
+  );
 
   const queryClient = trpc.useContext();
   const { mutateAsync: updateUserById, isLoading } =
@@ -85,8 +99,9 @@ export const Form: React.FC<{
   return (
     <Card>
       <div className="flex flex-col">
-        Role
-        <Select
+        <SelectField
+          marginBottom={8}
+          label="Role"
           value={role}
           onChange={(e) => setRole(e.target.value as RoleType)}
         >
@@ -95,9 +110,10 @@ export const Form: React.FC<{
               {capitalize(role)}
             </option>
           ))}
-        </Select>
-        Verification
-        <Select
+        </SelectField>
+        <SelectField
+          marginBottom={8}
+          label="Verification"
           value={verification}
           onChange={(e) => setVerification(e.target.value as VerificationType)}
         >
@@ -106,9 +122,10 @@ export const Form: React.FC<{
               {capitalize(verification)}
             </option>
           ))}
-        </Select>
-        Status
-        <Select
+        </SelectField>
+        <SelectField
+          marginBottom={8}
+          label="Status"
           value={status}
           onChange={(e) => setStatus(e.target.value as StatusType)}
         >
@@ -117,15 +134,32 @@ export const Form: React.FC<{
               {capitalize(status)}
             </option>
           ))}
-        </Select>
-        <Input
-          type="submit"
-          value="Submit"
+        </SelectField>
+        <FormField marginBottom={12} width="100%" label="Affiliation">
+          <TagInput
+            width="100%"
+            id="affiliation"
+            values={affiliation}
+            onChange={(values: string[]) => {
+              setAffiliation(values);
+            }}
+          />
+        </FormField>
+
+        <Button
           onClick={async () =>
-            await updateUserById({ id: user.id, role, verification, status })
+            await updateUserById({
+              id: user.id,
+              role,
+              verification,
+              status,
+              affiliation,
+            })
           }
-          disabled={isLoading}
-        />
+          isLoading={isLoading}
+        >
+          Save
+        </Button>
       </div>
     </Card>
   );

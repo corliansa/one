@@ -1,7 +1,8 @@
+import { Button, TextInputField } from "evergreen-ui";
 import { type NextPage } from "next";
 import Head from "next/head";
-import { useState } from "react";
-import { Base, Card, Input, Protected } from "../../Components";
+import React, { useState } from "react";
+import { Base, Card, Protected } from "../../Components";
 import { capitalize } from "../../utils/capitalize";
 import type { RouterOutputs } from "../../utils/trpc";
 import { trpc } from "../../utils/trpc";
@@ -37,9 +38,19 @@ export const Profile: NextPage = () => {
                     {
                       label: "Affiliation",
                       value:
-                        user.affiliation.length > 0
-                          ? user.affiliation.join(" ,")
-                          : "N/A",
+                        user.affiliation.length > 0 ? (
+                          <ul className="list-disc pl-4">
+                            {user.affiliation
+                              .sort((a, b) => b.length - a.length)
+                              .map((affiliation) => (
+                                <li key={affiliation}>
+                                  {affiliation.replace("_", " ")}
+                                </li>
+                              ))}
+                          </ul>
+                        ) : (
+                          "N/A"
+                        ),
                     },
                     { label: "City", value: user.city ?? "N/A" },
                   ].map(({ label, value }) => (
@@ -79,33 +90,43 @@ export const Form: React.FC<{
   return (
     <Card>
       <div className="flex flex-col">
-        Name
-        <Input
+        <TextInputField
+          marginBottom={8}
+          label="Name"
           defaultValue={user?.name || ""}
           value={name}
-          onChange={(e) => setName(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setName(e.target.value)
+          }
         />
-        Birth Date
-        <Input
+        <TextInputField
+          marginBottom={8}
+          label="Birth Date"
           type="date"
           value={birthDate}
-          onChange={(e) => setBirthDate(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setBirthDate(e.target.value)
+          }
         />
-        Occupation
-        <Input
+        <TextInputField
+          marginBottom={8}
+          label="Occupation"
           defaultValue={user?.occupation || ""}
           value={occupation}
-          onChange={(e) => setOccupation(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setOccupation(e.target.value)
+          }
         />
-        City
-        <Input
+        <TextInputField
+          marginBottom={12}
+          label="City"
           defaultValue={user?.city || ""}
           value={city}
-          onChange={(e) => setCity(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setCity(e.target.value)
+          }
         />
-        <Input
-          type="submit"
-          value="Submit"
+        <Button
           onClick={async () =>
             await updateUser({
               name,
@@ -114,8 +135,10 @@ export const Form: React.FC<{
               city,
             })
           }
-          disabled={isLoading}
-        />
+          isLoading={isLoading}
+        >
+          Save
+        </Button>
       </div>
     </Card>
   );
