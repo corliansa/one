@@ -54,6 +54,7 @@ enum Status {
 enum Verification {
   VERIFIED
   UNVERIFIED
+  REJECTED
 }
 
 model User {
@@ -69,8 +70,7 @@ model User {
   verification  Verification @default(UNVERIFIED)
   birthDate     DateTime?
   occupation    String?
-  city          String?
-  fieldOfWork   String?
+  location      String?
   affiliation   String[]     @default([])
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt

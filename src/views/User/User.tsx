@@ -59,7 +59,7 @@ export const User: NextPage<{ userId: string }> = ({ userId }) => {
                           "N/A"
                         ),
                     },
-                    { label: "City", value: user.city ?? "N/A" },
+                    { label: "Location", value: user.location ?? "N/A" },
                   ].map(({ label, value }) => (
                     <p key={label}>
                       <>

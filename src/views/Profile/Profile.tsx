@@ -52,7 +52,7 @@ export const Profile: NextPage = () => {
                           "N/A"
                         ),
                     },
-                    { label: "City", value: user.city ?? "N/A" },
+                    { label: "Location", value: user.location ?? "N/A" },
                   ].map(({ label, value }) => (
                     <p key={label}>
                       <>
@@ -80,7 +80,7 @@ export const Form: React.FC<{
     user?.birthDate ? (user?.birthDate).toISOString().slice(0, 10) : ""
   );
   const [occupation, setOccupation] = useState(user?.occupation ?? "");
-  const [city, setCity] = useState(user?.city ?? "");
+  const [location, setLocation] = useState(user?.location ?? "");
 
   const queryClient = trpc.useContext();
   const { mutateAsync: updateUser, isLoading } =
@@ -119,11 +119,11 @@ export const Form: React.FC<{
         />
         <TextInputField
           marginBottom={12}
-          label="City"
-          defaultValue={user?.city || ""}
-          value={city}
+          label="Location"
+          defaultValue={user?.location || ""}
+          value={location}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setCity(e.target.value)
+            setLocation(e.target.value)
           }
         />
         <Button
@@ -132,7 +132,7 @@ export const Form: React.FC<{
               name,
               birthDate: birthDate ? new Date(birthDate) : undefined,
               occupation,
-              city,
+              location,
             })
           }
           isLoading={isLoading}

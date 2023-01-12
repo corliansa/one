@@ -6,7 +6,7 @@ export type VerificationType = keyof typeof Verification;
 export type StatusType = keyof typeof Status;
 
 export const Roles = ["USER", "ADMIN"] as const;
-export const Verifications = ["VERIFIED", "UNVERIFIED"] as const;
+export const Verifications = ["VERIFIED", "UNVERIFIED", "REJECTED"] as const;
 export const Statuses = ["ACTIVE", "INACTIVE"] as const;
 
 export const RoleZod = z.enum(Roles).optional();
