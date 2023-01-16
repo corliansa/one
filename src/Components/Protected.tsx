@@ -15,28 +15,26 @@ export const Protected: React.FC<{
   if (status === "loading") {
     return props?.hideIfNotAuthorized
       ? null
-      : props.replacer ?? <p>Loading...</p>;
+      : props.replacer ?? <>Loading...</>;
   }
 
   if (status === "unauthenticated") {
     props.redirectTo && replace(props.redirectTo || "/");
     return props?.hideIfNotAuthorized
       ? null
-      : props.replacer ?? <p>Unauthenticated</p>;
+      : props.replacer ?? <>Unauthenticated</>;
   }
 
   if (!session || !session.user) {
     props.redirectTo && replace(props.redirectTo || "/");
     return props?.hideIfNotAuthorized
       ? null
-      : props.replacer ?? <p>Unauthorized</p>;
+      : props.replacer ?? <>Unauthorized</>;
   }
 
   if (props.roles && !props.roles.includes(session.user.role as RoleType)) {
     props.redirectTo && replace(props.redirectTo || "/");
-    return props?.hideIfNotAuthorized
-      ? null
-      : props.replacer ?? <p>Forbidden</p>;
+    return props?.hideIfNotAuthorized ? null : props.replacer ?? <>Forbidden</>;
   }
 
   return <>{props.children}</>;

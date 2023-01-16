@@ -61,12 +61,10 @@ export const User: NextPage<{ userId: string }> = ({ userId }) => {
                     },
                     { label: "Location", value: user.location ?? "N/A" },
                   ].map(({ label, value }) => (
-                    <p key={label}>
-                      <>
-                        <span className="font-bold">{label}: </span>
-                        {value}
-                      </>
-                    </p>
+                    <div key={label}>
+                      <span className="font-bold">{label}: </span>
+                      {value}
+                    </div>
                   ))}
                 </Card>
                 <Form user={user} />

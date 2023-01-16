@@ -33,6 +33,7 @@ const isAuthed = t.middleware(async ({ ctx, next, path, input }) => {
       input: input as any,
     },
   });
+  ctx.auditId = audit.id;
   return next({
     ctx: {
       // infers the `session` as non-nullable

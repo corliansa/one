@@ -54,12 +54,10 @@ export const Profile: NextPage = () => {
                     },
                     { label: "Location", value: user.location ?? "N/A" },
                   ].map(({ label, value }) => (
-                    <p key={label}>
-                      <>
-                        <span className="font-bold">{label}: </span>
-                        {value}
-                      </>
-                    </p>
+                    <div key={label}>
+                      <span className="font-bold">{label}: </span>
+                      {value}
+                    </div>
                   ))}
                 </Card>
                 <Form user={user} />
@@ -93,7 +91,6 @@ export const Form: React.FC<{
         <TextInputField
           marginBottom={8}
           label="Name"
-          defaultValue={user?.name || ""}
           value={name}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setName(e.target.value)
@@ -111,7 +108,6 @@ export const Form: React.FC<{
         <TextInputField
           marginBottom={8}
           label="Occupation"
-          defaultValue={user?.occupation || ""}
           value={occupation}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setOccupation(e.target.value)
@@ -120,7 +116,6 @@ export const Form: React.FC<{
         <TextInputField
           marginBottom={12}
           label="Location"
-          defaultValue={user?.location || ""}
           value={location}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setLocation(e.target.value)

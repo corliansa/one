@@ -6,6 +6,15 @@ import { trpc } from "../utils/trpc";
 import Script from "next/script";
 
 import "../styles/globals.css";
+import { toaster } from "evergreen-ui";
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const onError = (error: any) => {
+  console.log(JSON.stringify(error));
+  toaster.danger(`(${error.name || "Error"}): ${error.data.code}`, {
+    description: error?.message,
+  });
+};
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
