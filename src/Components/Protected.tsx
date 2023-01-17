@@ -1,41 +1,56 @@
+import type { Session } from "next-auth";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import type { RoleType } from "../types";
+import type { RoleType, StatusType, VerificationType } from "../types";
 
 export const Protected: React.FC<{
-  children: React.ReactNode;
+  children?:
+    | React.ReactNode
+    | ((callback: { session: Session }) => React.ReactNode);
   roles?: RoleType[];
-  hideIfNotAuthorized?: boolean;
   redirectTo?: string;
   replacer?: JSX.Element;
+  verification?: VerificationType;
+  status?: StatusType;
 }> = (props) => {
   const { data: session, status } = useSession();
   const { replace } = useRouter();
 
   if (status === "loading") {
-    return props?.hideIfNotAuthorized
-      ? null
-      : props.replacer ?? <>Loading...</>;
+    return props.replacer ?? null;
   }
 
-  if (status === "unauthenticated") {
+  const unauthenticated = () => {
     props.redirectTo && replace(props.redirectTo || "/");
-    return props?.hideIfNotAuthorized
-      ? null
-      : props.replacer ?? <>Unauthenticated</>;
+    return props.replacer ?? null;
+  };
+
+  if (status === "unauthenticated") {
+    return unauthenticated();
   }
 
   if (!session || !session.user) {
-    props.redirectTo && replace(props.redirectTo || "/");
-    return props?.hideIfNotAuthorized
-      ? null
-      : props.replacer ?? <>Unauthorized</>;
+    return unauthenticated();
   }
 
   if (props.roles && !props.roles.includes(session.user.role as RoleType)) {
-    props.redirectTo && replace(props.redirectTo || "/");
-    return props?.hideIfNotAuthorized ? null : props.replacer ?? <>Forbidden</>;
+    return unauthenticated();
   }
 
-  return <>{props.children}</>;
+  if (
+    (props.verification && props.verification !== session.user.verification) ||
+    (props.status && props.status !== session.user.status)
+  ) {
+    return unauthenticated();
+  }
+
+  return (
+    <>
+      {props?.children
+        ? typeof props.children === "function"
+          ? props.children({ session })
+          : props.children
+        : null}
+    </>
+  );
 };

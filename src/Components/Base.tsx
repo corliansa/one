@@ -64,7 +64,7 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <Protected hideIfNotAuthorized redirectTo="/">
+    <Protected redirectTo="/">
       <div className="h-full">
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog

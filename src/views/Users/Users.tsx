@@ -27,61 +27,57 @@ export const Users: NextPage = () => {
       </Head>
       <Base title="Users list">
         <div className="py-4">
-          <div className="flex flex-col gap-0 rounded-lg bg-white/20 sm:flex-row sm:gap-2">
-            <Select
-              onChange={(e) =>
-                replace({
-                  query: e.target.value
-                    ? { ...query, role: e.target.value }
-                    : omit(query, "role"),
-                })
-              }
-            >
-              <option value="">All Roles</option>
-              {Roles.map((role) => (
-                <option key={role} value={role}>
-                  {role}
-                </option>
-              ))}
-            </Select>
-            <Select
-              onChange={(e) =>
-                replace({
-                  query: e.target.value
-                    ? { ...query, verification: e.target.value }
-                    : omit(query, "verification"),
-                })
-              }
-            >
-              <option value="">All Verifications</option>
-              {Verifications.map((verification) => (
-                <option key={verification} value={verification}>
-                  {verification}
-                </option>
-              ))}
-            </Select>
-            <Select
-              onChange={(e) =>
-                replace({
-                  query: e.target.value
-                    ? { ...query, status: e.target.value }
-                    : omit(query, "status"),
-                })
-              }
-            >
-              <option value="">All Statuses</option>
-              {Statuses.map((status) => (
-                <option key={status} value={status}>
-                  {status}
-                </option>
-              ))}
-            </Select>
-          </div>
-          <Protected
-            roles={["ADMIN"]}
-            hideIfNotAuthorized
-            redirectTo="/dashboard"
-          >
+          <Protected roles={["ADMIN"]} redirectTo="/dashboard">
+            <div className="flex flex-col gap-0 rounded-lg bg-white/20 sm:flex-row sm:gap-2">
+              <Select
+                onChange={(e) =>
+                  replace({
+                    query: e.target.value
+                      ? { ...query, role: e.target.value }
+                      : omit(query, "role"),
+                  })
+                }
+              >
+                <option value="">All Roles</option>
+                {Roles.map((role) => (
+                  <option key={role} value={role}>
+                    {role}
+                  </option>
+                ))}
+              </Select>
+              <Select
+                onChange={(e) =>
+                  replace({
+                    query: e.target.value
+                      ? { ...query, verification: e.target.value }
+                      : omit(query, "verification"),
+                  })
+                }
+              >
+                <option value="">All Verifications</option>
+                {Verifications.map((verification) => (
+                  <option key={verification} value={verification}>
+                    {verification}
+                  </option>
+                ))}
+              </Select>
+              <Select
+                onChange={(e) =>
+                  replace({
+                    query: e.target.value
+                      ? { ...query, status: e.target.value }
+                      : omit(query, "status"),
+                  })
+                }
+              >
+                <option value="">All Statuses</option>
+                {Statuses.map((status) => (
+                  <option key={status} value={status}>
+                    {status}
+                  </option>
+                ))}
+              </Select>
+            </div>
             {!isLoading && users && (
               <div className="grid gap-2 py-4">
                 {users.length === 0 ? (

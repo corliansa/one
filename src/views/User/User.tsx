@@ -21,11 +21,7 @@ export const User: NextPage<{ userId: string }> = ({ userId }) => {
       </Head>
       <Base title={user?.name ?? " "}>
         <div className="py-4">
-          <Protected
-            roles={["ADMIN"]}
-            hideIfNotAuthorized
-            redirectTo="/dashboard"
-          >
+          <Protected roles={["ADMIN"]} redirectTo="/dashboard">
             {!isLoading && user && (
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <Card>

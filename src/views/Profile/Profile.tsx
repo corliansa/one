@@ -17,7 +17,7 @@ export const Profile: NextPage = () => {
       </Head>
       <Base title="Profile">
         <div className="py-4">
-          <Protected hideIfNotAuthorized>
+          <Protected>
             {!isLoading && user && (
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <Card key={user.id}>
