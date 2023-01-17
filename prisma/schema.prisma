@@ -79,6 +79,8 @@ model User {
   @@index([role])
   @@index([status])
   @@index([verification])
+  @@index([occupation])
+  @@index([location])
 }
 
 model Audit {
@@ -88,4 +90,6 @@ model Audit {
   action    String
   input     Json?
   createdAt DateTime @default(now())
+  success   Boolean  @default(true)
+  error     String?
 }

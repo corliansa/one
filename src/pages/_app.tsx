@@ -10,9 +10,8 @@ import { toaster } from "evergreen-ui";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const onError = (error: any) => {
-  console.log(JSON.stringify(error));
   toaster.danger(`(${error.name || "Error"}): ${error.data.code}`, {
-    description: error?.message,
+    description: error.data.code === error?.message ? null : error?.message,
   });
 };
 

@@ -273,7 +273,7 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
                         <Menu.Item>
                           {({ active }) => (
                             <a
-                              onClick={() => signOut()}
+                              onClick={() => signOut({ callbackUrl: "/" })}
                               className={classNames(
                                 active ? "bg-gray-100" : "",
                                 "block cursor-pointer py-2 px-4 text-sm text-gray-700"

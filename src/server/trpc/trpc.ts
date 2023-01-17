@@ -33,6 +33,12 @@ const isAuthed = t.middleware(async ({ ctx, next, path, input }) => {
       input: input as any,
     },
   });
+  if (!audit.id) {
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Failed to audit request",
+    });
+  }
   ctx.auditId = audit.id;
   return next({
     ctx: {

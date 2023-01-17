@@ -8,10 +8,12 @@ import { appRouter } from "../../../server/trpc/router/_app";
 export default createNextApiHandler({
   router: appRouter,
   createContext,
-  onError:
-    env.NODE_ENV === "development"
-      ? ({ path, error }) => {
-          console.error(`❌ tRPC failed on ${path}: ${error}`);
-        }
-      : undefined,
+  onError: async ({ path, error, ctx }) => {
+    await ctx?.prisma.audit.update({
+      where: { id: ctx?.auditId },
+      data: { error: error.message, success: false },
+    });
+    env.NODE_ENV === "development" &&
+      console.error(`❌ tRPC failed on ${path}: ${error}`);
+  },
 });
