@@ -1,6 +1,7 @@
 import { Fragment, useState } from "react";
 import { Dialog, Menu, Transition } from "@headlessui/react";
 import {
+  AcademicCapIcon,
   Bars3BottomLeftIcon,
   // ChartBarIcon,
   FolderIcon,
@@ -40,16 +41,16 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
       icon: FolderIcon,
     },
     {
+      name: "Admins",
+      href: "/admins",
+      icon: AcademicCapIcon,
+    },
+    {
       name: "Users",
       href: "/users",
       icon: UsersIcon,
       roles: ["ADMIN"],
     },
-    // {
-    //   name: "Documents",
-    //   href: "#",
-    //   icon: InboxIcon,
-    // },
     // {
     //   name: "Reports",
     //   href: "#",
