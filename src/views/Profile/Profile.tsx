@@ -8,7 +8,9 @@ import type { RouterOutputs } from "../../utils/trpc";
 import { trpc } from "../../utils/trpc";
 
 export const Profile: NextPage = () => {
-  const { data: user, isLoading } = trpc.user.getUser.useQuery();
+  const { data : user, isLoading } = trpc.user.getUser.useQuery();
+  
+  
   return (
     <>
       <Head>
