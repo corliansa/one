@@ -5,7 +5,7 @@ import {
   Bars3BottomLeftIcon,
   // ChartBarIcon,
   FolderIcon,
-  HomeIcon,
+  // HomeIcon,
   // InboxIcon,
   UserCircleIcon,
   UsersIcon,
@@ -30,11 +30,11 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
 }) => {
   const router = useRouter();
   const [navigation] = useState([
-    {
-      name: "Home",
-      href: "/",
-      icon: HomeIcon,
-    },
+    // {
+    //   name: "Home",
+    //   href: "/",
+    //   icon: HomeIcon,
+    // },
     {
       name: "Dashboard",
       href: "/dashboard",
@@ -50,6 +50,12 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
       href: "/users",
       icon: UsersIcon,
       roles: ["ADMIN"],
+    },
+    {
+      name: "My Profile",
+      href: "/profile",
+      icon: UserCircleIcon,
+      roles: ["ADMIN", "USER"],
     },
     // {
     //   name: "Reports",
@@ -95,7 +101,7 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
                 leaveFrom="translate-x-0"
                 leaveTo="-translate-x-full"
               >
-                <Dialog.Panel className="relative flex w-full max-w-xs flex-1 flex-col bg-white pt-5 pb-4">
+                <Dialog.Panel className="relative flex w-full max-w-xs flex-1 flex-col bg-white pb-4 pt-5">
                   <Transition.Child
                     as={Fragment}
                     enter="ease-in-out duration-300"
@@ -105,7 +111,7 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
                     leaveFrom="opacity-100"
                     leaveTo="opacity-0"
                   >
-                    <div className="absolute top-0 right-0 -mr-12 pt-2">
+                    <div className="absolute right-0 top-0 -mr-12 pt-2">
                       <button
                         type="button"
                         className="ml-1 flex h-10 w-10 items-center justify-center rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
@@ -129,8 +135,8 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
                           (item) =>
                             !item.roles ||
                             item.roles.includes(
-                              sessionData?.user?.role || "ADMIN"
-                            )
+                              sessionData?.user?.role || "ADMIN",
+                            ),
                         )
                         .map((item) => (
                           <Link
@@ -140,7 +146,7 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
                               router.pathname === item.href
                                 ? "bg-gray-100 text-gray-900"
                                 : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
-                              "group flex items-center rounded-md py-2 px-2 text-base font-medium"
+                              "group flex items-center rounded-md px-2 py-2 text-base font-medium",
                             )}
                           >
                             <item.icon
@@ -148,7 +154,7 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
                                 router.pathname === item.href
                                   ? "text-gray-500"
                                   : "text-gray-400 group-hover:text-gray-500",
-                                "mr-4 h-6 w-6 flex-shrink-0"
+                                "mr-4 h-6 w-6 flex-shrink-0",
                               )}
                               aria-hidden="true"
                             />
@@ -171,7 +177,10 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex flex-grow flex-col overflow-y-auto border-r border-gray-200 bg-white pt-5">
             <div className="flex flex-shrink-0 items-center px-4">
-              <Logo />
+              {/* logo link to home page */}
+              <Link href="/">
+                <Logo />
+              </Link>
             </div>
             <div className="mt-5 flex flex-grow flex-col">
               <nav className="flex-1 space-y-1 px-2 pb-4">
@@ -179,7 +188,7 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
                   .filter(
                     (item) =>
                       !item.roles ||
-                      item.roles.includes(sessionData?.user?.role || "ADMIN")
+                      item.roles.includes(sessionData?.user?.role || "ADMIN"),
                   )
                   .map((item) => (
                     <Link
@@ -189,7 +198,7 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
                         router.pathname === item.href
                           ? "bg-gray-100 text-gray-900"
                           : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
-                        "group flex items-center rounded-md py-2 px-2 text-sm font-medium"
+                        "group flex items-center rounded-md px-2 py-2 text-sm font-medium",
                       )}
                     >
                       <item.icon
@@ -197,7 +206,7 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
                           router.pathname === item.href
                             ? "text-gray-500"
                             : "text-gray-400 group-hover:text-gray-500",
-                          "mr-3 h-6 w-6 flex-shrink-0"
+                          "mr-3 h-6 w-6 flex-shrink-0",
                         )}
                         aria-hidden="true"
                       />
@@ -263,7 +272,7 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
                                 href={item.href}
                                 className={classNames(
                                   active ? "bg-gray-100" : "",
-                                  "block py-2 px-4 text-sm text-gray-700"
+                                  "block px-4 py-2 text-sm text-gray-700",
                                 )}
                               >
                                 {item.name}
@@ -277,7 +286,7 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
                               onClick={() => signOut({ callbackUrl: "/" })}
                               className={classNames(
                                 active ? "bg-gray-100" : "",
-                                "block cursor-pointer py-2 px-4 text-sm text-gray-700"
+                                "block cursor-pointer px-4 py-2 text-sm text-gray-700",
                               )}
                             >
                               Sign out
