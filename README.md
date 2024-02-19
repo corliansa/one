@@ -23,3 +23,13 @@ Run
 6. Run <code>yarn dev</code>
 
 Go directly to dashboard by typing down localhost:3000/dashboard
+
+
+## Step by Step for Windows Users
+1. Download and install node.js https://nodejs.org/en/download/current
+2. Git clone this repo
+3. Open Terminal and go to folder where this repo was cloned
+4. Type <code>yarn install</code> in terminal (if errors appear try <code>npm install --force</code>)
+5. Download the file ".env" from Notion in the Sensus Digitalisasi page and move it to ppi-sensus/ folder
+8. Type <code>yarn dev</code> in terminal to start webapp
+9. Type <code>http://localhost:3000</code> to open webapp
