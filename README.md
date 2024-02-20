@@ -11,7 +11,7 @@ Remember to look the .env.example and fill the .env file accordingly. This proje
 
 ## How do I get fake data?
 
-Run 
+Run <code>yarn db-seed</code>
 
 ## How to get this running on my PC on development? 
 
