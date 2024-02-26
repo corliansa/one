@@ -7,6 +7,9 @@ declare global {
   var prisma: PrismaClient | undefined;
 }
 
+
+// Initialize the Prisma client for database interactions
+// This client will be used throughout the application to perform database operations
 export const prisma =
   global.prisma ||
   new PrismaClient({
