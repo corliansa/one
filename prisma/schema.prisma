@@ -79,7 +79,7 @@ model User {
   birthDate     DateTime?
   occupation    String?
   location      String?
-  affiliation   String     @default("") // change to normal string instead of list
+  affiliation   String[]     @default([]) // change to normal string instead of list
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
   Audit         Audit[]
