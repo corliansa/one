@@ -19,11 +19,11 @@ export const trpc = createTRPCNext<AppRouter>({
         defaultOptions: {
           queries: {
             retry: false,
-            onError: (err: any) => onError(err),
+            onError: (err: unknown) => onError(err),
           },
           mutations: {
             retry: false,
-            onError: (err:any) => onError(err),
+            onError: (err: unknown) => onError(err),
           },
         },
       },
