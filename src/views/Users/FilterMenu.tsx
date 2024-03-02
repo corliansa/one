@@ -1,20 +1,13 @@
 import { Select } from "evergreen-ui";
-import type { RoleType, StatusType, VerificationType } from "../../types";
 import { Statuses } from "../../types";
 import { Verifications } from "../../types";
 import { Roles } from "../../types";
 import { omit } from "../../utils/omit";
+import { useRouter } from "next/router";
 
-type FilterProps = {
-  query: {
-    verification: VerificationType;
-    role: RoleType;
-    status: StatusType;
-  };
-  replace: (query: object) => void;
-};
+export const Filter: React.FC = () => {
+  const { query, replace } = useRouter();
 
-export const Filter: React.FC<FilterProps> = ({ query, replace }) => {
   const handleSelectChange =
     (filterType: "role" | "verification" | "status") =>
     (e: React.ChangeEvent<HTMLSelectElement>) => {

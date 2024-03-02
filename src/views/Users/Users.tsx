@@ -9,7 +9,7 @@ import { Filter } from "./FilterMenu";
 import { UserCard } from "./UserCard";
 
 export const Users: NextPage = () => {
-  const { query, replace } = useRouter();
+  const { query } = useRouter();
 
   const { data: users, isLoading } = trpc.user.getUsers.useQuery({
     verification: query.verification as VerificationType,
@@ -26,7 +26,7 @@ export const Users: NextPage = () => {
       <Base title="Users list">
         <div className="py-4">
           <Protected roles={["ADMIN"]} redirectTo="/dashboard">
-            <Filter query={query} replace={replace} />
+            <Filter/>
             {!isLoading && users && (
               <div className="grid gap-2 py-4">
                 {users.length === 0 ? (
