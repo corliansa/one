@@ -20,6 +20,7 @@ export const User: NextPage<{ userId: string }> = ({ userId }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Base title={user?.name ?? " "}>
+        <h1>Admin View, editing user...</h1>
         <div className="py-4">
           <Protected roles={["ADMIN"]} redirectTo="/dashboard">
             {!isLoading && user && (
