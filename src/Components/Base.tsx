@@ -20,6 +20,15 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
+/**
+ * Base component for the application.
+ * 
+ * @component
+ * @param {React.ReactNode} children - The content of the component.
+ * @param {string} title - The title of the component.
+ * @returns {React.ReactElement} The rendered Base component.
+ */
+
 export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
   children = (
     <div className="py-4">
