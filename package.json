@@ -27,6 +27,7 @@
     "@trpc/react-query": "^10.44.1",
     "@trpc/server": "^10.44.1",
     "@types/pg": "^8.11.2",
+    "bcryptjs": "^2.4.3",
     "evergreen-ui": "^7.1.9",
     "mysql2": "^3.9.2",
     "n": "^9.2.0",
@@ -39,6 +40,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/node": "^20.10.5",
     "@types/react": "^18.2.45",
     "@types/react-dom": "^18.2.18",

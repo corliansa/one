@@ -3,12 +3,14 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import React, { useState } from "react";
 import { Base, Card, Protected } from "../../Components";
-import { capitalize } from "../../utils/capitalize";
+
 import type { RouterOutputs } from "../../utils/trpc";
 import { trpc } from "../../utils/trpc";
+import ProfileInfo from "./ProfileInfo";
 
 export const Profile: NextPage = () => {
   const { data: user, isLoading } = trpc.user.getUser.useQuery();
+
   return (
     <>
       <Head>
@@ -20,46 +22,7 @@ export const Profile: NextPage = () => {
           <Protected redirectTo="/">
             {!isLoading && user && (
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <Card key={user.id}>
-                  <h2 className="text-xl font-semibold">{user.name}</h2>
-                  {[
-                    { label: "Email", value: user.email },
-                    { label: "Role", value: capitalize(user.role) },
-                    { label: "Status", value: capitalize(user.status) },
-                    {
-                      label: "Verified",
-                      value: user.verification === "VERIFIED" ? "Yes" : "No",
-                    },
-                    {
-                      label: "Birth date",
-                      value: user.birthDate?.toLocaleDateString() ?? "N/A",
-                    },
-                    { label: "Occupation", value: user.occupation ?? "N/A" },
-                    {
-                      label: "Affiliation",
-                      value:
-                        user.affiliation.length > 0 ? (
-                          <ul className="list-disc pl-4">
-                            {user.affiliation
-                              .sort((a, b) => b.length - a.length)
-                              .map((affiliation) => (
-                                <li key={affiliation}>
-                                  {affiliation.replace("_", " ")}
-                                </li>
-                              ))}
-                          </ul>
-                        ) : (
-                          "N/A"
-                        ),
-                    },
-                    { label: "Location", value: user.location ?? "N/A" },
-                  ].map(({ label, value }) => (
-                    <div key={label}>
-                      <span className="font-bold">{label}: </span>
-                      {value}
-                    </div>
-                  ))}
-                </Card>
+                <ProfileInfo user={user} />
                 <Form user={user} />
               </div>
             )}
@@ -75,7 +38,7 @@ export const Form: React.FC<{
 }> = ({ user }) => {
   const [name, setName] = useState(user.name ?? "");
   const [birthDate, setBirthDate] = useState(
-    user?.birthDate ? (user?.birthDate).toISOString().slice(0, 10) : ""
+    user?.birthDate ? (user?.birthDate).toISOString().slice(0, 10) : "",
   );
   const [occupation, setOccupation] = useState(user?.occupation ?? "");
   const [location, setLocation] = useState(user?.location ?? "");

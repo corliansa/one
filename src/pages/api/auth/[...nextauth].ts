@@ -29,7 +29,12 @@ export const authOptions: NextAuthOptions = {
         timeout: 10000,
       },
     }),
+
+    
+
+
     // ...add more providers here
+
   ],
 };
 
