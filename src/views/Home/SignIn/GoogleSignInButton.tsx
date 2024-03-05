@@ -8,7 +8,7 @@ const GoogleButton: React.FC = () => {
     // maybe for data click tracking or something
 
     signIn("google", {
-      callbackUrl: `${window.location.origin}/dashboard`,
+      callbackUrl: `${window.location.origin}/update`,
     });
 
     console.log("Google Log-In");

@@ -57,6 +57,14 @@ export const User: NextPage<{ userId: string }> = ({ userId }) => {
                         ),
                     },
                     { label: "Location", value: user.location ?? "N/A" },
+                    {
+                      label: "PPI Cabang",
+                      value: user.ppicabang ?? "N/A",
+                    },
+                    {
+                      label: "Updated Info",
+                      value: user.updated ? "Yes" : "No",
+                    },
                   ].map(({ label, value }) => (
                     <div key={label}>
                       <span className="font-bold">{label}: </span>
