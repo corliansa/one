@@ -17,5 +17,6 @@ declare module "next-auth" {
     role: "ADMIN" | "USER";
     status: "ACTIVE" | "INACTIVE";
     verification: "VERIFIED" | "UNVERIFIED";
+    updated: boolean;
   }
 }
