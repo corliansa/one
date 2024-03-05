@@ -9,7 +9,7 @@ export const Filter: React.FC = () => {
   const { query, replace } = useRouter();
 
   const handleSelectChange =
-    (filterType: "role" | "verification" | "status") =>
+    (filterType: "role" | "verification" | "status" | "occupation") =>
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       replace({
         query: e.target.value

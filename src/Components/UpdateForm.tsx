@@ -2,6 +2,8 @@ import { Button, TextInputField } from "evergreen-ui";
 import React, { useState } from "react";
 import type { RouterOutputs } from "../utils/trpc";
 import { trpc } from "../utils/trpc";
+import { SelectField } from "evergreen-ui";
+import { ListPPICabang } from "./ListPPICabang";
 
 export const UpdateProfileForm: React.FC<{
   user: RouterOutputs["user"]["getUser"];
@@ -10,20 +12,25 @@ export const UpdateProfileForm: React.FC<{
   const [birthDate, setBirthDate] = useState(
     user?.birthDate ? (user?.birthDate).toISOString().slice(0, 10) : "",
   );
+  const [ppicabang, setPpiCabang] = useState(user?.ppicabang ?? "");
   const [occupation, setOccupation] = useState(user?.occupation ?? "");
   const [location, setLocation] = useState(user?.location ?? "");
 
   const queryClient = trpc.useContext();
   const { mutateAsync: updateUser, isLoading } =
     trpc.user.updateUser.useMutation({
-      onSuccess: () => queryClient.user.getUser.invalidate(),
+      onSuccess: () => queryClient.user?.getUser?.invalidate(),
     });
+
+  const isProfileUpdated = !user.updated;
+
   return (
     <div className="flex flex-col">
       <TextInputField
         marginBottom={8}
         label="Name"
         value={name}
+        required={isProfileUpdated}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           setName(e.target.value)
         }
@@ -33,26 +40,51 @@ export const UpdateProfileForm: React.FC<{
         label="Birth Date"
         type="date"
         value={birthDate}
+        required={isProfileUpdated}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           setBirthDate(e.target.value)
         }
       />
-      <TextInputField
+      <SelectField
         marginBottom={8}
         label="Occupation"
         value={occupation}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setOccupation(e.target.value)
-        }
-      />
+        required={isProfileUpdated}
+        description="Select your occupation"
+        onChange={(e) => setOccupation(e.target.value)}
+      >
+        <option value="ausbildung">Ausbildung</option>
+        <option value="bachelor">Bachelor</option>
+        <option value="master">Master</option>
+        <option value="doctor">Doctor</option>
+        <option value="doctor">Researcher</option>
+      </SelectField>
+
       <TextInputField
         marginBottom={12}
         label="Location"
         value={location}
+        required={isProfileUpdated}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           setLocation(e.target.value)
         }
       />
+      <SelectField
+        marginBottom={8}
+        label="PPI Cabang"
+        required={isProfileUpdated}
+        value={ppicabang}
+        description="PPI Cabang terdekat dari lokasi domisili anda di Jerman"
+        onChange={(e) => setPpiCabang(e.target.value)}
+      >
+        {ListPPICabang.map((ppi) => {
+          return (
+            <option key={ppi.value} value={ppi.value}>
+              {ppi.label}
+            </option>
+          );
+        })}
+      </SelectField>
       <Button
         onClick={async () =>
           await updateUser({
@@ -60,6 +92,7 @@ export const UpdateProfileForm: React.FC<{
             birthDate: birthDate ? new Date(birthDate) : undefined,
             occupation,
             location,
+            ppicabang,
           })
         }
         isLoading={isLoading}

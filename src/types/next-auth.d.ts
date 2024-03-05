@@ -10,6 +10,7 @@ declare module "next-auth" {
       role: "ADMIN" | "USER";
       status: "ACTIVE" | "INACTIVE";
       verification: "VERIFIED" | "UNVERIFIED";
+      occupation: "Ausbildung" | "Bachelor" | "Master" | "Doctor" | "Professor";
       updated: boolean;
     } & DefaultSession["user"];
   }
@@ -17,6 +18,7 @@ declare module "next-auth" {
     role: "ADMIN" | "USER";
     status: "ACTIVE" | "INACTIVE";
     verification: "VERIFIED" | "UNVERIFIED";
+    occupation: "Ausbildung" | "Bachelor" | "Master" | "Doctor" | "Professor";
     updated: boolean;
   }
 }

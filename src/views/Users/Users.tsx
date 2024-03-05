@@ -2,7 +2,12 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { Base, Card, Protected } from "../../Components";
-import type { RoleType, StatusType, VerificationType } from "../../types";
+import type {
+  OccupationsType,
+  RoleType,
+  StatusType,
+  VerificationType,
+} from "../../types";
 import { trpc } from "../../utils/trpc";
 import { Filter } from "./FilterMenu";
 
@@ -15,6 +20,7 @@ export const Users: NextPage = () => {
     verification: query.verification as VerificationType,
     role: query.role as RoleType,
     status: query.status as StatusType,
+    occupation: query.occupation as OccupationsType,
   });
 
   return (
@@ -26,7 +32,7 @@ export const Users: NextPage = () => {
       <Base title="Users list">
         <div className="py-4">
           <Protected roles={["ADMIN"]} redirectTo="/dashboard">
-            <Filter/>
+            <Filter />
             {!isLoading && users && (
               <div className="grid gap-2 py-4">
                 {users.length === 0 ? (
