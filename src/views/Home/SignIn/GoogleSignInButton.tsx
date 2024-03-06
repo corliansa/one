@@ -1,7 +1,6 @@
 import React from "react";
 import { signIn } from "next-auth/react";
 import styles from "./GoogleSignInButton.module.css";
-import { useSession } from "next-auth/react";
 
 const GoogleButton: React.FC = () => {
   const handleClick = () => {
