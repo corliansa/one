@@ -10,7 +10,7 @@ const UpdateProfilePage: NextPage = () => {
   return (
     <ProtectedUpdate redirectTo="/">
       {!isLoading && user && (
-        <div className="flex h-full flex-col items-center justify-center">
+        <div className="flex min-h-screen flex-col items-center justify-center">
           <Card className="p-10">
             <h1 className="p-10 text-3xl">Update info sensus</h1>
             <UpdateProfileFormFirstLogin user={user} />
