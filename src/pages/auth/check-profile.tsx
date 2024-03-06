@@ -1,28 +1,39 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSession, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 
 export const CheckProfile = () => {
   const router = useRouter();
   const { data: session, status } = useSession();
+  const [calledPush, setCalledPush] = useState(false); // State to track if redirect has been called
+
   useEffect(() => {
-    // Wait until the session is fully loaded
-    if (status === "loading") return;
+    // Check if redirection has already been initiated or if we're still loading the session
+    if (calledPush || status === "loading") return;
+    console.log("Checking profile", session, status);
+
     if (status === "unauthenticated") {
-      // Redirect to sign-in if somehow accessed without being authenticated
+      // Redirect to sign-in if unauthenticated
       signIn("google");
+      setCalledPush(true); // Prevent further actions
       return;
     }
-
+    // Proceed with redirection based on the user's profile update status
     if (session?.user?.updated) {
-      router.replace("/dashboard");
+      // If the user has updated their profile, redirect to the dashboard
+      console.log("redirecting to dashboard")
+      router.replace("/dashboard").then(() => setCalledPush(true));
     } else {
-      router.replace("/update");
+      // If the user has not updated their profile, redirect to the update page
+      console.log("redirecting to update")
+      router.replace("/update").then(() => setCalledPush(true));
     }
-  }, [session, status, router]);
+  }, [session, status, router, calledPush]);
 
   return (
-    <div className="flex flex-col h-full items-center justify-center">Loading...</div> // Show a loading message or spinner while waiting
+    <div className="flex h-full flex-col items-center justify-center">
+      Loading...
+    </div>
   );
 };
 

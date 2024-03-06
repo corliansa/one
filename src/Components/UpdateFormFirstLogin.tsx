@@ -5,6 +5,7 @@ import { trpc } from "../utils/trpc";
 import { SelectField } from "evergreen-ui";
 import { ListPPICabang } from "./ListPPICabang";
 import { useRouter } from "next/router";
+// import { useSession } from "next-auth/react";
 
 export const UpdateProfileFormFirstLogin: React.FC<{
   user: RouterOutputs["user"]["getUser"];
@@ -17,15 +18,14 @@ export const UpdateProfileFormFirstLogin: React.FC<{
   const [occupation, setOccupation] = useState(user?.occupation ?? "");
   const [location, setLocation] = useState(user?.location ?? "");
   const router = useRouter();
-
   const queryClient = trpc.useContext();
 
   const { mutateAsync: updateUserByIdLogin, isLoading } =
     trpc.user.updateUserByIdLogin.useMutation({
       onSuccess: async () => {
-        queryClient.user.getUserById.invalidate({ id: user.id });
-        await router.replace("/auth/check-profile");
-        console.log("Dashboard navigation triggered");
+        await queryClient.user.getUserById.invalidate({ id: user.id });
+        console.log("user updated");
+        window.location.reload();
       },
     });
 
