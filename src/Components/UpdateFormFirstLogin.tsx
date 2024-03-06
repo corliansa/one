@@ -2,9 +2,8 @@ import { Button, TextInputField } from "evergreen-ui";
 import React, { useState } from "react";
 import type { RouterOutputs } from "../utils/trpc";
 import { trpc } from "../utils/trpc";
-import { SelectField } from "evergreen-ui";
+import { SelectField, Checkbox } from "evergreen-ui";
 import { ListPPICabang } from "./ListPPICabang";
-
 
 export const UpdateProfileFormFirstLogin: React.FC<{
   user: RouterOutputs["user"]["getUser"];
@@ -16,6 +15,7 @@ export const UpdateProfileFormFirstLogin: React.FC<{
   const [ppicabang, setPpiCabang] = useState(user?.ppicabang ?? "");
   const [occupation, setOccupation] = useState(user?.occupation ?? "");
   const [location, setLocation] = useState(user?.location ?? "");
+  const [checkedPrivacy, setCheckedPrivacy] = useState(false);
   const queryClient = trpc.useContext();
 
   const { mutateAsync: updateUserByIdLogin, isLoading } =
@@ -29,6 +29,13 @@ export const UpdateProfileFormFirstLogin: React.FC<{
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    // check privacy
+    if (!checkedPrivacy) {
+      alert("Please check the privacy policy");
+      return;
+    }
+
     await updateUserByIdLogin({
       id: user.id,
       name,
@@ -102,6 +109,13 @@ export const UpdateProfileFormFirstLogin: React.FC<{
             );
           })}
         </SelectField>
+
+        <Checkbox
+          label="Dengan ini, anda setuju dengan kebijakan privasi kami."
+          checked={checkedPrivacy}
+          onChange={(e) => setCheckedPrivacy(e.target.checked)}
+        />
+
         <Button type="submit" isLoading={isLoading} className="mt-10 w-full">
           Save
         </Button>

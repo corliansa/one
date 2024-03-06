@@ -82,6 +82,7 @@ model User {
   birthDate     DateTime?
   occupation    String?
   location      String?
+  universityEmail String?    
   affiliation   String[]     @default([]) // change to normal string instead of list
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt

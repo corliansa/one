@@ -7,6 +7,7 @@ import { getUser } from "./user/getUser";
 import { getUsers } from "./user/getUsers";
 import { updateUserByIdLogin } from "./user/updateUserByIdLogin";
 import { getUserUpdateProfileStatus } from "./user/getUserUpdateProfileStatus";
+import { updateUserUniEmail } from "./user/updateUserUniEmail";
 
 export const userRouter = router({
   getSession,
@@ -17,4 +18,5 @@ export const userRouter = router({
   updateUserById,
   updateUserByIdLogin,
   getUserUpdateProfileStatus,
+  updateUserUniEmail,
 });
