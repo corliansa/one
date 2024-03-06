@@ -10,11 +10,15 @@ declare module "next-auth" {
       role: "ADMIN" | "USER";
       status: "ACTIVE" | "INACTIVE";
       verification: "VERIFIED" | "UNVERIFIED";
+      occupation: "Ausbildung" | "Bachelor" | "Master" | "Doctor" | "Professor";
+      updated: boolean;
     } & DefaultSession["user"];
   }
   interface User extends DefaultUser {
     role: "ADMIN" | "USER";
     status: "ACTIVE" | "INACTIVE";
     verification: "VERIFIED" | "UNVERIFIED";
+    occupation: "Ausbildung" | "Bachelor" | "Master" | "Doctor" | "Professor";
+    updated: boolean;
   }
 }

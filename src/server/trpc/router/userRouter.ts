@@ -5,6 +5,8 @@ import { router } from "../trpc";
 import { getSession } from "./user/getSession";
 import { getUser } from "./user/getUser";
 import { getUsers } from "./user/getUsers";
+import { updateUserByIdLogin } from "./user/updateUserByIdLogin";
+import { getUserUpdateProfileStatus } from "./user/getUserUpdateProfileStatus";
 
 export const userRouter = router({
   getSession,
@@ -13,4 +15,6 @@ export const userRouter = router({
   getUsers,
   getUserById,
   updateUserById,
+  updateUserByIdLogin,
+  getUserUpdateProfileStatus,
 });

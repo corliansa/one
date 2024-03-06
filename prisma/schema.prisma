@@ -77,6 +77,8 @@ model User {
   role          Role         @default(USER)
   status        Status       @default(ACTIVE)
   verification  Verification @default(UNVERIFIED)
+  ppicabang     String?      
+  updated       Boolean      @default(false)
   birthDate     DateTime?
   occupation    String?
   location      String?

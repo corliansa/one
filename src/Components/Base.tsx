@@ -22,7 +22,7 @@ function classNames(...classes: string[]) {
 
 /**
  * Base component for the application.
- * 
+ *
  * @component
  * @param {React.ReactNode} children - The content of the component.
  * @param {string} title - The title of the component.
@@ -66,6 +66,13 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
       icon: UserCircleIcon,
       roles: ["ADMIN", "USER"],
     },
+    {
+      name: "Verify",
+      href: "/verify",
+      icon: UsersIcon,
+      roles: ["USER"],
+      verification: "UNVERIFIED",
+    }
     // {
     //   name: "Reports",
     //   href: "#",
@@ -199,6 +206,7 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
                       !item.roles ||
                       item.roles.includes(sessionData?.user?.role || "ADMIN"),
                   )
+                  .filter((item) => !item.roles || item.verification?.includes(sessionData?.user?.verification || "VERIFIED") || item.verification === undefined)
                   .map((item) => (
                     <Link
                       key={item.name}

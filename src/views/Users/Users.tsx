@@ -26,7 +26,7 @@ export const Users: NextPage = () => {
       <Base title="Users list">
         <div className="py-4">
           <Protected roles={["ADMIN"]} redirectTo="/dashboard">
-            <Filter/>
+            <Filter />
             {!isLoading && users && (
               <div className="grid gap-2 py-4">
                 {users.length === 0 ? (
