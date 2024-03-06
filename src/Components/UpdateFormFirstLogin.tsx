@@ -4,7 +4,7 @@ import type { RouterOutputs } from "../utils/trpc";
 import { trpc } from "../utils/trpc";
 import { SelectField } from "evergreen-ui";
 import { ListPPICabang } from "./ListPPICabang";
-import { useRouter } from "next/router";
+
 
 export const UpdateProfileFormFirstLogin: React.FC<{
   user: RouterOutputs["user"]["getUser"];
@@ -16,19 +16,17 @@ export const UpdateProfileFormFirstLogin: React.FC<{
   const [ppicabang, setPpiCabang] = useState(user?.ppicabang ?? "");
   const [occupation, setOccupation] = useState(user?.occupation ?? "");
   const [location, setLocation] = useState(user?.location ?? "");
-  const router = useRouter();
-
   const queryClient = trpc.useContext();
 
   const { mutateAsync: updateUserByIdLogin, isLoading } =
     trpc.user.updateUserByIdLogin.useMutation({
       onSuccess: async () => {
-        queryClient.user.getUserById.invalidate({ id: user.id });
-        await router.replace("/dashboard");
-        console.log("Dashboard navigation triggered");
+        await queryClient.user.getUserById.invalidate({ id: user.id });
+        console.log("user updated");
+        window.location.reload();
       },
     });
-    
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await updateUserByIdLogin({

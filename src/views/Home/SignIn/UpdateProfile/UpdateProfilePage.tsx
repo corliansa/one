@@ -1,6 +1,6 @@
 import React from "react";
 import { UpdateProfileFormFirstLogin } from "../../../../Components/UpdateFormFirstLogin";
-import { Protected } from "../../../../Components";
+import { ProtectedUpdate } from "./ProtectedUpdate";
 import { trpc } from "../../../../utils/trpc";
 import { Card } from "../../../../Components/Card";
 import type { NextPage } from "next";
@@ -8,7 +8,7 @@ import type { NextPage } from "next";
 const UpdateProfilePage: NextPage = () => {
   const { data: user, isLoading } = trpc.user.getUser.useQuery();
   return (
-    <Protected redirectTo="/update">
+    <ProtectedUpdate redirectTo="/">
       {!isLoading && user && (
         <div className="flex h-full flex-col items-center justify-center">
           <Card className="p-10">
@@ -17,7 +17,7 @@ const UpdateProfilePage: NextPage = () => {
           </Card>
         </div>
       )}
-    </Protected>
+    </ProtectedUpdate>
   );
 };
 
