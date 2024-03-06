@@ -2,12 +2,7 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { Base, Card, Protected } from "../../Components";
-import type {
-  OccupationsType,
-  RoleType,
-  StatusType,
-  VerificationType,
-} from "../../types";
+import type { RoleType, StatusType, VerificationType } from "../../types";
 import { trpc } from "../../utils/trpc";
 import { Filter } from "./FilterMenu";
 
@@ -20,7 +15,6 @@ export const Users: NextPage = () => {
     verification: query.verification as VerificationType,
     role: query.role as RoleType,
     status: query.status as StatusType,
-    occupation: query.occupation as OccupationsType,
   });
 
   return (
