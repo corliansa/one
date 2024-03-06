@@ -3,7 +3,6 @@ import Head from "next/head";
 import { Base, Card, Protected } from "../../Components";
 import { capitalize } from "../../utils/capitalize";
 import { trpc } from "../../utils/trpc";
-import { VerifyWarning } from "../../Components/VerifyWarning";
 
 export const Dashboard: NextPage = () => {
   const { data } = trpc.internal.getStatistics.useQuery();
@@ -24,7 +23,7 @@ export const Dashboard: NextPage = () => {
       <Base title="Dashboard">
         <Protected verification="UNVERIFIED">
           {/* added a warning verification if user is unverified */}
-          <VerifyWarning href="/admins" />
+          
         </Protected>
         <Protected redirectTo="/">
           <Card className="mt-4">

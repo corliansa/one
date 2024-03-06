@@ -17,6 +17,7 @@ export const authOptions: NextAuthOptions = {
         session.user.verification = user.verification;
         // added if user updated profile or not
         session.user.updated = user.updated;
+        session.user.universityEmail = user.universityEmail;
       }
 
       return session;

@@ -15,6 +15,7 @@ import { signOut, useSession } from "next-auth/react";
 import { Protected, Logo } from ".";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { VerifyWarning } from "./VerifyWarning";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -70,9 +71,9 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
       name: "Verify",
       href: "/verify",
       icon: UsersIcon,
-      roles: ["USER"],
-      verification: "UNVERIFIED",
-    }
+      roles: ["USER", "ADMIN"], // delete admin later, so that verify only for users
+      verification: "UNVERIFIED", // uncomment to apply for production
+    },
     // {
     //   name: "Reports",
     //   href: "#",
@@ -206,7 +207,14 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
                       !item.roles ||
                       item.roles.includes(sessionData?.user?.role || "ADMIN"),
                   )
-                  .filter((item) => !item.roles || item.verification?.includes(sessionData?.user?.verification || "VERIFIED") || item.verification === undefined)
+                  .filter(
+                    (item) =>
+                      !item.roles ||
+                      item.verification?.includes(
+                        sessionData?.user?.verification || "VERIFIED",
+                      ) ||
+                      item.verification === undefined,
+                  )
                   .map((item) => (
                     <Link
                       key={item.name}
@@ -316,7 +324,9 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
                 </div>
               </div>
             </div>
-
+            <Protected verification="UNVERIFIED">
+              <VerifyWarning href="/verify" />
+            </Protected>
             <main className="flex-1">
               <div className="py-6">
                 <div className="px-4 sm:px-6 md:px-0">

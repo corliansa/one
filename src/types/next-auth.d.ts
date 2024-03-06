@@ -12,6 +12,7 @@ declare module "next-auth" {
       verification: "VERIFIED" | "UNVERIFIED";
       occupation: "Ausbildung" | "Bachelor" | "Master" | "Doctor" | "Professor";
       updated: boolean;
+      universityEmail: string;
     } & DefaultSession["user"];
   }
   interface User extends DefaultUser {
@@ -20,5 +21,6 @@ declare module "next-auth" {
     verification: "VERIFIED" | "UNVERIFIED";
     occupation: "Ausbildung" | "Bachelor" | "Master" | "Doctor" | "Professor";
     updated: boolean;
+    universityEmail: string;
   }
 }
