@@ -4,8 +4,7 @@ import type { RouterOutputs } from "../utils/trpc";
 import { trpc } from "../utils/trpc";
 import { SelectField } from "evergreen-ui";
 import { ListPPICabang } from "./ListPPICabang";
-import { useRouter } from "next/router";
-// import { useSession } from "next-auth/react";
+
 
 export const UpdateProfileFormFirstLogin: React.FC<{
   user: RouterOutputs["user"]["getUser"];
@@ -17,7 +16,6 @@ export const UpdateProfileFormFirstLogin: React.FC<{
   const [ppicabang, setPpiCabang] = useState(user?.ppicabang ?? "");
   const [occupation, setOccupation] = useState(user?.occupation ?? "");
   const [location, setLocation] = useState(user?.location ?? "");
-  const router = useRouter();
   const queryClient = trpc.useContext();
 
   const { mutateAsync: updateUserByIdLogin, isLoading } =
