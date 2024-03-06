@@ -24,11 +24,11 @@ export const UpdateProfileFormFirstLogin: React.FC<{
     trpc.user.updateUserByIdLogin.useMutation({
       onSuccess: async () => {
         queryClient.user.getUserById.invalidate({ id: user.id });
-        await router.replace("/dashboard");
+        await router.replace("/auth/check-profile");
         console.log("Dashboard navigation triggered");
       },
     });
-    
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await updateUserByIdLogin({

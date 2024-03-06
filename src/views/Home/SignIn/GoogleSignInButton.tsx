@@ -1,6 +1,7 @@
 import React from "react";
 import { signIn } from "next-auth/react";
 import styles from "./GoogleSignInButton.module.css";
+import { useSession } from "next-auth/react";
 
 const GoogleButton: React.FC = () => {
   const handleClick = () => {
@@ -8,7 +9,7 @@ const GoogleButton: React.FC = () => {
     // maybe for data click tracking or something
 
     signIn("google", {
-      callbackUrl: `${window.location.origin}/update`,
+      callbackUrl: `${window.location.origin}/auth/check-profile`,
     });
 
     console.log("Google Log-In");
