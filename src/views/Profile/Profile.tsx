@@ -5,7 +5,7 @@ import { Base, Protected } from "../../Components";
 
 import { trpc } from "../../utils/trpc";
 import ProfileInfo from "./ProfileInfo";
-import { UpdateProfileForm } from "../../Components/UpdateForm";
+import { UpdateProfileForm } from "./UpdateForm";
 
 export const Profile: NextPage = () => {
   const { data: user, isLoading } = trpc.user.getUser.useQuery();
