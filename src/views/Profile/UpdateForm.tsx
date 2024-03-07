@@ -1,9 +1,9 @@
 import { Button, TextInputField } from "evergreen-ui";
 import React, { useState } from "react";
-import type { RouterOutputs } from "../utils/trpc";
-import { trpc } from "../utils/trpc";
+import type { RouterOutputs } from "../../utils/trpc";
+import { trpc } from "../../utils/trpc";
 import { SelectField } from "evergreen-ui";
-import { ListPPICabang } from "./ListPPICabang";
+import { ListPPICabang } from "../../Components/optionsList/ListPPICabang";
 
 export const UpdateProfileForm: React.FC<{
   user: RouterOutputs["user"]["getUser"];

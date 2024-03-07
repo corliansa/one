@@ -1,5 +1,5 @@
 import React from "react";
-import { UpdateProfileFormFirstLogin } from "../../../../Components/UpdateFormFirstLogin";
+import { UpdateProfileFormFirstLogin } from "./UpdateFormFirstLogin";
 import { ProtectedUpdate } from "./ProtectedUpdate";
 import { trpc } from "../../../../utils/trpc";
 import { Card } from "../../../../Components/Card";

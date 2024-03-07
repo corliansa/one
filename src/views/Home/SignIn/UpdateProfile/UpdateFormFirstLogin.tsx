@@ -1,9 +1,9 @@
 import { Button, TextInputField } from "evergreen-ui";
 import React, { useState } from "react";
-import type { RouterOutputs } from "../utils/trpc";
-import { trpc } from "../utils/trpc";
+import type { RouterOutputs } from "../../../../utils/trpc";
+import { trpc } from "../../../../utils/trpc";
 import { SelectField, Checkbox } from "evergreen-ui";
-import { ListPPICabang } from "./ListPPICabang";
+import { ListPPICabang } from "../../../../Components/optionsList/ListPPICabang";
 
 export const UpdateProfileFormFirstLogin: React.FC<{
   user: RouterOutputs["user"]["getUser"];
@@ -32,7 +32,7 @@ export const UpdateProfileFormFirstLogin: React.FC<{
 
     // check privacy
     if (!checkedPrivacy) {
-      alert("Please check the privacy policy");
+      alert("Please agree to the terms and conditions.");
       return;
     }
 
