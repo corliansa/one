@@ -24,7 +24,7 @@ export const serverSchema = z.object({
 
   // Email environment variables
   EMAIL_HOST: z.string(),
-  EMAIL_PORT: z.preprocess((val) => parseInt(val, 10), z.number()),
+  EMAIL_PORT: z.preprocess((val) => parseInt(String(val), 10), z.number()),
   EMAIL_USER: z.string(),
   EMAIL_PASSWORD: z.string(),
   EMAIL_FROM: z.string(),
