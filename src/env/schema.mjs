@@ -21,6 +21,12 @@ export const serverSchema = z.object({
   ),
   GOOGLE_CLIENT_ID: z.string(),
   GOOGLE_CLIENT_SECRET: z.string(),
+
+  // Email environment variables
+  EMAIL_HOST: z.string(),
+  EMAIL_PORT: z.number(),
+  EMAIL_USER: z.string(),
+  EMAIL_PASSWORD: z.string(),
 });
 
 /**
