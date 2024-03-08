@@ -27,10 +27,11 @@ export const VerifyFormUni: React.FC = () => {
     }
   }, [session?.user?.universityName]);
 
+  const verificationStatus = session?.user?.verification;
+
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [checkedPrivacy, setCheckedPrivacy] = useState(false);
-
   const queryClient = trpc.useContext();
   const generateTokenMutation =
     trpc.token.generateVerificationToken.useMutation();
@@ -44,11 +45,15 @@ export const VerifyFormUni: React.FC = () => {
           id: userIdAndEmail.id,
           email: userIdAndEmail.universityEmail,
         });
+
+        if (!result.success) {
+          return setError(result.message);
+        }
         // If successful, you might want to do something with the result
-        console.log("Verification token generated:", result);
+        
         const result2 = await sendVerificationTokenMutation.mutateAsync({
           email: userIdAndEmail.universityEmail,
-          token: result.token,
+          token: result.token!,
         });
         return result2;
       } catch (error) {
@@ -66,6 +71,10 @@ export const VerifyFormUni: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (verificationStatus === "VERIFIED") {
+      return setError("User is already verified.");
+    }
 
     if (!university) {
       return setError("Please select a university.");
@@ -149,7 +158,11 @@ export const VerifyFormUni: React.FC = () => {
 
           <FormError message={error} />
           <FormSuccess message={success} />
-          <Button isLoading={isLoading} appearance="primary">
+          <Button
+            isLoading={isLoading}
+            appearance="primary"
+            disabled={session?.user?.verification === "VERIFIED"}
+          >
             Verifikasi Email Universitas
           </Button>
         </div>

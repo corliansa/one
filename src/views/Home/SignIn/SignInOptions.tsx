@@ -15,7 +15,7 @@ export const SignInOptionsPage = () => {
       </Head>
 
       <div className="flex min-h-screen flex-col justify-center py-12">
-        <Card className="rounded-lg bg-gray-50 px-5 py-5 sm:mx-auto sm:w-full sm:max-w-md">
+        <Card className="rounded-lg px-5 py-5 sm:mx-auto sm:w-full sm:max-w-md">
           <button
             onClick={() => back()} // Use router.back() to go to the previous page
             className="inline-flex items-center text-sm font-medium text-gray-600 hover:text-gray-900"

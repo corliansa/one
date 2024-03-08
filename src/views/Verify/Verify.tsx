@@ -12,7 +12,7 @@ const VerifyPage = () => {
         <title>ONE | Verify</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Protected>
+      <Protected redirectTo="/">
         <Base title="Verification Page">
           <div className="my-3 flex flex-row items-center justify-start gap-3">
             <h1 className="text-xl font-semibold">Status:</h1>

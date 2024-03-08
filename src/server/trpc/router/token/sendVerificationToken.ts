@@ -6,7 +6,7 @@ export const sendVerificationToken = protectedProcedure
   .input(
     z.object({
       email: z.string().email(),
-      token: z.string().length(36), // UUID v4
+      token: z.string(), // hashed token
     }),
   )
   .mutation(async ({ input: { email, token } }) => {
