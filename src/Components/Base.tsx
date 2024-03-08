@@ -3,6 +3,8 @@ import { Dialog, Menu, Transition } from "@headlessui/react";
 import {
   AcademicCapIcon,
   Bars3BottomLeftIcon,
+  CheckIcon,
+
   // ChartBarIcon,
   FolderIcon,
   // HomeIcon,
@@ -71,7 +73,8 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
       name: "Verify",
       href: "/verify",
       icon: UsersIcon,
-      roles: ["USER", "ADMIN"], // delete admin later, so that verify only for users
+      roles: ["USER", "ADMIN"],
+      // delete admin later, so that verify only for users
     },
     // {
     //   name: "Reports",
@@ -251,6 +254,16 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
                     {sessionData?.user?.name
                       ? `Welcome, ${sessionData?.user?.name}`
                       : "Welcome"}{" "}
+                    {sessionData?.user?.verification === "VERIFIED" ? (
+                      <div className="flex flex-row gap-1">
+                        <CheckIcon className="h-6 w-6 text-sky-500" />
+                        <p className="text-sky-500">Verified</p>
+                      </div>
+                    ) : (
+                      <div className="flex flex-row gap-1">
+                        <p className="text-red-500">Unverified</p>
+                      </div>
+                    )}
                   </p>
                 </div>
                 <div className="ml-4 flex items-center md:ml-6">
