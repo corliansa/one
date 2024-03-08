@@ -38,6 +38,7 @@ export const generateVerificationToken = protectedProcedure
         });
         if (expiry && expiry > new Date()) {
           return {
+            token,
             success: true,
             message: "Token updated and resended in email.",
           };
