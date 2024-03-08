@@ -87,6 +87,7 @@ model User {
   expectedGraduation          String?
   universityName              String?
   universityEmail             String?
+  universityEmailVerificationToken UniversityEmailVerificationToken[]
   // forwardDataThirdParty    Boolean      @default(false)
   // useDataForResearch       Boolean      @default(false)
   // agreedToTermsAndCond     Boolean      @default(false)
@@ -118,6 +119,8 @@ model UniversityEmailVerificationToken {
   email    String
   token    String   @unique
   expires  DateTime
+  userId   String?  // field to store user id
+  user     User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([email, token])
 }
