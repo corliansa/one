@@ -1,20 +1,23 @@
-import { Button, TextInputField } from "evergreen-ui";
+import { Button, Checkbox, SelectField, TextInputField } from "evergreen-ui";
 import React, { useState } from "react";
+import { ListPPICabang } from "../../../../Components/optionsList/ListPPICabang";
 import type { RouterOutputs } from "../../../../utils/trpc";
 import { trpc } from "../../../../utils/trpc";
-import { SelectField, Checkbox } from "evergreen-ui";
-import { ListPPICabang } from "../../../../Components/optionsList/ListPPICabang";
 
 export const UpdateProfileFormFirstLogin: React.FC<{
   user: RouterOutputs["user"]["getUser"];
 }> = ({ user }) => {
   const [name, setName] = useState(user.name ?? "");
-  const [birthDate, setBirthDate] = useState(
-    user?.birthDate ? (user?.birthDate).toISOString().slice(0, 10) : "",
-  );
+  const [birthDate, setBirthDate] = useState<string | undefined>(undefined);
+  const [expectedGraduation, setExpectedGraduation] = useState<
+    string | undefined
+  >(undefined);
   const [ppicabang, setPpiCabang] = useState(user?.ppicabang ?? "");
   const [occupation, setOccupation] = useState(user?.occupation ?? "");
   const [location, setLocation] = useState(user?.location ?? "");
+  const [bundesland, setBundesland] = useState("berlin");
+  const [fieldOfStudy, setFieldOfStudy] = useState("");
+
   const [checkedPrivacy, setCheckedPrivacy] = useState(false);
   const queryClient = trpc.useContext();
 
@@ -43,6 +46,13 @@ export const UpdateProfileFormFirstLogin: React.FC<{
       occupation,
       location,
       ppicabang,
+      bundesland,
+      fieldOfStudy: ["bachelor", "master", "doctor"].includes(occupation)
+        ? fieldOfStudy
+        : undefined,
+      expectedGraduation: ["bachelor", "master", "doctor"].includes(occupation)
+        ? expectedGraduation
+        : undefined,
     });
   };
 
@@ -85,6 +95,63 @@ export const UpdateProfileFormFirstLogin: React.FC<{
           <option value="master">Master</option>
           <option value="doctor">Doctor</option>
           <option value="professor">Professor</option>
+        </SelectField>
+        {["bachelor", "master", "doctor"].includes(occupation) && (
+          <>
+            <TextInputField
+              marginBottom={8}
+              label="Field Of Study "
+              value={fieldOfStudy}
+              disabled={isLoading}
+              required={
+                isProfileUpdated &&
+                ["bachelor", "master", "doctor"].includes(occupation)
+              }
+              description="Select your occupation"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setFieldOfStudy(e.target.value)
+              }
+            />
+            <TextInputField
+              marginBottom={8}
+              label="Expected Graduation Date"
+              type="date"
+              disabled={isLoading}
+              value={expectedGraduation}
+              required={
+                isProfileUpdated &&
+                ["bachelor", "master", "doctor"].includes(occupation)
+              }
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setExpectedGraduation(e.target.value)
+              }
+            />
+          </>
+        )}
+        <SelectField
+          marginBottom={8}
+          required={isProfileUpdated}
+          disabled={isLoading}
+          value={bundesland}
+          label="Federal State"
+          onChange={(e) => setBundesland(e.target.value)}
+        >
+          <option value="hamburg">Hamburg</option>
+          <option value="bremen">Bremen</option>
+          <option value="thüringen">Thüringen</option>
+          <option value="bayern">Bayern</option>
+          <option value="nordrhein-westfalen">Nordrhein Westfalen</option>
+          <option value="baden-württemberg">Baden Württemberg</option>
+          <option value="berlin">Berlin</option>
+          <option value="niedersachsen">Niedersachsen</option>
+          <option value="hessen">Hessen</option>
+          <option value="rheinland-pfalz">Rheinland-Pfalz</option>
+          <option value="brandenburg">Brandenburg</option>
+          <option value="sachsen">Sachsen</option>
+          <option value="sachsen-anhalt">Sachsen-Anhalt</option>
+          <option value="mecklenburg-vorpommern">Mecklenburg-Vorpommern</option>
+          <option value="schleswig-holstein">Schleswig-Holstein</option>
+          <option value="saarland">Saarland</option>
         </SelectField>
 
         <TextInputField
