@@ -12,6 +12,7 @@ const universityList: University[] = Universities as University[];
 export const VerifyFormUni: React.FC = () => {
   const { data: userIdAndEmail } = trpc.user.getUserUniEmailAndId.useQuery();
   const { data: session } = useSession();
+
   const [universityEmail, setUniversityEmail] = useState(
     session?.user?.universityEmail || "",
   );
@@ -28,8 +29,8 @@ export const VerifyFormUni: React.FC = () => {
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-
   const [checkedPrivacy, setCheckedPrivacy] = useState(false);
+
   const queryClient = trpc.useContext();
   const generateTokenMutation =
     trpc.token.generateVerificationToken.useMutation();
@@ -153,14 +154,6 @@ export const VerifyFormUni: React.FC = () => {
           </Button>
         </div>
       </form>
-      <Button
-        onClick={() => {
-          console.log(userIdAndEmail?.universityEmail);
-        }}
-        isLoading={isLoading}
-      >
-        Debug Uni Email
-      </Button>
     </>
   );
 };

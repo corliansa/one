@@ -12,7 +12,7 @@ export const sendVerificationToken = protectedProcedure
   .mutation(async ({ input: { email, token } }) => {
     try {
       // Construct the verification URL or message
-      const verificationUrl = `https://sensus.ppijerman.com/verify?token=${token}`; // Adjust as necessary
+      const verificationUrl = `https://sensus.ppijerman.com/auth/verify-token?token=${token}`; // Adjust as necessary
 
       // Send the verification email
       await sendEmail({
