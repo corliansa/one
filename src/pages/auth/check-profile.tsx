@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSession, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
+import { Logo } from "../../Components";
 
 export const CheckProfile = () => {
   const router = useRouter();
@@ -31,8 +32,9 @@ export const CheckProfile = () => {
   }, [session, status, router, calledPush]);
 
   return (
-    <div className="flex h-full flex-col items-center justify-center">
-      Loading...
+    <div className="flex min-h-screen flex-col items-center justify-center">
+      <Logo />
+      <h1 className="text-3xl font-bold">Loading...</h1>
     </div>
   );
 };
