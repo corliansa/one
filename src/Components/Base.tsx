@@ -12,7 +12,7 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { signOut, useSession } from "next-auth/react";
-import { Protected, Logo } from ".";
+import { Protected, Logo, Footer } from ".";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { VerifyWarning } from "./VerifyWarning";
@@ -72,7 +72,6 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
       href: "/verify",
       icon: UsersIcon,
       roles: ["USER", "ADMIN"], // delete admin later, so that verify only for users
-      verification: "UNVERIFIED", // uncomment to apply for production
     },
     // {
     //   name: "Reports",
@@ -207,14 +206,6 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
                       !item.roles ||
                       item.roles.includes(sessionData?.user?.role || "ADMIN"),
                   )
-                  .filter(
-                    (item) =>
-                      !item.roles ||
-                      item.verification?.includes(
-                        sessionData?.user?.verification || "VERIFIED",
-                      ) ||
-                      item.verification === undefined,
-                  )
                   .map((item) => (
                     <Link
                       key={item.name}
@@ -259,7 +250,7 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
                   <p className="text-md font-medium text-gray-500">
                     {sessionData?.user?.name
                       ? `Welcome, ${sessionData?.user?.name}`
-                      : "Welcome"}
+                      : "Welcome"}{" "}
                   </p>
                 </div>
                 <div className="ml-4 flex items-center md:ml-6">
@@ -334,6 +325,7 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
                 </div>
                 <div className="px-4 sm:px-6 md:px-0">{children}</div>
               </div>
+              <Footer />
             </main>
           </div>
         </div>
