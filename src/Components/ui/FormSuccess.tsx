@@ -1,7 +1,7 @@
 import { CheckCircleIcon } from "@heroicons/react/24/outline";
 
 interface FormSuccessProps {
-  message: string;
+  message: string | undefined;
 }
 
 export const FormSuccess: React.FC<FormSuccessProps> = ({

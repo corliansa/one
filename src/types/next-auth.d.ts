@@ -10,8 +10,9 @@ declare module "next-auth" {
       role: "ADMIN" | "USER";
       status: "ACTIVE" | "INACTIVE";
       verification: "VERIFIED" | "UNVERIFIED";
-      occupation: "Ausbildung" | "Bachelor" | "Master" | "Doctor" | "Professor";
+      occupation: string;
       updated: boolean;
+      universityName: string;
       universityEmail: string;
     } & DefaultSession["user"];
   }
@@ -19,8 +20,9 @@ declare module "next-auth" {
     role: "ADMIN" | "USER";
     status: "ACTIVE" | "INACTIVE";
     verification: "VERIFIED" | "UNVERIFIED";
-    occupation: "Ausbildung" | "Bachelor" | "Master" | "Doctor" | "Professor";
+    occupation: string;
     updated: boolean;
+    universityName: string;
     universityEmail: string;
   }
 }

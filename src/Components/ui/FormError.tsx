@@ -1,7 +1,7 @@
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
 interface FormErrorProps {
-  message: string;
+  message: string | undefined;
 }
 
 export const FormError: React.FC<FormErrorProps> = ({

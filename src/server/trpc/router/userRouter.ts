@@ -8,6 +8,9 @@ import { getUsers } from "./user/getUsers";
 import { updateUserByIdLogin } from "./user/updateUserByIdLogin";
 import { getUserUpdateProfileStatus } from "./user/getUserUpdateProfileStatus";
 import { updateUserUniEmail } from "./user/updateUserUniEmail";
+import { getUserUniEmail } from "./user/getUserUniversityEmail";
+import { getUserUniEmailAndId } from "./user/getUserUniversityEmailAndId";
+import { updateUserUniEmailAndUni } from "./user/updateUserUniEmailAndUni";
 
 export const userRouter = router({
   getSession,
@@ -19,4 +22,7 @@ export const userRouter = router({
   updateUserByIdLogin,
   getUserUpdateProfileStatus,
   updateUserUniEmail,
+  getUserUniEmail,
+  getUserUniEmailAndId,
+  updateUserUniEmailAndUni,
 });

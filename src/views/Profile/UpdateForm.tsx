@@ -1,9 +1,9 @@
 import { Button, TextInputField } from "evergreen-ui";
 import React, { useState } from "react";
-import type { RouterOutputs } from "../utils/trpc";
-import { trpc } from "../utils/trpc";
+import type { RouterOutputs } from "../../utils/trpc";
+import { trpc } from "../../utils/trpc";
 import { SelectField } from "evergreen-ui";
-import { ListPPICabang } from "./ListPPICabang";
+import { ListPPICabang } from "../../Components/optionsList/ListPPICabang";
 
 export const UpdateProfileForm: React.FC<{
   user: RouterOutputs["user"]["getUser"];
@@ -19,7 +19,10 @@ export const UpdateProfileForm: React.FC<{
   const queryClient = trpc.useContext();
   const { mutateAsync: updateUser, isLoading } =
     trpc.user.updateUser.useMutation({
-      onSuccess: () => queryClient.user?.getUser?.invalidate(),
+      onSuccess: () => {
+        queryClient.user?.getUser?.invalidate();
+        window.location.reload();
+      },
     });
 
   const isProfileUpdated = !user.updated;
@@ -30,6 +33,7 @@ export const UpdateProfileForm: React.FC<{
         marginBottom={8}
         label="Name"
         value={name}
+        disabled={isLoading}
         required={isProfileUpdated}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           setName(e.target.value)
@@ -39,6 +43,7 @@ export const UpdateProfileForm: React.FC<{
         marginBottom={8}
         label="Birth Date"
         type="date"
+        disabled={isLoading}
         value={birthDate}
         required={isProfileUpdated}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -49,6 +54,7 @@ export const UpdateProfileForm: React.FC<{
         marginBottom={8}
         label="Occupation"
         value={occupation}
+        disabled={isLoading}
         required={isProfileUpdated}
         description="Select your occupation"
         onChange={(e) => setOccupation(e.target.value)}
@@ -64,6 +70,7 @@ export const UpdateProfileForm: React.FC<{
         marginBottom={12}
         label="Location"
         value={location}
+        disabled={isLoading}
         required={isProfileUpdated}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           setLocation(e.target.value)
@@ -74,6 +81,7 @@ export const UpdateProfileForm: React.FC<{
         label="PPI Cabang"
         required={isProfileUpdated}
         value={ppicabang}
+        disabled={isLoading}
         description="PPI Cabang terdekat dari lokasi domisili anda di Jerman"
         onChange={(e) => setPpiCabang(e.target.value)}
       >
