@@ -33,8 +33,10 @@ export const VerifyFormUni: React.FC = () => {
   const queryClient = trpc.useContext();
   const generateTokenMutation =
     trpc.token.generateVerificationToken.useMutation();
+  const sendVerificationTokenMutation =
+    trpc.token.sendVerificationToken.useMutation();
 
-  const handleGenerateToken = async () => {
+  const handleSendVerificationEmail = async () => {
     if (userIdAndEmail?.id && userIdAndEmail.universityEmail) {
       try {
         const result = await generateTokenMutation.mutateAsync({
@@ -43,6 +45,11 @@ export const VerifyFormUni: React.FC = () => {
         });
         // If successful, you might want to do something with the result
         console.log("Verification token generated:", result);
+        const result2 = await sendVerificationTokenMutation.mutateAsync({
+          email: userIdAndEmail.universityEmail,
+          token: result.token,
+        });
+        return result2;
       } catch (error) {
         console.error("Error generating verification token:", error);
       }
@@ -80,8 +87,14 @@ export const VerifyFormUni: React.FC = () => {
       universityName: university.name,
     });
 
-    await handleGenerateToken();
-    setSuccess("Verification email sent. Please accept it within 5 minutes");
+    const sendResult = await handleSendVerificationEmail();
+    if (sendResult && !sendResult.success) {
+      return setError(sendResult.message);
+    } else {
+      return setSuccess(
+        sendResult?.message || "Verification email sent successfully",
+      );
+    }
   };
   return (
     <>

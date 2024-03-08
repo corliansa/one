@@ -6,7 +6,7 @@ import { tokenRouter } from "./tokenRouter";
 export const appRouter = router({
   user: userRouter,
   internal: internalRouter,
-  token: tokenRouter
+  token: tokenRouter,
 });
 
 // export type definition of API
