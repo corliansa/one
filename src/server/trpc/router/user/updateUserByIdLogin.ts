@@ -1,5 +1,5 @@
-import { protectedProcedure } from "../../trpc";
 import { z } from "zod";
+import { protectedProcedure } from "../../trpc";
 
 /**
  * Updates a user by their ID.
@@ -20,13 +20,26 @@ export const updateUserByIdLogin = protectedProcedure
       birthDate: z.date().optional(),
       occupation: z.string(),
       location: z.string(),
+      fieldOfStudy: z.string().optional(),
+      bundesland: z.string(),
+      expectedGraduation: z.string().optional(),
       ppicabang: z.string(),
     }),
   )
   .mutation(
     async ({
       ctx,
-      input: { id, name, birthDate, occupation, location, ppicabang },
+      input: {
+        id,
+        name,
+        birthDate,
+        occupation,
+        location,
+        ppicabang,
+        bundesland,
+        expectedGraduation,
+        fieldOfStudy,
+      },
     }) => {
       return await ctx.prisma.user.update({
         where: { id },
@@ -36,6 +49,9 @@ export const updateUserByIdLogin = protectedProcedure
           occupation,
           location,
           ppicabang,
+          bundesland,
+          fieldOfStudy,
+          expectedGraduation,
           updated: true,
         },
       });
