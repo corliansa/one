@@ -20,10 +20,11 @@ const VerifyPage = () => {
           </div>
           <div className="flex flex-col gap-2 py-4">
             <Card>
-              <VerifyFormUni />
-            </Card>
-            <Card>
-              <VerifyFormAusbildung />
+              {session?.user?.occupation !== "ausbildung" ? (
+                <VerifyFormUni />
+              ) : (
+                <VerifyFormAusbildung />
+              )}
             </Card>
           </div>
         </Base>

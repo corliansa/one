@@ -1,13 +1,13 @@
 // CustomBadge.tsx
 
 interface CustomBadgeProps {
-  color?: "neutral" | "blue" | "green" | "purple" | "orange" | "gray";
+  color?: "neutral" | "blue" | "green" | "purple" | "orange" | "pink";
   children: React.ReactNode;
   className?: string;
 }
 
 export const CustomBadge = ({
-  color = "gray",
+  color = "neutral",
   children,
   className = "",
 }: CustomBadgeProps) => {
@@ -18,7 +18,7 @@ export const CustomBadge = ({
     green: "bg-green-500 text-white",
     purple: "bg-purple-500 text-white",
     orange: "bg-orange-500 text-white",
-    gray: "bg-gray-500 text-white", // Default color
+    pink: "bg-pink-500 text-white", // Default color
   };
 
   // Combine the base classes with the color-specific classes

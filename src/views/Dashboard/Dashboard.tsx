@@ -1,11 +1,16 @@
+import { useMemo } from "react";
 import { type NextPage } from "next";
 import Head from "next/head";
 import { Base, Card, Protected } from "../../Components";
+
 import { capitalize } from "../../utils/capitalize";
 import { trpc } from "../../utils/trpc";
+import { DashboardGraph } from "./DashboardGraph";
 
 export const Dashboard: NextPage = () => {
   const { data } = trpc.internal.getStatistics.useQuery();
+  const { data: ppiCabangStats } = trpc.internal.getPPICabangStats.useQuery();
+
   const stats = [
     { name: "users", count: data?.[0] ?? 0 },
     { name: "verifiedUsers", count: data?.[1] ?? 0 },
@@ -14,6 +19,11 @@ export const Dashboard: NextPage = () => {
     { name: "activeUsers", count: data?.[4] ?? 0 },
     { name: "inactiveUsers", count: data?.[5] ?? 0 },
   ];
+
+  useMemo(() => {
+    return ppiCabangStats?.sort((a, b) => b.count - a.count);
+  }, [ppiCabangStats]);
+
   return (
     <>
       <Head>
@@ -23,7 +33,6 @@ export const Dashboard: NextPage = () => {
       <Base title="Dashboard">
         <Protected verification="UNVERIFIED">
           {/* added a warning verification if user is unverified */}
-          
         </Protected>
         <Protected redirectTo="/">
           <Card className="mt-4">
@@ -40,6 +49,9 @@ export const Dashboard: NextPage = () => {
                 </div>
               ))}
             </div>
+          </Card>
+          <Card className="mt-4">
+            <DashboardGraph ppiCabangStats={ppiCabangStats} />
           </Card>
         </Protected>
       </Base>

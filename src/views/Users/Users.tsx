@@ -1,21 +1,39 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import { useRouter } from "next/router";
-import { Base, Card, Protected } from "../../Components";
-import type { RoleType, StatusType, VerificationType } from "../../types";
+import { Base, Protected } from "../../Components";
 import { trpc } from "../../utils/trpc";
-import { Filter } from "./FilterMenu";
-
-import { UserCard } from "./UserCard";
+// import { Filter } from "./FilterMenu";
+// import { UserCard } from "./UserCard";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import type { GridColDef, GridRowParams } from "@mui/x-data-grid";
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
+import { ClimbingBoxLoader } from "react-spinners";
 
 export const Users: NextPage = () => {
-  const { query } = useRouter();
+  const { data: session } = useSession();
+  const { data: users, isLoading } = trpc.user.getUsers.useQuery();
+  const router = useRouter();
 
-  const { data: users, isLoading } = trpc.user.getUsers.useQuery({
-    verification: query.verification as VerificationType,
-    role: query.role as RoleType,
-    status: query.status as StatusType,
-  });
+  const columns: GridColDef[] = [
+    { field: "name", headerName: "Name", width: 200 },
+    { field: "email", headerName: "Email", width: 200 },
+    { field: "role", headerName: "Role", width: 100 },
+    { field: "occupation", headerName: "Occupation", width: 100 },
+    { field: "location", headerName: "Location", width: 150 },
+    { field: "ppicabang", headerName: "PPI Cabang", width: 200 },
+    { field: "fieldOfStudy", headerName: "Field Of Study", width: 200 },
+  ];
+
+  // grid row params type (refer docs)
+  // MUI https://mui.com/x/react-data-grid/row-selection/
+  // https://mui.com/x/react-data-grid/events/
+  const handleRowClick = (row: GridRowParams) => {
+    if (session?.user?.role === "ADMIN") {
+      router.push(`/users/${row.id}`);
+    } else {
+    }
+  };
 
   return (
     <>
@@ -23,24 +41,36 @@ export const Users: NextPage = () => {
         <title>ONE | Users</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Base title="Users list">
+      <Base title="Data Sensus">
         <div className="py-4">
           <Protected roles={["ADMIN"]} redirectTo="/dashboard">
-            <Filter />
-            {!isLoading && users && (
-              <div className="grid gap-2 py-4">
-                {users.length === 0 ? (
-                  <Card>
-                    <p>No users found</p>
-                  </Card>
-                ) : (
-                  <>
-                    {users.map((user) => (
-                      <UserCard key={user.id} user={user} />
-                    ))}
-                  </>
-                )}
+            {/* <Filter /> */}
+            {isLoading ? (
+              <div className="flex h-1/2 items-center justify-center">
+                <p>Fetching users...</p>
+                <ClimbingBoxLoader />
               </div>
+            ) : users ? (
+              <div className="flex min-h-screen flex-col">
+                <DataGrid
+                  rows={users}
+                  columns={columns}
+                  initialState={{
+                    pagination: {
+                      paginationModel: {
+                        pageSize: 20,
+                      },
+                    },
+                  }}
+                  pageSizeOptions={[5]}
+                  onRowClick={handleRowClick}
+                  slots={{
+                    toolbar: GridToolbar,
+                  }}
+                />
+              </div>
+            ) : (
+              <p>User Not Found</p>
             )}
           </Protected>
         </div>

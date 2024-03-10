@@ -44,7 +44,7 @@ export const VerifyTokenForm: React.FC = () => {
 
         setTimeout(() => {
           router.push("/dashboard");
-        }, 5000);
+        }, 10000);
       })
       .catch(() => {
         setError("Something went wrong!");
@@ -73,7 +73,10 @@ export const VerifyTokenForm: React.FC = () => {
             <h1>Verifikasi berhasil!</h1>
             <p>
               Anda telah terverifikasi sebagai student. Anda akan dikembalikan
-              dalam 5 detik ke dashboard.
+              dalam 10 detik ke dashboard.
+            </p>
+            <p>
+              Anda mungkin harus melakukan refresh halaman untuk melihat perubahan.
             </p>
           </div>
         )}

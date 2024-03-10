@@ -7,11 +7,11 @@ interface OccupationBadgesProps {
 
 // Define a TypeScript type for occupation colors
 type OccupationColor = {
-  [key: string]: "neutral" | "blue" | "green" | "purple" | "orange";
+  [key: string]: "neutral" | "blue" | "green" | "purple" | "orange" | "pink";
 };
 
 const occupationColors: OccupationColor = {
-  ausbildung: "neutral",
+  ausbildung: "pink",
   bachelor: "blue",
   master: "green",
   doctor: "purple",
