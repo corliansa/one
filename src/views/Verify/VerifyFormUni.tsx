@@ -6,6 +6,7 @@ import { trpc } from "../../utils/trpc";
 import { FormError } from "../../Components/ui/FormError";
 import { FormSuccess } from "../../Components/ui/FormSuccess";
 import { useSession } from "next-auth/react";
+import { set } from "zod";
 
 const universityList: University[] = Universities as University[];
 
@@ -33,34 +34,26 @@ export const VerifyFormUni: React.FC = () => {
   const [success, setSuccess] = useState("");
   const [checkedPrivacy, setCheckedPrivacy] = useState(false);
   const queryClient = trpc.useContext();
-  const generateTokenMutation =
-    trpc.token.generateVerificationToken.useMutation();
-  const sendVerificationTokenMutation =
-    trpc.token.sendVerificationToken.useMutation();
+  const generateAndSendTokenMutation =
+    trpc.token.generateAndSendVerificationToken.useMutation();
 
   const handleSendVerificationEmail = async () => {
     if (userIdAndEmail?.id && userIdAndEmail.universityEmail) {
-      try {
-        const result = await generateTokenMutation.mutateAsync({
-          id: userIdAndEmail.id,
-          email: userIdAndEmail.universityEmail,
-        });
+      const result = await generateAndSendTokenMutation.mutateAsync({
+        id: userIdAndEmail.id,
+        email: userIdAndEmail.universityEmail,
+      });
 
-        if (!result.success) {
-          return setError(result.message);
-        }
-        // If successful, you might want to do something with the result
-
-        const result2 = await sendVerificationTokenMutation.mutateAsync({
-          email: userIdAndEmail.universityEmail,
-          token: result.token!,
-        });
-        return result2;
-      } catch (error) {
-        console.error("Error generating verification token:", error);
+      if (!result.success) {
+        setError(result.message);
+      } else {
+        setSuccess(result.message);
       }
+
+      return result.success;
+      // If successful, you might want to do something with the result
     } else {
-      console.error("Session user ID or email is undefined.");
+      setError("User not found.");
     }
   };
 
@@ -98,11 +91,11 @@ export const VerifyFormUni: React.FC = () => {
     });
 
     const sendResult = await handleSendVerificationEmail();
-    if (sendResult && !sendResult.success) {
-      return setError(sendResult.message);
+    if (sendResult) {
+      return setError("Failed to send verification email.");
     } else {
       return setSuccess(
-        sendResult?.message || "Verification email sent successfully",
+        "Verification email sent successfully. Please check your email.",
       );
     }
   };
