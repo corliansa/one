@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 import { Footer, Logo, Protected } from "../../Components";
 
 const navigation = [
-  { name: "About", href: "#" },
+  { name: "About", href: "/about" },
   { name: "Contact", href: "#" },
   { name: "FAQ", href: "#" },
 ];

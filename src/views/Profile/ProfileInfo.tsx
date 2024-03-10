@@ -24,7 +24,7 @@ const ProfileInfo: React.FC<UserInfoProps> = ({ user }) => {
           label: "Birth date",
           value: user.birthDate?.toLocaleDateString() ?? "N/A",
         },
-        { label: "Occupation", value: user.occupation ?? "N/A" },
+        { label: "Occupation", value: capitalize(user.occupation ?? "N/A") },
         {
           label: "Affiliation",
           value:
@@ -40,7 +40,8 @@ const ProfileInfo: React.FC<UserInfoProps> = ({ user }) => {
               "N/A"
             ),
         },
-        { label: "Location", value: user.location ?? "N/A" },
+        { label: "Location", value: capitalize(user.location ?? "N/A") },
+        { label: "PPI Cabang", value: user.ppicabang ?? "N/A" },
       ].map(({ label, value }) => (
         <ProfileDetails key={label} label={label} value={value} />
       ))}

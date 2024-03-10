@@ -2,7 +2,6 @@
 
 import Head from "next/head";
 import { Card, Footer } from "../../../Components";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import GoogleButton from "./GoogleSignInButton";
 
@@ -16,7 +15,7 @@ export const SignInOptionsPage = () => {
       </Head>
 
       <div className="flex min-h-screen flex-col justify-center py-12">
-        <Card className="rounded-lg bg-gray-50 px-5 py-5 sm:mx-auto sm:w-full sm:max-w-md">
+        <Card className="rounded-lg px-5 py-5 sm:mx-auto sm:w-full sm:max-w-md">
           <button
             onClick={() => back()} // Use router.back() to go to the previous page
             className="inline-flex items-center text-sm font-medium text-gray-600 hover:text-gray-900"
@@ -29,12 +28,6 @@ export const SignInOptionsPage = () => {
           <div className="mt-8">
             <div>
               <div>
-                <button
-                  onClick={() => signIn("credentials")}
-                  className="flex w-full cursor-pointer justify-center rounded-lg rounded-md border border-transparent bg-pink-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                >
-                  Sign in with Email
-                </button>
               </div>
               <div className="mt-4">
                 <GoogleButton />

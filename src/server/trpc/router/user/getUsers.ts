@@ -5,7 +5,7 @@ import { RoleZod, StatusZod, VerificationZod } from "../../../../types";
 
 /**
  * Retrieves users based on the specified criteria.
- * 
+ *
  * @param input - Optional object containing the criteria for filtering users.
  * @returns A promise that resolves to an array of users matching the specified criteria.
  */
@@ -17,7 +17,7 @@ export const getUsers = protectedProcedure
         verification: VerificationZod,
         status: StatusZod,
       })
-      .optional()
+      .optional(),
   )
   .query(async ({ ctx, input }) => {
     authorize(ctx, ["ADMIN"]);

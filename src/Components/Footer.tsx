@@ -81,9 +81,14 @@ export const Footer: React.FC = () => {
             </a>
           ))}
         </div>
-        <p className="mt-8 text-center text-base text-gray-400">
-          &copy; {new Date().getFullYear()} ONE. All rights reserved.
-        </p>
+        <div className="flex flex-col items-center justify-center">
+          <p className="mt-8 text-center text-base text-gray-400">
+            &copy; {new Date().getFullYear()} ONE. All rights reserved.
+          </p>
+          <p className="mt-8 text-center text-base text-gray-400">
+            Found bugs? Email us: it@ppijerman.org
+          </p>
+        </div>
       </div>
     </footer>
   );
