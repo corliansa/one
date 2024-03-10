@@ -4,7 +4,7 @@ import {
   AcademicCapIcon,
   Bars3BottomLeftIcon,
   CheckIcon,
-
+  CheckCircleIcon,
   // ChartBarIcon,
   FolderIcon,
   // HomeIcon,
@@ -72,7 +72,7 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
     {
       name: "Verify",
       href: "/verify",
-      icon: UsersIcon,
+      icon: CheckCircleIcon,
       roles: ["USER", "ADMIN"],
       // delete admin later, so that verify only for users
     },
