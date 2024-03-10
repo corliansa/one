@@ -50,7 +50,7 @@ export const VerifyFormUni: React.FC = () => {
           return setError(result.message);
         }
         // If successful, you might want to do something with the result
-        
+
         const result2 = await sendVerificationTokenMutation.mutateAsync({
           email: userIdAndEmail.universityEmail,
           token: result.token!,
@@ -106,67 +106,74 @@ export const VerifyFormUni: React.FC = () => {
       );
     }
   };
-  return (
-    <>
-      <h1 className="pb-3 text-center text-2xl font-semibold">
-        Verifikasi Universitas
-      </h1>
-      <p className="mb-5">
-        Masukkan email universitas anda untuk memverifikasi status student anda.
-        Anda akan dikirimkan email verifikasi ke alamat email universitas anda,
-        yang mana anda harus memverifikasi dalam jangka waktu{" "}
-        <span className="font-bold">10 menit</span>.
-      </p>
-      <form onSubmit={handleSubmit}>
-        <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium">
-            Pilih universitas anda saat ini
-          </label>
-          <Combobox
-            placeholder="Universitas"
-            items={universityList}
-            itemToString={(universityList) =>
-              universityList ? universityList.name : ""
-            }
-            disabled={isLoading}
-            width="100%"
-            onChange={(selected: University) => {
-              setUniversity(selected);
-              console.log(selected);
-            }}
-          />
-          <TextInputField
-            marginTop={8}
-            marginBottom={24}
-            label="University Email"
-            type="email"
-            placeholder="nicole@tu-jerman.de"
-            value={universityEmail}
-            disabled={isLoading}
-            required
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setUniversityEmail(e.target.value)
-            }
-          />
+  if (session?.user?.verification === "UNVERIFIED") {
+    return (
+      <>
+        <h1 className="pb-3 text-center text-2xl font-semibold">
+          Verifikasi Status Student
+        </h1>
+        <p className="mb-5">
+          Masukkan email universitas anda untuk memverifikasi status student
+          anda. Anda akan dikirimkan email verifikasi ke alamat email
+          universitas anda, yang mana anda harus memverifikasi dalam jangka
+          waktu <span className="font-bold">10 menit</span>.
+        </p>
+        <form onSubmit={handleSubmit}>
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium">
+              Pilih universitas anda saat ini
+            </label>
+            <Combobox
+              placeholder="Universitas"
+              items={universityList}
+              itemToString={(universityList) =>
+                universityList ? universityList.name : ""
+              }
+              disabled={isLoading}
+              width="100%"
+              onChange={(selected: University) => {
+                setUniversity(selected);
+                console.log(selected);
+              }}
+            />
+            <TextInputField
+              marginTop={8}
+              marginBottom={24}
+              label="University Email"
+              type="email"
+              placeholder="nicole@tu-jerman.de"
+              value={universityEmail}
+              disabled={isLoading}
+              required
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setUniversityEmail(e.target.value)
+              }
+            />
 
-          <Checkbox
-            label="Dengan ini, anda setuju dengan kebijakan privasi kami dan memberikan informasi secara jujur."
-            checked={checkedPrivacy}
-            disabled={isLoading}
-            onChange={(e) => setCheckedPrivacy(e.target.checked)}
-          />
+            <Checkbox
+              label="Dengan ini, anda setuju dengan kebijakan privasi kami dan memberikan informasi secara jujur."
+              checked={checkedPrivacy}
+              disabled={isLoading}
+              onChange={(e) => setCheckedPrivacy(e.target.checked)}
+            />
 
-          <FormError message={error} />
-          <FormSuccess message={success} />
-          <Button
-            isLoading={isLoading}
-            appearance="primary"
-            disabled={session?.user?.verification === "VERIFIED"}
-          >
-            Verifikasi Email Universitas
-          </Button>
-        </div>
-      </form>
-    </>
-  );
+            <FormError message={error} />
+            <FormSuccess message={success} />
+            <Button isLoading={isLoading} appearance="primary">
+              Verifikasi Email Universitas
+            </Button>
+          </div>
+        </form>
+      </>
+    );
+  } else {
+    return (
+      <div className="flex flex-col justify-center">
+        <h1 className="pb-3 text-center text-2xl font-semibold">
+          Verifikasi Status Student
+        </h1>
+        <FormSuccess message="Terima kasih sudah memverifikasi status student anda!" />
+      </div>
+    );
+  }
 };

@@ -4,6 +4,7 @@ import { Base, Card, Protected } from "../../Components";
 import { capitalize } from "../../utils/capitalize";
 import { trpc } from "../../utils/trpc";
 import { UserForm } from "./UserForm";
+import { FormError } from "../../Components/ui";
 
 export const User: NextPage<{ userId: string }> = ({ userId }) => {
   const { data: user, isLoading } = trpc.user.getUserById.useQuery({
@@ -18,7 +19,12 @@ export const User: NextPage<{ userId: string }> = ({ userId }) => {
       <Base title={user?.name ?? " "}>
         <h1>Admin View, editing user...</h1>
         <div className="py-4">
-          <Protected roles={["ADMIN"]} redirectTo="/dashboard">
+          <Protected
+            roles={["ADMIN"]}
+            replacer={
+              <FormError message="Unauthorized access to user data! Please contact admin for access." />
+            }
+          >
             {!isLoading && user && (
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <Card>
@@ -77,4 +83,3 @@ export const User: NextPage<{ userId: string }> = ({ userId }) => {
     </>
   );
 };
-

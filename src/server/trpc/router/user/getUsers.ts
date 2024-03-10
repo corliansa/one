@@ -16,6 +16,9 @@ export const getUsers = protectedProcedure
         role: RoleZod,
         verification: VerificationZod,
         status: StatusZod,
+        occupation: z.string(),
+        bundesland: z.string(),
+        location: z.string(),
       })
       .optional(),
   )

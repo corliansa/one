@@ -1,25 +1,16 @@
-import { useState, useMemo } from "react";
+import { useMemo } from "react";
 import { type NextPage } from "next";
 import Head from "next/head";
 import { Base, Card, Protected } from "../../Components";
 
-// recharts
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
 import { capitalize } from "../../utils/capitalize";
 import { trpc } from "../../utils/trpc";
+import { DashboardGraph } from "./DashboardGraph";
 
 export const Dashboard: NextPage = () => {
   const { data } = trpc.internal.getStatistics.useQuery();
   const { data: ppiCabangStats } = trpc.internal.getPPICabangStats.useQuery();
-  const [showAll, setShowAll] = useState(false);
+
   const stats = [
     { name: "users", count: data?.[0] ?? 0 },
     { name: "verifiedUsers", count: data?.[1] ?? 0 },
@@ -32,8 +23,6 @@ export const Dashboard: NextPage = () => {
   useMemo(() => {
     return ppiCabangStats?.sort((a, b) => b.count - a.count);
   }, [ppiCabangStats]);
-
-  const displayedStats = showAll ? ppiCabangStats : ppiCabangStats?.slice(0, 5);
 
   return (
     <>
@@ -61,28 +50,9 @@ export const Dashboard: NextPage = () => {
               ))}
             </div>
           </Card>
-
-          <div className="flex flex-col items-center justify-center">
-            <div className="h-full">
-              <ResponsiveContainer height={400}>
-                <BarChart data={displayedStats}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="label" angle={-45} />
-                  <YAxis />
-                  <Tooltip />
-                  <Bar dataKey="count" fill="#8884d8" />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-            <div className="flex items-center justify-center">
-              <button
-                className="mt-4 rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
-                onClick={() => setShowAll(!showAll)}
-              >
-                {showAll ? "Show Less" : "Show More"}
-              </button>
-            </div>
-          </div>
+          <Card className="mt-4">
+            <DashboardGraph ppiCabangStats={ppiCabangStats} />
+          </Card>
         </Protected>
       </Base>
     </>
