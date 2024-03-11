@@ -11,7 +11,7 @@ const UpdateProfilePage: NextPage = () => {
   return (
     <ProtectedUpdate redirectTo="/">
       {!isLoading && user && (
-        <div className="flex min-h-screen flex-col items-center justify-center">
+        <div className="flex min-h-screen flex-col items-center justify-center p-5">
           <Card className="p-10">
             <Logo />
             <h1 className="p-10 text-center text-3xl font-bold">Data Diri</h1>

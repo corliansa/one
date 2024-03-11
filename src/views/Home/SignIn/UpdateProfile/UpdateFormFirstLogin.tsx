@@ -7,9 +7,6 @@ import { trpc } from "../../../../utils/trpc";
 export const UpdateProfileFormFirstLogin: React.FC<{
   user: RouterOutputs["user"]["getUser"];
 }> = ({ user }) => {
-  if (!user) {
-    return null;
-  }
   const [name, setName] = useState(user?.name ?? "");
   const [birthDate, setBirthDate] = useState<string | undefined>(undefined);
   const [expectedGraduation, setExpectedGraduation] = useState<
@@ -20,18 +17,22 @@ export const UpdateProfileFormFirstLogin: React.FC<{
   const [location, setLocation] = useState(user?.location ?? "");
   const [bundesland, setBundesland] = useState("");
   const [fieldOfStudy, setFieldOfStudy] = useState("");
-
   const [checkedPrivacy, setCheckedPrivacy] = useState(false);
   const queryClient = trpc.useContext();
 
   const { mutateAsync: updateUserByIdLogin, isLoading } =
     trpc.user.updateUserByIdLogin.useMutation({
       onSuccess: async () => {
-        await queryClient.user.getUserById.invalidate({ id: user.id });
+        await queryClient.user.getUser.invalidate();
         console.log("user updated");
         window.location.reload();
       },
     });
+
+  //TODO: handleBundesland to automatically assign based on city
+  const handleBundesland = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setBundesland(e.target.value);
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -43,7 +44,7 @@ export const UpdateProfileFormFirstLogin: React.FC<{
     }
 
     await updateUserByIdLogin({
-      id: user.id,
+      id: user!.id,
       name,
       birthDate: birthDate ? new Date(birthDate) : undefined,
       occupation,
@@ -62,7 +63,7 @@ export const UpdateProfileFormFirstLogin: React.FC<{
     });
   };
 
-  const isProfileUpdated = !user.updated;
+  const isProfileUpdated = !user!.updated;
 
   return (
     <div className="flex flex-col">
@@ -103,39 +104,32 @@ export const UpdateProfileFormFirstLogin: React.FC<{
         </SelectField>
         <TextInputField
           marginBottom={8}
-          label="Field Of Study "
+          label="Bidang Studi"
           value={fieldOfStudy}
           disabled={isLoading}
-          required={
-            isProfileUpdated &&
-            ["bachelor", "master", "doctor"].includes(occupation)
-          }
-          description="Select your occupation"
+          required={isProfileUpdated}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setFieldOfStudy(e.target.value)
           }
         />
-        {["bachelor", "master", "doctor", "ausbildung"].includes(
-          occupation,
-        ) && (
-          <>
-            <TextInputField
-              marginBottom={8}
-              label="Perkiraan Tanggal Kelulusan"
-              type="date"
-              disabled={isLoading}
-              value={expectedGraduation}
-              required={
-                isProfileUpdated &&
-                ["bachelor", "master", "doctor", "ausbildung"].includes(
-                  occupation,
-                )
-              }
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setExpectedGraduation(e.target.value)
-              }
-            />
-          </>
+
+        {occupation === "professor" ? null : (
+          <TextInputField
+            marginBottom={8}
+            label="Perkiraan Tanggal Kelulusan"
+            type="date"
+            disabled={isLoading}
+            value={expectedGraduation}
+            required={
+              isProfileUpdated &&
+              ["bachelor", "master", "doctor", "ausbildung"].includes(
+                occupation,
+              )
+            }
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setExpectedGraduation(e.target.value)
+            }
+          />
         )}
 
         <SelectField
@@ -144,7 +138,7 @@ export const UpdateProfileFormFirstLogin: React.FC<{
           disabled={isLoading}
           value={bundesland}
           label="Negara Bagian"
-          onChange={(e) => setBundesland(e.target.value)}
+          onChange={handleBundesland}
         >
           <option value="">Pilih Negara Bagian</option>
           <option value="baden-württemberg">Baden-Württemberg</option>

@@ -6,7 +6,6 @@ import { trpc } from "../../utils/trpc";
 import { FormError } from "../../Components/ui/FormError";
 import { FormSuccess } from "../../Components/ui/FormSuccess";
 import { useSession } from "next-auth/react";
-import { set } from "zod";
 
 const universityList: University[] = Universities as University[];
 

@@ -2,7 +2,6 @@ import type { Session } from "next-auth";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import type { RoleType, StatusType, VerificationType } from "../types";
-import { Role, Status, Verification } from "@prisma/client";
 
 export const Protected: React.FC<{
   children?:
@@ -22,7 +21,7 @@ export const Protected: React.FC<{
   }
 
   const unauthenticated = () => {
-    //props.redirectTo && replace(props.redirectTo || "/");
+    props.redirectTo && replace(props.redirectTo || "/");
     return props.replacer ?? null;
   };
 

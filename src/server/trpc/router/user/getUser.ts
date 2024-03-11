@@ -1,5 +1,4 @@
 
-import { User } from "@prisma/client";
 import { protectedProcedure } from "../../trpc";
 
 export const getUser = protectedProcedure.query(async ({ ctx }) => {
@@ -8,7 +7,7 @@ export const getUser = protectedProcedure.query(async ({ ctx }) => {
   
   return await ctx.prisma.user.findFirst({
     where: {
-      id: userId || "123",
+      id: userId
     },
   });
 });

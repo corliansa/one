@@ -14,7 +14,7 @@ export const Admins: NextPage = () => {
       </Head>
       <Base title="Admins list"  >
         <div className="py-4">
-          <>
+          <Protected redirectTo="/">
             {!isLoading && admins && (
               <div className="grid gap-2 py-4 lg:grid-cols-2">
                 {admins.length === 0 ? (
@@ -35,7 +35,7 @@ export const Admins: NextPage = () => {
                 )}
               </div>
             )}
-          </>
+          </Protected>
         </div>
       </Base>
     </>

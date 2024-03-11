@@ -35,7 +35,6 @@ export const generateAndSendVerificationToken = protectedProcedure
 
       if (existingToken) {
         // If an existing token is found, update it with the new hashed token and expiry
-        const expiry = existingToken.expires;
 
         await ctx.prisma.universityEmailVerificationToken.update({
           where: { id: existingToken.id },
