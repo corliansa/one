@@ -4,7 +4,7 @@ import Head from "next/head";
 import { Base, Protected } from "../../Components";
 
 import { trpc } from "../../utils/trpc";
-import ProfileInfo from "./ProfileInfo";
+import { ProfileInfo } from "./ProfileInfo";
 import { UpdateProfileForm } from "./UpdateForm";
 
 export const Profile: NextPage = () => {

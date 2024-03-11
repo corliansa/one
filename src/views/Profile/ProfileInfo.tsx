@@ -7,7 +7,7 @@ type UserInfoProps = {
   user: RouterOutputs["user"]["getUser"];
 };
 
-const ProfileInfo: React.FC<UserInfoProps> = ({ user }) => {
+export const ProfileInfo: React.FC<UserInfoProps> = ({ user }) => {
   return (
     <Card>
       <h2 className="text-xl font-semibold">{user.name}</h2>
@@ -48,5 +48,3 @@ const ProfileInfo: React.FC<UserInfoProps> = ({ user }) => {
     </Card>
   );
 };
-
-export default ProfileInfo;
