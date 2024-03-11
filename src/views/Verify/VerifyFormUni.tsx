@@ -10,8 +10,8 @@ import { useSession } from "next-auth/react";
 const universityList: University[] = Universities as University[];
 
 export const VerifyFormUni: React.FC = () => {
-  const { data: userIdAndEmail } = trpc.user.getUserUniEmailAndId.useQuery();
   const { data: session } = useSession();
+  const { data: user } = trpc.user.getUser.useQuery();
 
   const [universityEmail, setUniversityEmail] = useState(
     session?.user?.universityEmail || "",
@@ -37,22 +37,13 @@ export const VerifyFormUni: React.FC = () => {
     trpc.token.generateAndSendVerificationToken.useMutation();
 
   const handleSendVerificationEmail = async () => {
-    if (userIdAndEmail?.id && userIdAndEmail.universityEmail) {
+    if (user && universityEmail) {
       const result = await generateAndSendTokenMutation.mutateAsync({
-        id: userIdAndEmail.id,
-        email: userIdAndEmail.universityEmail,
+        id: user.id,
+        email: universityEmail,
       });
 
-      if (!result.success) {
-        setError(result.message);
-      } else {
-        setSuccess(result.message);
-      }
-
-      return result.success;
-      // If successful, you might want to do something with the result
-    } else {
-      setError("User not found.");
+      return result;
     }
   };
 
@@ -91,11 +82,11 @@ export const VerifyFormUni: React.FC = () => {
 
     const sendResult = await handleSendVerificationEmail();
     if (sendResult) {
-      return setError("Failed to send verification email.");
-    } else {
       return setSuccess(
         "Verification email sent successfully. Please check your email.",
       );
+    } else {
+      return setError("ERROR: Something Went Wront! \nFailed to send verification email.");
     }
   };
   if (session?.user?.verification === "UNVERIFIED") {
