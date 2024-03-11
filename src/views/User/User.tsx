@@ -17,14 +17,14 @@ export const User: NextPage<{ userId: string }> = ({ userId }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Base title={user?.name ?? " "}>
-        <h1>Admin View, editing user...</h1>
-        <div className="py-4">
-          <Protected
-            roles={["ADMIN"]}
-            replacer={
-              <FormError message="Unauthorized access to user data! Please contact admin for access." />
-            }
-          >
+        <Protected
+          roles={["ADMIN"]}
+          replacer={
+            <FormError message="Unauthorized access to user data! Please contact admin for access." />
+          }
+        >
+          <h1>Admin View, editing user...</h1>
+          <div className="py-4">
             {!isLoading && user && (
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <Card>
@@ -77,8 +77,8 @@ export const User: NextPage<{ userId: string }> = ({ userId }) => {
                 <UserForm user={user} />
               </div>
             )}
-          </Protected>
-        </div>
+          </div>
+        </Protected>
       </Base>
     </>
   );

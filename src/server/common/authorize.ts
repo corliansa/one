@@ -18,11 +18,11 @@ export const authorize = (ctx: Context, roles: RoleType[]) => {
   } 
 
   if (!ctx.session || !ctx.session.user || !ctx.session.user.role) {
-    //throw new TRPCError({ code: "UNAUTHORIZED" });
+    throw new TRPCError({ code: "UNAUTHORIZED" });
   }
 
   if (ctx.session?.user && !roles.includes(ctx.session.user.role)) {
-    //throw new TRPCError({ code: "FORBIDDEN" });
+    throw new TRPCError({ code: "FORBIDDEN" });
   }
   
 };

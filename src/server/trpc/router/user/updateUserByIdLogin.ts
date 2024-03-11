@@ -20,7 +20,7 @@ export const updateUserByIdLogin = protectedProcedure
       birthDate: z.date().optional(),
       occupation: z.string(),
       location: z.string(),
-      fieldOfStudy: z.string().optional(),
+      fieldOfStudy: z.string(),
       bundesland: z.string(),
       expectedGraduation: z.string().optional(),
       ppicabang: z.string(),

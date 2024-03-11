@@ -2,7 +2,6 @@ import type { Session } from "next-auth";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import type { RoleType, StatusType, VerificationType } from "../types";
-import { Role, Status, Verification } from "@prisma/client";
 
 export const Protected: React.FC<{
   children?:
@@ -16,21 +15,13 @@ export const Protected: React.FC<{
 }> = (props) => {
   const { data: session, status } = useSession();
   const { replace } = useRouter();
-if (typeof props.children === "function"){
-  const date = new Date()
-  date.setFullYear(new Date().getFullYear() + 1)
-  const dummyUser = {user:{id:"123", role: Role.ADMIN, status:Status.ACTIVE, verification : Verification.VERIFIED}, expires:date.toISOString()}
-  return <>{props.children({session : session || dummyUser}) }</>
-}
-  
-return <>{props.children}</>
+
   if (status === "loading") {
     return props.replacer ?? null;
   }
 
-
   const unauthenticated = () => {
-    //props.redirectTo && replace(props.redirectTo || "/");
+    props.redirectTo && replace(props.redirectTo || "/");
     return props.replacer ?? null;
   };
 

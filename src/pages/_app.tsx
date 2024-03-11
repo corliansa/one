@@ -23,7 +23,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
     <SessionProvider session={session}>
       <Script
         defer
-        data-domain="ppi.one"
+        data-domain="sensus.ppijerman.org"
         src="https://plausible.dlx.pw/js/plausible.js"
       />
       <ReactQueryDevtools initialIsOpen={false} />
