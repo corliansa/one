@@ -10,7 +10,7 @@ export const ProtectedUpdate: React.FC<{
   replacer?: JSX.Element;
 }> = (props) => {
   const { data: session, status } = useSession();
-  const { replace } = useRouter();
+  const { replace, push } = useRouter();
 
   if (status === "loading") {
     return props.replacer ?? null;
@@ -31,7 +31,7 @@ export const ProtectedUpdate: React.FC<{
 
   if (session.user.updated) {
     // If user has updated their profile, redirect to dashboard
-    replace("/dashboard");
+    push("/dashboard");
     return;
   }
 

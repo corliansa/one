@@ -4,7 +4,7 @@ import { VerifyFormUni } from "./VerifyFormUni";
 import { VerifyFormAusbildung } from "./VerifyFormAusbildung";
 import { useSession } from "next-auth/react";
 import { OccupationBadges } from "../../Components/OccupationBadges";
-const VerifyPage = () => {
+export const VerifyPage = () => {
   const { data: session } = useSession();
   return (
     <>
@@ -12,8 +12,9 @@ const VerifyPage = () => {
         <title>ONE | Verify</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Protected redirectTo="/">
-        <Base title="Verification Page">
+
+      <Base title="Verification Page">
+        <Protected redirectTo="/">
           <div className="my-3 flex flex-row items-center justify-start gap-3">
             <h1 className="text-xl font-semibold">Status:</h1>
             <OccupationBadges occupation={session?.user?.occupation || ""} />
@@ -27,10 +28,8 @@ const VerifyPage = () => {
               )}
             </Card>
           </div>
-        </Base>
-      </Protected>
+        </Protected>
+      </Base>
     </>
   );
 };
-
-export default VerifyPage;

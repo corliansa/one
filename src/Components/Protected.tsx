@@ -16,18 +16,10 @@ export const Protected: React.FC<{
 }> = (props) => {
   const { data: session, status } = useSession();
   const { replace } = useRouter();
-if (typeof props.children === "function"){
-  const date = new Date()
-  date.setFullYear(new Date().getFullYear() + 1)
-  const dummyUser = {user:{id:"123", role: Role.ADMIN, status:Status.ACTIVE, verification : Verification.VERIFIED}, expires:date.toISOString()}
-  return <>{props.children({session : session || dummyUser}) }</>
-}
-  
-return <>{props.children}</>
+
   if (status === "loading") {
     return props.replacer ?? null;
   }
-
 
   const unauthenticated = () => {
     //props.redirectTo && replace(props.redirectTo || "/");

@@ -73,7 +73,6 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
       name: "Verify",
       href: "/verify",
       icon: CheckCircleIcon,
-      roles: ["USER", "ADMIN"],
       // delete admin later, so that verify only for users
     },
     // {
