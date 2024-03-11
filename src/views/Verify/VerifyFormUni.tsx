@@ -89,6 +89,8 @@ export const VerifyFormUni: React.FC = () => {
       return setError("ERROR: Something Went Wront! \nFailed to send verification email.");
     }
   };
+
+  
   if (session?.user?.verification === "UNVERIFIED") {
     return (
       <>
