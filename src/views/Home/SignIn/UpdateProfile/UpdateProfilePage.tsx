@@ -6,7 +6,7 @@ import { Card } from "../../../../Components/Card";
 import type { NextPage } from "next";
 import { Logo } from "../../../../Components";
 
-const UpdateProfilePage: NextPage = () => {
+export const UpdateProfilePage: NextPage = () => {
   const { data: user, isLoading } = trpc.user.getUser.useQuery();
   return (
     <ProtectedUpdate redirectTo="/">
@@ -23,4 +23,3 @@ const UpdateProfilePage: NextPage = () => {
   );
 };
 
-export default UpdateProfilePage;
