@@ -18,8 +18,9 @@ export const UserForm: React.FC<{
   const [affiliation, setAffiliation] = useState<string[]>(
     user.affiliation ?? [],
   );
-
-  const queryClient = trpc.useContext();
+  
+  // useContext is deprecated, use useUtils instead
+  const queryClient = trpc.useUtils();
   const { mutateAsync: updateUserById, isLoading } =
     trpc.user.updateUserById.useMutation({
       onSuccess: () => {

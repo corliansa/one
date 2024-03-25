@@ -16,7 +16,7 @@ export const UpdateProfileForm: React.FC<{
   const [occupation, setOccupation] = useState(user?.occupation ?? "");
   const [location, setLocation] = useState(user?.location ?? "");
 
-  const queryClient = trpc.useContext();
+  const queryClient = trpc.useUtils();
   const { mutateAsync: updateUser, isLoading } =
     trpc.user.updateUser.useMutation({
       onSuccess: () => {

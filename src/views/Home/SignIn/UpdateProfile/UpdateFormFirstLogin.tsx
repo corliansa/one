@@ -4,9 +4,12 @@ import { ListPPICabang } from "../../../../Components/optionsList/ListPPICabang"
 import type { RouterOutputs } from "../../../../utils/trpc";
 import { trpc } from "../../../../utils/trpc";
 
-export const UpdateProfileFormFirstLogin: React.FC<{
+
+type UpdateProfileFormFirstLoginProps = {
   user: RouterOutputs["user"]["getUser"];
-}> = ({ user }) => {
+};
+
+export const UpdateProfileFormFirstLogin: React.FC<UpdateProfileFormFirstLoginProps> = ({ user }) => {
   const [name, setName] = useState(user?.name ?? "");
   const [birthDate, setBirthDate] = useState<string | undefined>(undefined);
   const [expectedGraduation, setExpectedGraduation] = useState<
@@ -18,7 +21,8 @@ export const UpdateProfileFormFirstLogin: React.FC<{
   const [bundesland, setBundesland] = useState("");
   const [fieldOfStudy, setFieldOfStudy] = useState("");
   const [checkedPrivacy, setCheckedPrivacy] = useState(false);
-  const queryClient = trpc.useContext();
+  // useContext is deprecated, use useUtils instead
+  const queryClient = trpc.useUtils();
 
   const { mutateAsync: updateUserByIdLogin, isLoading } =
     trpc.user.updateUserByIdLogin.useMutation({

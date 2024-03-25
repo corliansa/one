@@ -32,7 +32,7 @@ export const VerifyFormUni: React.FC = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [checkedPrivacy, setCheckedPrivacy] = useState(false);
-  const queryClient = trpc.useContext();
+  const queryClient = trpc.useUtils();
   const generateAndSendTokenMutation =
     trpc.token.generateAndSendVerificationToken.useMutation();
 

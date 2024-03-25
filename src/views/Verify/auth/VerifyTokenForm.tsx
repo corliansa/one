@@ -13,7 +13,7 @@ export const VerifyTokenForm: React.FC = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const { data: session } = useSession();
-  const queryClient = trpc.useContext();
+  const queryClient = trpc.useUtils();
 
   const { mutateAsync: verifyUniVerificationToken, isLoading } =
     trpc.token.verifyUniVerificationToken.useMutation({
@@ -76,7 +76,8 @@ export const VerifyTokenForm: React.FC = () => {
               dalam 10 detik ke dashboard.
             </p>
             <p>
-              Anda mungkin harus melakukan refresh halaman untuk melihat perubahan.
+              Anda mungkin harus melakukan refresh halaman untuk melihat
+              perubahan.
             </p>
           </div>
         )}
