@@ -12,7 +12,7 @@ import { protectedProcedure } from "../../trpc";
  * @param {string[]} [input.affiliation] - The new affiliations of the user (optional).
  * @returns {Promise<User>} - A promise that resolves to the updated user.
  */
-export const updateUserByIdLogin = protectedProcedure
+export const updateUserLogin = protectedProcedure
   .input(
     z.object({
       id: z.string(),
@@ -21,8 +21,9 @@ export const updateUserByIdLogin = protectedProcedure
       occupation: z.string(),
       location: z.string(),
       fieldOfStudy: z.string(),
+      studySpecialization: z.string().optional(),
       bundesland: z.string(),
-      expectedGraduation: z.string().optional(),
+      expectedGraduation: z.date().optional(),
       ppicabang: z.string(),
     }),
   )
@@ -38,6 +39,7 @@ export const updateUserByIdLogin = protectedProcedure
         ppicabang,
         bundesland,
         expectedGraduation,
+        studySpecialization,
         fieldOfStudy,
       },
     }) => {
@@ -51,6 +53,7 @@ export const updateUserByIdLogin = protectedProcedure
           ppicabang,
           bundesland,
           fieldOfStudy,
+          studySpecialization,
           expectedGraduation,
           updated: true,
         },

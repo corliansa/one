@@ -27,35 +27,34 @@ export const VerifyFormUni: React.FC = () => {
     }
   }, [session?.user?.universityName]);
 
-  const verificationStatus = session?.user?.verification;
-
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [checkedPrivacy, setCheckedPrivacy] = useState(false);
   const queryClient = trpc.useUtils();
   const generateAndSendTokenMutation =
     trpc.token.generateAndSendVerificationToken.useMutation();
+  const updateUserUniEmailAndUni =
+    trpc.user.updateUserUniEmailAndUni.useMutation({
+      onSuccess: () => queryClient.user.getUser.invalidate(),
+    });
 
   const handleSendVerificationEmail = async () => {
-    if (user && universityEmail) {
-      const result = await generateAndSendTokenMutation.mutateAsync({
-        id: user.id,
-        email: universityEmail,
-      });
-
-      return result;
-    }
-  };
-
-  const { mutateAsync: updateUserUniEmailAndUni, isLoading } =
-    trpc.user.updateUserUniEmailAndUni.useMutation({
-      onSuccess: () => queryClient.user?.getUser.invalidate(),
+    if (!user || !universityEmail) return;
+    const result = await generateAndSendTokenMutation.mutateAsync({
+      id: user.id,
+      email: universityEmail,
     });
+    return result;
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (verificationStatus === "VERIFIED") {
+    // reset
+    setError("");
+    setSuccess("");
+
+    if (session?.user?.verification === "VERIFIED") {
       return setError("User is already verified.");
     }
 
@@ -75,22 +74,25 @@ export const VerifyFormUni: React.FC = () => {
       return setError("Please agree to the terms and conditions.");
     }
 
-    await updateUserUniEmailAndUni({
+    await updateUserUniEmailAndUni.mutateAsync({
       universityEmail,
       universityName: university.name,
     });
 
     const sendResult = await handleSendVerificationEmail();
     if (sendResult) {
+      setError("");
       return setSuccess(
         "Verification email sent successfully. Please check your email.",
       );
     } else {
-      return setError("ERROR: Something Went Wront! \nFailed to send verification email.");
+      setSuccess("");
+      return setError(
+        "ERROR: Something Went Wrong! \nFailed to send verification email.",
+      );
     }
   };
 
-  
   if (session?.user?.verification === "UNVERIFIED") {
     return (
       <>
@@ -103,52 +105,21 @@ export const VerifyFormUni: React.FC = () => {
           universitas anda, yang mana anda harus memverifikasi dalam jangka
           waktu <span className="font-bold">10 menit</span>.
         </p>
-        <form onSubmit={handleSubmit}>
-          <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium">
-              Pilih universitas anda saat ini
-            </label>
-            <Combobox
-              placeholder="Universitas"
-              items={universityList}
-              itemToString={(universityList) =>
-                universityList ? universityList.name : ""
-              }
-              disabled={isLoading}
-              width="100%"
-              onChange={(selected: University) => {
-                setUniversity(selected);
-                console.log(selected);
-              }}
-            />
-            <TextInputField
-              marginTop={8}
-              marginBottom={24}
-              label="University Email"
-              type="email"
-              placeholder="nicole@tu-jerman.de"
-              value={universityEmail}
-              disabled={isLoading}
-              required
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setUniversityEmail(e.target.value)
-              }
-            />
-
-            <Checkbox
-              label="Dengan ini, anda setuju dengan kebijakan privasi kami dan memberikan informasi secara jujur."
-              checked={checkedPrivacy}
-              disabled={isLoading}
-              onChange={(e) => setCheckedPrivacy(e.target.checked)}
-            />
-
-            <FormError message={error} />
-            <FormSuccess message={success} />
-            <Button isLoading={isLoading} appearance="primary">
-              Verifikasi Email Universitas
-            </Button>
-          </div>
-        </form>
+        <VerifyForm
+          universityList={universityList}
+          setUniversity={setUniversity}
+          universityEmail={universityEmail}
+          setUniversityEmail={setUniversityEmail}
+          checkedPrivacy={checkedPrivacy}
+          setCheckedPrivacy={setCheckedPrivacy}
+          handleSubmit={handleSubmit}
+          isLoading={
+            updateUserUniEmailAndUni.isLoading ||
+            generateAndSendTokenMutation.isLoading
+          }
+          error={error}
+          success={success}
+        />
       </>
     );
   } else {
@@ -162,3 +133,78 @@ export const VerifyFormUni: React.FC = () => {
     );
   }
 };
+
+interface VerifyFormProps {
+  universityList: University[];
+  setUniversity: React.Dispatch<React.SetStateAction<University | null>>;
+  universityEmail: string;
+  setUniversityEmail: React.Dispatch<React.SetStateAction<string>>;
+  checkedPrivacy: boolean;
+  setCheckedPrivacy: React.Dispatch<React.SetStateAction<boolean>>;
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
+  isLoading: boolean;
+  error: string;
+  success: string;
+}
+
+const VerifyForm: React.FC<VerifyFormProps> = ({
+  universityList,
+  setUniversity,
+  universityEmail,
+  setUniversityEmail,
+  checkedPrivacy,
+  setCheckedPrivacy,
+  handleSubmit,
+  isLoading,
+  error,
+  success,
+}) => (
+  <>
+    <form onSubmit={handleSubmit}>
+      <div className="flex flex-col gap-2">
+        <label className="text-sm font-medium">
+          Pilih universitas anda saat ini
+        </label>
+        <Combobox
+          placeholder="Universitas"
+          items={universityList}
+          itemToString={(universityList) =>
+            universityList ? universityList.name : ""
+          }
+          disabled={isLoading}
+          width="100%"
+          onChange={(selected: University) => {
+            setUniversity(selected);
+            console.log(selected);
+          }}
+        />
+        <TextInputField
+          marginTop={8}
+          marginBottom={24}
+          label="University Email"
+          type="email"
+          placeholder="nicole@tu-jerman.de"
+          value={universityEmail}
+          disabled={isLoading}
+          required
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setUniversityEmail(e.target.value)
+          }
+        />
+
+        <Checkbox
+          label="Dengan ini, anda setuju dengan kebijakan privasi kami dan memberikan informasi secara jujur."
+          checked={checkedPrivacy}
+          disabled={isLoading}
+          onChange={(e) => setCheckedPrivacy(e.target.checked)}
+        />
+
+        <FormError message={error} />
+        <FormSuccess message={success} />
+        <Button isLoading={isLoading} appearance="primary">
+          Verifikasi Email Universitas
+        </Button>
+      </div>
+    </form>
+  </>
+);

@@ -6,6 +6,7 @@ import type { RouterOutputs } from "../../utils/trpc";
 import { trpc } from "../../utils/trpc";
 import { Card } from "../../Components";
 import { capitalize } from "../../utils/capitalize";
+import { ListPPICabang } from "../../Components/optionsList/ListPPICabang";
 
 export const UserForm: React.FC<{
   user: RouterOutputs["user"]["getUserById"];
@@ -18,7 +19,8 @@ export const UserForm: React.FC<{
   const [affiliation, setAffiliation] = useState<string[]>(
     user.affiliation ?? [],
   );
-  
+  const [ppicabang, setPpiCabang] = useState(user.ppicabang ?? "");
+
   // useContext is deprecated, use useUtils instead
   const queryClient = trpc.useUtils();
   const { mutateAsync: updateUserById, isLoading } =
@@ -28,6 +30,7 @@ export const UserForm: React.FC<{
           window.location.reload();
       },
     });
+    //TODO: Handle the logic for PPI Cabang branch admins, so that they cannot change the PPI Cabang value of each users but can see the data and assign role as PPI Cabang admins.
   return (
     <>
       <Card>
@@ -80,6 +83,22 @@ export const UserForm: React.FC<{
               }}
             />
           </FormField>
+          <SelectField
+            marginBottom={8}
+            label="PPI Cabang"
+            value={ppicabang}
+            disabled={isLoading}
+            description="PPI Cabang pengguna"
+            onChange={(e) => setPpiCabang(e.target.value)}
+          >
+            {ListPPICabang.map((ppi) => {
+              return (
+                <option key={ppi.value} value={ppi.value}>
+                  {ppi.label}
+                </option>
+              );
+            })}
+          </SelectField>
 
           <Button
             onClick={async () =>
@@ -89,11 +108,13 @@ export const UserForm: React.FC<{
                 verification,
                 status,
                 affiliation,
+                ppicabang,
               })
             }
             isLoading={isLoading}
+            className="mt-5"
           >
-            Save
+            Update user
           </Button>
         </div>
       </Card>

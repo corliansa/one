@@ -81,8 +81,6 @@ export const VerifyTokenForm: React.FC = () => {
             </p>
           </div>
         )}
-
-        <p>{tokenToVerify}</p>
       </div>
 
       <div className="flex flex-col gap-2">

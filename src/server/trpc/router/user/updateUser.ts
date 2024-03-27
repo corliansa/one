@@ -9,12 +9,24 @@ export const updateUser = protectedProcedure
       occupation: z.string(),
       location: z.string(),
       ppicabang: z.string().optional(),
+      fieldOfStudy: z.string().optional(),
+      expectedGraduation: z.date().optional(),
+      bundesland: z.string().optional(),
     }),
   )
   .mutation(
     async ({
       ctx,
-      input: { name, birthDate, occupation, location, ppicabang },
+      input: {
+        name,
+        birthDate,
+        occupation,
+        location,
+        ppicabang,
+        fieldOfStudy,
+        expectedGraduation,
+        bundesland,
+      },
     }) => {
       const userId = ctx.session.user.id;
 
@@ -28,6 +40,9 @@ export const updateUser = protectedProcedure
           occupation,
           location,
           ppicabang,
+          fieldOfStudy,
+          expectedGraduation,
+          bundesland,
         },
       });
     },

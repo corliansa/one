@@ -84,7 +84,7 @@ model User {
   studySpecialization         String?
   location                    String?
   bundesland                  String?
-  expectedGraduation          String?
+  expectedGraduation          DateTime?
   universityName              String?
   universityEmail             String?
   universityEmailVerificationToken UniversityEmailVerificationToken[]

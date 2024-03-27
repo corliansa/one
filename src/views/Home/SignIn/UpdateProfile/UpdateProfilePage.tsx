@@ -11,15 +11,19 @@ export const UpdateProfilePage: NextPage = () => {
   return (
     <ProtectedUpdate redirectTo="/">
       {!isLoading && user && (
-        <div className="flex min-h-screen flex-col items-center justify-center p-5">
-          <Card className="p-10">
-            <Logo />
-            <h1 className="p-10 text-center text-3xl font-bold">Data Diri</h1>
-            <UpdateProfileFormFirstLogin user={user} />
-          </Card>
+        <div className="isolate bg-slate-100">
+          <div className="flex min-h-screen flex-col items-center justify-center gap-y-10 p-5">
+            <Card className="w-full border-none bg-white shadow-xl md:w-1/2">
+              <Logo />
+              <h1 className="p-5 text-center text-4xl font-bold">
+                Data Diri Sensus
+              </h1>
+
+              <UpdateProfileFormFirstLogin user={user} />
+            </Card>
+          </div>
         </div>
       )}
     </ProtectedUpdate>
   );
 };
-

@@ -21,7 +21,7 @@ interface Stat {
     | undefined;
 }
 
-export const DashboardGraph: React.FC<Stat> = ({ ppiCabangStats }: Stat) => {
+export const PPICabangGraph: React.FC<Stat> = ({ ppiCabangStats }: Stat) => {
   const [showAll, setShowAll] = useState(false);
   const displayedStats = showAll ? ppiCabangStats : ppiCabangStats?.slice(0, 5);
 

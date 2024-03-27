@@ -5,7 +5,7 @@ import { Base, Card, Protected } from "../../Components";
 
 import { capitalize } from "../../utils/capitalize";
 import { trpc } from "../../utils/trpc";
-import { DashboardGraph } from "./DashboardGraph";
+import { PPICabangGraph } from "./PPICabangGraph";
 
 export const Dashboard: NextPage = () => {
   const { data } = trpc.internal.getStatistics.useQuery();
@@ -23,6 +23,8 @@ export const Dashboard: NextPage = () => {
   useMemo(() => {
     return ppiCabangStats?.sort((a, b) => b.count - a.count);
   }, [ppiCabangStats]);
+
+  //TODO: Add more visualizations for the dashboard.
 
   return (
     <>
@@ -51,7 +53,7 @@ export const Dashboard: NextPage = () => {
             </div>
           </Card>
           <Card className="mt-4">
-            <DashboardGraph ppiCabangStats={ppiCabangStats} />
+            <PPICabangGraph ppiCabangStats={ppiCabangStats} />
           </Card>
         </Protected>
       </Base>

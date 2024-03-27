@@ -5,7 +5,7 @@ import { router } from "../trpc";
 import { getSession } from "./user/getSession";
 import { getUser } from "./user/getUser";
 import { getUsers } from "./user/getUsers";
-import { updateUserByIdLogin } from "./user/updateUserByIdLogin";
+import { updateUserLogin } from "./user/updateUserLogin";
 import { getUserUpdateProfileStatus } from "./user/getUserUpdateProfileStatus";
 import { updateUserUniEmail } from "./user/updateUserUniEmail";
 import { getUserUniEmail } from "./user/getUserUniversityEmail";
@@ -19,7 +19,7 @@ export const userRouter = router({
   getUsers,
   getUserById,
   updateUserById,
-  updateUserByIdLogin,
+  updateUserLogin,
   getUserUpdateProfileStatus,
   updateUserUniEmail,
   getUserUniEmail,

@@ -22,14 +22,18 @@ export const updateUserById = protectedProcedure
       verification: VerificationZod,
       status: StatusZod,
       affiliation: z.array(z.string()).optional(),
-    })
+      ppicabang: z.string().optional(),
+    }),
   )
   .mutation(
-    async ({ ctx, input: { id, role, verification, status, affiliation } }) => {
+    async ({
+      ctx,
+      input: { id, role, verification, status, affiliation, ppicabang },
+    }) => {
       authorize(ctx, ["ADMIN"]);
       return await ctx.prisma.user.update({
         where: { id },
-        data: { role, verification, status, affiliation },
+        data: { role, verification, status, affiliation, ppicabang },
       });
-    }
+    },
   );

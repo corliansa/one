@@ -7,10 +7,12 @@ import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Footer, Logo, Protected } from "../../Components";
+import { Alert, Button } from "evergreen-ui";
+import { CustomBackground } from "../../Components/Background";
 
 const navigation = [
   { name: "About", href: "/about" },
-  { name: "Contact", href: "#" },
+  { name: "Contact", href: "/contact" },
   { name: "FAQ", href: "#" },
 ];
 
@@ -26,33 +28,7 @@ export const Home = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="isolate bg-white">
-        <div className="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]">
-          <svg
-            className="relative left-[calc(50%-11rem)] -z-10 h-[21.1875rem] max-w-none -translate-x-1/2 rotate-[30deg] sm:left-[calc(50%-30rem)] sm:h-[42.375rem]"
-            viewBox="0 0 1155 678"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill="url(#45de2b6b-92d5-4d68-a6a0-9b9b2abad533)"
-              fillOpacity=".3"
-              d="M317.219 518.975L203.852 678 0 438.341l317.219 80.634 204.172-286.402c1.307 132.337 45.083 346.658 209.733 145.248C936.936 126.058 882.053-94.234 1031.02 41.331c119.18 108.451 130.68 295.337 121.53 375.223L855 299l21.173 362.054-558.954-142.079z"
-            />
-            <defs>
-              <linearGradient
-                id="45de2b6b-92d5-4d68-a6a0-9b9b2abad533"
-                x1="1155.49"
-                x2="-78.208"
-                y1=".177"
-                y2="474.645"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop stopColor="#9089FC" />
-                <stop offset={1} stopColor="#FF80B5" />
-              </linearGradient>
-            </defs>
-          </svg>
-        </div>
+        <CustomBackground />
         <div className="px-6 pt-6 lg:px-8">
           <div>
             <nav
@@ -165,17 +141,37 @@ export const Home = () => {
                 </div> */}
                 <Protected>
                   {({ session }) => (
-                    <div className="mb-4 flex justify-center">
-                      <div className="relative overflow-hidden rounded-full px-4 py-1.5 text-sm leading-6 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-                        <span className="text-gray-600">
-                          Signed in as{" "}
-                          <Link
-                            href="/profile"
-                            className="font-semibold text-pink-600"
+                    <div className="flex flex-col">
+                      {session?.user?.updated === false && (
+                        <Alert
+                          intent="warning"
+                          title="Anda belum mengisi data diri"
+                          marginBottom={16}
+                        >
+                          <p className="py-2">
+                            Anda harus mengisi data diri pada tahap pertama
+                            registrasi sebelum melanjutkan.
+                          </p>
+                          <Button
+                            appearance="default"
+                            onClick={() => push("/auth/check-profile")}
                           >
-                            {session?.user?.email}
-                          </Link>
-                        </span>
+                            Isi data diri
+                          </Button>
+                        </Alert>
+                      )}
+                      <div className="mb-4 flex justify-center">
+                        <div className="relative overflow-hidden rounded-full px-4 py-1.5 text-sm leading-6 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+                          <span className="text-gray-600">
+                            Signed in as{" "}
+                            <Link
+                              href="/profile"
+                              className="font-semibold text-pink-600"
+                            >
+                              {session?.user?.email}
+                            </Link>
+                          </span>
+                        </div>
                       </div>
                     </div>
                   )}
@@ -190,7 +186,9 @@ export const Home = () => {
                   <div className="mt-8 flex gap-x-4 sm:justify-center">
                     <a
                       onClick={() =>
-                        sessionData ? push("/dashboard") : push("/signin")
+                        sessionData
+                          ? push("/auth/check-profile")
+                          : push("/signin")
                       }
                       className="inline-block cursor-pointer rounded-lg bg-pink-600 px-4 py-1.5 text-base font-semibold leading-7 text-white shadow-sm ring-1 ring-pink-600 hover:bg-pink-700 hover:ring-pink-700"
                     >
