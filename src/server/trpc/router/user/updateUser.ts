@@ -11,6 +11,7 @@ export const updateUser = protectedProcedure
       ppicabang: z.string().optional(),
       fieldOfStudy: z.string().optional(),
       expectedGraduation: z.date().optional(),
+      studySpecialization: z.string().optional(),
       bundesland: z.string().optional(),
     }),
   )
@@ -24,6 +25,7 @@ export const updateUser = protectedProcedure
         location,
         ppicabang,
         fieldOfStudy,
+        studySpecialization,
         expectedGraduation,
         bundesland,
       },
@@ -41,6 +43,7 @@ export const updateUser = protectedProcedure
           location,
           ppicabang,
           fieldOfStudy,
+          studySpecialization,
           expectedGraduation,
           bundesland,
         },

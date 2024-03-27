@@ -68,16 +68,6 @@ export const UpdateProfileFormFirstLogin: React.FC<
     }
   };
 
-  //TODO: handleBundesland to automatically assign based on city
-  // const handleBundesland = () => {
-  //   const selectedCity = germanCities.find((city) => city.name === location);
-  //   if (selectedCity) {
-  //     setBundesland(selectedCity.bundesland);
-  //   } else {
-  //     console.log("City not found");
-  //   }
-  // };
-
   // Corrected to trigger handleBundesland automatically when city changes
   useEffect(() => {
     const selectedCity = germanCities.find((city) => city.name === location);
