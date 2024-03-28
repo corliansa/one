@@ -1,4 +1,4 @@
-import { Alert, Button, CrossIcon, TextInputField } from "evergreen-ui";
+import { Button, CrossIcon, TextInputField } from "evergreen-ui";
 import React, { useState, useEffect, Fragment } from "react";
 import type { RouterOutputs } from "../../utils/trpc";
 import { trpc } from "../../utils/trpc";
@@ -10,8 +10,7 @@ import { germanCities, studiengangsListe } from "../../Components/optionsList";
 
 export const UpdateProfileForm: React.FC<{
   user: RouterOutputs["user"]["getUser"];
-  closeOnClick: () => void;
-}> = ({ user, closeOnClick }) => {
+}> = ({ user }) => {
   const [name, setName] = useState(user.name ?? "");
   const [birthDate, setBirthDate] = useState(
     user?.birthDate ? (user?.birthDate).toISOString().slice(0, 10) : "",
@@ -103,7 +102,7 @@ export const UpdateProfileForm: React.FC<{
         : undefined,
       bundesland,
     });
-    closeOnClick();
+    () => setIsOpen(false);
   };
 
   return (
@@ -311,10 +310,12 @@ export const UpdateProfileForm: React.FC<{
                   <div className="py-5">
                     <p className="text-sm text-gray-500">
                       For security reasons, you are only allowed to update your
-                      profile once every {" "}
+                      profile once every{" "}
                       <span className="font-bold">7 days</span>.
                     </p>
-                    <p className="text-sm text-gray-500">Are you sure you want to update your profile?</p>
+                    <p className="text-sm text-gray-500">
+                      Are you sure you want to update your profile?
+                    </p>
                   </div>
                   <div className="mt-4 flex justify-between">
                     <Button
