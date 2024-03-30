@@ -119,7 +119,7 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
                 leaveFrom="translate-x-0"
                 leaveTo="-translate-x-full"
               >
-                <Dialog.Panel className="relative flex w-full max-w-xs flex-1 flex-col bg-white pb-4 pt-5">
+                <Dialog.Panel className="relative flex w-full max-w-xs flex-1 flex-col bg-slate-50 pb-4 pt-5">
                   <Transition.Child
                     as={Fragment}
                     enter="ease-in-out duration-300"
@@ -191,9 +191,9 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
         </Transition.Root>
 
         {/* Static sidebar for desktop */}
-        <div className="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
+        <div className="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col bg-slate-50">
           {/* Sidebar component, swap this element with another sidebar if you like */}
-          <div className="flex flex-grow flex-col overflow-y-auto border-r border-gray-200 bg-white pt-5">
+          <div className="flex flex-grow flex-col overflow-y-auto border-r border-gray-200 bg-slate-50 pt-5">
             <div className="flex flex-shrink-0 items-center px-4">
               {/* logo link to home page */}
               <Link href="/">
@@ -236,9 +236,9 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
           </div>
         </div>
 
-        <div className="md:pl-64">
-          <div className="mx-auto flex flex-col max-w-[95%] md:px-8 xl:px-0">
-            <div className="sticky top-0 z-10 flex h-16 flex-shrink-0 border-b border-gray-200 bg-white">
+        <div className="md:pl-64 bg-slate-50 min-h-screen">
+          <div className="mx-auto flex max-w-[95%] flex-col md:px-8 xl:px-0">
+            <div className="sticky top-0 z-10 flex h-16 flex-shrink-0 border-b border-gray-200 bg-slate-50">
               <button
                 type="button"
                 className="border-r border-gray-200 px-4 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
@@ -251,7 +251,7 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
                 <div className="flex flex-1 items-center">
                   <p className="text-md font-medium text-gray-500">
                     {sessionData?.user?.name
-                      ? `Welcome, ${sessionData?.user?.name}`
+                      ? `${sessionData?.user?.name}`
                       : "Welcome"}{" "}
                     {sessionData?.user?.verification === "VERIFIED" ? (
                       <div className="flex flex-row gap-1">
@@ -292,7 +292,7 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
                       leaveFrom="transform opacity-100 scale-100"
                       leaveTo="transform opacity-0 scale-95"
                     >
-                      <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-slate-50 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                         {userNavigation.map((item) => (
                           <Menu.Item key={item.name}>
                             {({ active }) => (
@@ -330,12 +330,12 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
             <Protected verification="UNVERIFIED">
               <VerifyWarning href="/verify" />
             </Protected>
-            <main className="flex-1">
+            <main className="flex-1 bg-slate-50">
               <div className="py-6">
                 <div className="px-4 sm:px-6 md:px-0">
                   <h1 className="text-3xl font-bold text-gray-900">{title}</h1>
                 </div>
-                <div className="px-4 sm:px-6 md:px-0">{children}</div>
+                <div className="px-4 sm:px-6 md:px-0 min-h-screen">{children}</div>
               </div>
               <Footer />
             </main>

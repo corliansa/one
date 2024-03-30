@@ -45,6 +45,7 @@ export const UpdateProfileForm: React.FC<{
       onSuccess: async () => {
         await queryClient.user?.getUser?.invalidate();
         setSuccess("Profile updated successfully!");
+        () => setIsOpen(false);
       },
       onError: (error) => {
         setError(error.message);
@@ -92,6 +93,7 @@ export const UpdateProfileForm: React.FC<{
       location,
       ppicabang,
       fieldOfStudy,
+      studySpecialization,
       expectedGraduation: [
         "bachelor",
         "master",
@@ -101,36 +103,44 @@ export const UpdateProfileForm: React.FC<{
         ? new Date(expectedGraduation)
         : undefined,
       bundesland,
+      updatedAt: new Date(),
     });
-    () => setIsOpen(false);
   };
 
   return (
-    <div className="flex flex-col">
-      <TextInputField
-        label="Name"
-        value={name}
-        disabled={isLoading}
-        required={isProfileUpdated}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setName(e.target.value)
-        }
-      />
-      <TextInputField
-        label="Birth Date"
-        type="date"
-        disabled={isLoading}
-        value={birthDate}
-        required={isProfileUpdated}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setBirthDate(e.target.value)
-        }
-      />
+    <div className="flex w-full max-w-4xl flex-col">
+      <div className="flex w-full flex-col gap-5 md:flex-row">
+        <TextInputField
+          label="Name"
+          value={name}
+          marginBottom={8}
+          width="100%"
+          disabled={isLoading}
+          required={isProfileUpdated}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setName(e.target.value)
+          }
+        />
+        <TextInputField
+          label="Birth Date"
+          type="date"
+          marginBottom={8}
+          width="100%"
+          disabled={isLoading}
+          value={birthDate}
+          required={isProfileUpdated}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setBirthDate(e.target.value)
+          }
+        />
+      </div>
+
       <SelectField
         label="Status Pendidikan Saat Ini"
         description="Jika anda masih dalam proses pendidikan, pilih status pendidikan saat ini."
         value={occupation}
         disabled={isLoading}
+        marginBottom={8}
         required={isProfileUpdated}
         onChange={(e) => setOccupation(e.target.value)}
       >
@@ -155,12 +165,14 @@ export const UpdateProfileForm: React.FC<{
           const { getInputProps, getRef } = props;
           return (
             <TextInputField
+              {...getInputProps()}
               label="Bidang Studi"
               description="Bidang Studi dalam bahasa Jerman. Jika tidak ada di daftar bidang studi, silahkan tulis sendiri."
               ref={getRef}
+              value={fieldOfStudy}
+              marginBottom={8}
               disabled={isLoading}
               required={isProfileUpdated}
-              {...getInputProps()}
             />
           );
         }}
@@ -172,6 +184,7 @@ export const UpdateProfileForm: React.FC<{
         hint="Maksimum 50 karakter."
         isInvalid={studySpecialization.length > 50}
         disabled={isLoading}
+        marginBottom={8}
         value={studySpecialization}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           setStudySpecialization(e.target.value)
@@ -184,6 +197,7 @@ export const UpdateProfileForm: React.FC<{
           type="date"
           disabled={isLoading}
           value={expectedGraduation}
+          marginBottom={8}
           required={
             isProfileUpdated &&
             ["bachelor", "master", "doctor", "ausbildung"].includes(occupation)
@@ -194,57 +208,66 @@ export const UpdateProfileForm: React.FC<{
         />
       )}
 
-      <Autocomplete
-        items={germanCities}
-        itemToString={(germanCities) => (germanCities ? germanCities.name : "")}
-        onChange={handleCity}
-      >
-        {(props) => {
-          const { getInputProps, getRef } = props;
-          return (
-            <TextInputField
-              label="Kota"
-              required={isProfileUpdated}
-              placeholder="Domisili"
-              ref={getRef}
-              disabled={isLoading}
-              description="Lokasi domisili anda di Jerman"
-              {...getInputProps()}
-            />
-          );
-        }}
-      </Autocomplete>
+      <div className="flex flex-col gap-5 md:flex-row">
+        <Autocomplete
+          items={germanCities}
+          itemToString={(germanCities) =>
+            germanCities ? germanCities.name : ""
+          }
+          onChange={handleCity}
+        >
+          {(props) => {
+            const { getInputProps, getRef } = props;
+            return (
+              <TextInputField
+                label="Kota"
+                required={isProfileUpdated}
+                placeholder="Braunschweig, Berlin, München, dll."
+                marginBottom={8}
+                ref={getRef}
+                width="100%"
+                disabled={isLoading}
+                description="Lokasi domisili anda di Jerman"
+                {...getInputProps()}
+              />
+            );
+          }}
+        </Autocomplete>
 
-      <SelectField
-        required={isProfileUpdated}
-        disabled={true}
-        value={bundesland}
-        label="Negara Bagian"
-        description="Negara bagian menyesuaikan kota/domisili anda."
-      >
-        <option value="">Negara Bagian</option>
-        <option value="Baden-Württemberg">Baden-Württemberg</option>
-        <option value="Bayern">Bayern</option>
-        <option value="Berlin">Berlin</option>
-        <option value="Brandenburg">Brandenburg</option>
-        <option value="Bremen">Bremen</option>
-        <option value="Hamburg">Hamburg</option>
-        <option value="Hessen">Hessen</option>
-        <option value="Mecklenburg-Vorpommern">Mecklenburg-Vorpommern</option>
-        <option value="Niedersachsen">Niedersachsen</option>
-        <option value="Nordrhein-Westfalen">Nordrhein-Westfalen</option>
-        <option value="Rheinland-Pfalz">Rheinland-Pfalz</option>
-        <option value="Saarland">Saarland</option>
-        <option value="Sachsen">Sachsen</option>
-        <option value="Sachsen-Anhalt">Sachsen-Anhalt</option>
-        <option value="Schleswig-Holstein">Schleswig-Holstein</option>
-        <option value="Thüringen">Thüringen</option>
-      </SelectField>
+        <SelectField
+          required={isProfileUpdated}
+          disabled={true}
+          value={bundesland}
+          width="100%"
+          label="Negara Bagian"
+          marginBottom={8}
+          description="Negara bagian menyesuaikan kota/domisili anda."
+        >
+          <option value="">Negara Bagian</option>
+          <option value="Baden-Württemberg">Baden-Württemberg</option>
+          <option value="Bayern">Bayern</option>
+          <option value="Berlin">Berlin</option>
+          <option value="Brandenburg">Brandenburg</option>
+          <option value="Bremen">Bremen</option>
+          <option value="Hamburg">Hamburg</option>
+          <option value="Hessen">Hessen</option>
+          <option value="Mecklenburg-Vorpommern">Mecklenburg-Vorpommern</option>
+          <option value="Niedersachsen">Niedersachsen</option>
+          <option value="Nordrhein-Westfalen">Nordrhein-Westfalen</option>
+          <option value="Rheinland-Pfalz">Rheinland-Pfalz</option>
+          <option value="Saarland">Saarland</option>
+          <option value="Sachsen">Sachsen</option>
+          <option value="Sachsen-Anhalt">Sachsen-Anhalt</option>
+          <option value="Schleswig-Holstein">Schleswig-Holstein</option>
+          <option value="Thüringen">Thüringen</option>
+        </SelectField>
+      </div>
 
       <SelectField
         label="PPI Cabang"
         required={isProfileUpdated}
         value={ppicabang}
+        marginBottom={8}
         disabled={isLoading}
         description="PPI Cabang terdekat dari lokasi domisili anda di Jerman"
         onChange={(e) => setPpiCabang(e.target.value)}

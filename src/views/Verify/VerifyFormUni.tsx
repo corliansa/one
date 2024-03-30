@@ -27,7 +27,7 @@ export const VerifyFormUni: React.FC = () => {
     }
   }, [session?.user?.universityName]);
 
-  const [error, setError] = useState("");
+  const [error, setError] = useState("12312");
   const [success, setSuccess] = useState("");
   const [checkedPrivacy, setCheckedPrivacy] = useState(false);
   const queryClient = trpc.useUtils();
@@ -124,7 +124,7 @@ export const VerifyFormUni: React.FC = () => {
     );
   } else {
     return (
-      <div className="flex flex-col justify-center">
+      <div className="flex flex-col gap-10 justify-center">
         <h1 className="pb-3 text-center text-2xl font-semibold">
           Verifikasi Status Student
         </h1>

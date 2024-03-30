@@ -1,9 +1,9 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import { Base, Protected } from "../../Components";
+import { Base, Protected, Card } from "../../Components";
 import { trpc } from "../../utils/trpc";
-import { UpdateProfileForm } from "./UpdateForm";
 import { UserInfo } from "../../Components/UserInfo";
+import { Button, EditIcon } from "evergreen-ui";
 
 export const Profile: NextPage = () => {
   const { data: user, isLoading } = trpc.user.getUser.useQuery();
@@ -18,9 +18,22 @@ export const Profile: NextPage = () => {
         <div className="py-4">
           <Protected redirectTo="/">
             {!isLoading && user && (
-              <div className="flex flex-row gap-3">
-                <UserInfo user={user} />
-                <UpdateProfileForm user={user} />
+              <div className="flex w-full flex-col gap-3 md:flex-row">
+                <Card>
+                  <UserInfo user={user} />
+                  <div className="pt-10">
+                    <Button
+                      appearance="primary"
+                      onClick={() => {
+                        window.location.href = "/profile/edit";
+                      }}
+                      iconAfter={EditIcon}
+                      className="w-full p-4"
+                    >
+                      Edit Profile
+                    </Button>
+                  </div>
+                </Card>
               </div>
             )}
           </Protected>

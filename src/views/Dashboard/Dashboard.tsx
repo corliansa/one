@@ -6,6 +6,7 @@ import { Base, Card, Protected } from "../../Components";
 import { capitalize } from "../../utils/capitalize";
 import { trpc } from "../../utils/trpc";
 import { PPICabangGraph } from "./PPICabangGraph";
+import { GeoVis } from "./Geovis";
 
 export const Dashboard: NextPage = () => {
   const { data } = trpc.internal.getStatistics.useQuery();
@@ -37,24 +38,34 @@ export const Dashboard: NextPage = () => {
           {/* added a warning verification if user is unverified */}
         </Protected>
         <Protected redirectTo="/">
-          <Card className="mt-4">
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {stats.map((stat) => (
-                <div
-                  key={stat.name}
-                  className="flex flex-col items-center justify-center rounded-lg bg-white/20 p-4"
-                >
-                  <div className="text-xl font-bold">
-                    {capitalize(stat.name).replace(/(users)/, " $1")}
-                  </div>
-                  <div className="text-4xl font-bold">{stat.count}</div>
+          <div className="mt-4 flex w-full flex-col gap-10 lg:flex-row">
+            <div className="flex flex-col gap-6">
+              <Card className="">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {stats.map((stat) => (
+                    <div
+                      key={stat.name}
+                      className="flex flex-col items-center justify-center rounded-lg bg-white/20 p-4"
+                    >
+                      <div className="text-xl font-bold">
+                        {capitalize(stat.name).replace(/(users)/, " $1")}
+                      </div>
+                      <div className="text-4xl font-bold">{stat.count}</div>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </Card>
+              <Card>
+                <PPICabangGraph ppiCabangStats={ppiCabangStats} />
+              </Card>
             </div>
-          </Card>
-          <Card className="mt-4">
-            <PPICabangGraph ppiCabangStats={ppiCabangStats} />
-          </Card>
+            <Card className="">
+              <h1 className="mb-5 text-2xl font-semibold">
+                Demografi Mahasiswa Indonesia di Jerman
+              </h1>
+              <GeoVis width="100%" />
+            </Card>
+          </div>
         </Protected>
       </Base>
     </>
