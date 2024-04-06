@@ -4,7 +4,7 @@ import { GermanyOutline } from "./GermanyOutline";
 import { AnimatePresence, motion } from "framer-motion";
 import { trpc } from "../../utils/trpc";
 import { useEffect } from "react";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, Text } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, Legend, Text } from "recharts";
 
 const xLabels = ["Ausbildung", "Bachelor", "Master", "Doctor", "Professor"];
 
