@@ -172,6 +172,7 @@ export const UpdateProfileForm: React.FC<{
         required={isProfileUpdated}
         onChange={(e) => setOccupation(e.target.value)}
       >
+        <option value="">Pilih Status Pendidikan</option>
         <option value="ausbildung">Ausbildung</option>
         <option value="bachelor">Bachelor</option>
         <option value="master">Master</option>
