@@ -11,6 +11,7 @@ import { updateUserUniEmail } from "./user/updateUserUniEmail";
 import { getUserUniEmail } from "./user/getUserUniversityEmail";
 import { getUserUniEmailAndId } from "./user/getUserUniversityEmailAndId";
 import { updateUserUniEmailAndUni } from "./user/updateUserUniEmailAndUni";
+import { updateConsent } from "./user/updateConsent";
 
 export const userRouter = router({
   getSession,
@@ -25,4 +26,5 @@ export const userRouter = router({
   getUserUniEmail,
   getUserUniEmailAndId,
   updateUserUniEmailAndUni,
+  updateConsent,
 });

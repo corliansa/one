@@ -88,9 +88,12 @@ model User {
   universityName              String?
   universityEmail             String?
   universityEmailVerificationToken UniversityEmailVerificationToken[]
-  // forwardDataThirdParty    Boolean      @default(false)
-  // useDataForResearch       Boolean      @default(false)
-  // agreedToTermsAndCond     Boolean      @default(false)
+  forwardDataThirdParty    Boolean      @default(false)
+  forwardDataThirdPartyDate DateTime?
+  subscribeNewsletterEmail       Boolean      @default(false)
+  subscribeNewsletterDate       DateTime?
+  agreedToTermsAndCond     Boolean      @default(false)
+  agreedToTermsAndCondDate DateTime?
   affiliation                 String[]     @default([]) // change to normal string instead of list
   createdAt                   DateTime     @default(now())
   updatedAt                   DateTime     @updatedAt

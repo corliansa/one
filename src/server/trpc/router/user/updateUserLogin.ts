@@ -25,6 +25,9 @@ export const updateUserLogin = protectedProcedure
       bundesland: z.string(),
       expectedGraduation: z.date().optional(),
       ppicabang: z.string(),
+      agreedToTermsAndCond: z.boolean(),
+      forwardDataThirdParty: z.boolean().optional(),
+      subscribeNewsletterEmail: z.boolean().optional(),
     }),
   )
   .mutation(
@@ -41,6 +44,9 @@ export const updateUserLogin = protectedProcedure
         expectedGraduation,
         studySpecialization,
         fieldOfStudy,
+        agreedToTermsAndCond,
+        forwardDataThirdParty,
+        subscribeNewsletterEmail,
       },
     }) => {
       return await ctx.prisma.user.update({
@@ -56,6 +62,11 @@ export const updateUserLogin = protectedProcedure
           studySpecialization,
           expectedGraduation,
           updated: true,
+          agreedToTermsAndCond,
+          agreedToTermsAndCondDate: new Date(),
+          forwardDataThirdParty,
+          forwardDataThirdPartyDate: new Date(),
+          subscribeNewsletterEmail,
         },
       });
     },

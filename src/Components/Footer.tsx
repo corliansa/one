@@ -8,7 +8,7 @@ const navigation: {
 } = {
   main: [
     { name: "Privacy", href: "#" },
-    { name: "T&C", href: "#" },
+    { name: "T&C", href: "/terms-and-conditions" },
     { name: "Impressum", href: "#" },
   ],
   social: [

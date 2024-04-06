@@ -3,7 +3,7 @@ export const Card: React.FC<{
   className?: string;
 }> = ({ className, ...props }) => (
   <div
-    className={`rounded-lg border-2 border-dashed p-6 ${className}`}
+    className={`rounded-lg border-2 bg-white p-6 shadow-md ${className}`}
     {...props}
   />
 );

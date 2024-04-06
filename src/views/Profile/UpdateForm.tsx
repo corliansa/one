@@ -7,6 +7,7 @@ import { ListPPICabang } from "../../Components/optionsList/ListPPICabang";
 import { FormError, FormSuccess } from "../../Components/ui";
 import { Dialog, Transition } from "@headlessui/react";
 import { germanCities, studiengangsListe } from "../../Components/optionsList";
+import { InformationCircleIcon } from "@heroicons/react/24/outline";
 
 export const UpdateProfileForm: React.FC<{
   user: RouterOutputs["user"]["getUser"];
@@ -28,6 +29,7 @@ export const UpdateProfileForm: React.FC<{
   const [studySpecialization, setStudySpecialization] = useState(
     user.studySpecialization ?? "",
   );
+  const [ableToUpdate, setAbleToUpdate] = useState(false); //
 
   // error states
   const [error, setError] = useState("");
@@ -38,6 +40,8 @@ export const UpdateProfileForm: React.FC<{
 
   const isProfileUpdated = !user.updated;
 
+  const lastUpdated = user.updatedAt.toString();
+
   const queryClient = trpc.useUtils();
 
   const { mutateAsync: updateUser, isLoading } =
@@ -45,6 +49,7 @@ export const UpdateProfileForm: React.FC<{
       onSuccess: async () => {
         await queryClient.user?.getUser?.invalidate();
         setSuccess("Profile updated successfully!");
+        () => setIsOpen(false);
       },
       onError: (error) => {
         setError(error.message);
@@ -53,6 +58,23 @@ export const UpdateProfileForm: React.FC<{
 
   type Studiengang = {
     name: string;
+  };
+
+  // handle update profile
+  const handleAbleToUpdate = () => {
+    const lastUpdated = user.updatedAt;
+    const dateNow = new Date();
+    const diffTime = Math.abs(dateNow.getTime() - lastUpdated.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    if (diffDays >= 3) {
+      setAbleToUpdate(true);
+    } else {
+      if (user.role === "ADMIN") {
+        // TODO: Update and check if user is superadmin
+        setAbleToUpdate(true);
+      }
+      setAbleToUpdate(false);
+    }
   };
 
   const handleFieldOfStudy = (selectedFieldOfStudy: Studiengang) => {
@@ -84,48 +106,64 @@ export const UpdateProfileForm: React.FC<{
     }
   }, [location]); // Depend on location and germanCities to re-run
 
+  useEffect(() => {
+    handleAbleToUpdate();
+  }, []);
+
   const handleClick = async () => {
-    await updateUser({
-      name,
-      birthDate: birthDate ? new Date(birthDate) : undefined,
-      occupation,
-      location,
-      ppicabang,
-      fieldOfStudy,
-      expectedGraduation: [
-        "bachelor",
-        "master",
-        "doctor",
-        "ausbildung",
-      ].includes(occupation)
-        ? new Date(expectedGraduation)
-        : undefined,
-      bundesland,
-    });
-    () => setIsOpen(false);
+    if (ableToUpdate) {
+      await updateUser({
+        name,
+        birthDate: birthDate ? new Date(birthDate) : undefined,
+        occupation,
+        location,
+        ppicabang,
+        fieldOfStudy,
+        studySpecialization,
+        expectedGraduation: [
+          "bachelor",
+          "master",
+          "doctor",
+          "ausbildung",
+        ].includes(occupation)
+          ? new Date(expectedGraduation)
+          : undefined,
+        bundesland,
+        updatedAt: new Date(),
+      });
+    } else {
+      setError(
+        "Anda hanya diperbolehkan memperbarui profil sekali setiap 7 hari.",
+      );
+    }
   };
 
   return (
-    <div className="flex flex-col">
-      <TextInputField
-        label="Name"
-        value={name}
-        disabled={isLoading}
-        required={isProfileUpdated}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setName(e.target.value)
-        }
-      />
-      <TextInputField
-        label="Birth Date"
-        type="date"
-        disabled={isLoading}
-        value={birthDate}
-        required={isProfileUpdated}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setBirthDate(e.target.value)
-        }
-      />
+    <div className="flex w-full max-w-4xl flex-col">
+      <div className="flex w-full flex-col gap-5 md:flex-row">
+        <TextInputField
+          label="Name"
+          value={name}
+          width="100%"
+          disabled={isLoading}
+          required={isProfileUpdated}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setName(e.target.value)
+          }
+        />
+        <TextInputField
+          label="Birth Date"
+          type="date"
+          width="100%"
+          disabled={isLoading}
+          value={birthDate}
+          required={isProfileUpdated}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setBirthDate(e.target.value)
+          }
+        />
+      </div>
+
       <SelectField
         label="Status Pendidikan Saat Ini"
         description="Jika anda masih dalam proses pendidikan, pilih status pendidikan saat ini."
@@ -155,12 +193,13 @@ export const UpdateProfileForm: React.FC<{
           const { getInputProps, getRef } = props;
           return (
             <TextInputField
+              {...getInputProps()}
               label="Bidang Studi"
               description="Bidang Studi dalam bahasa Jerman. Jika tidak ada di daftar bidang studi, silahkan tulis sendiri."
               ref={getRef}
+              value={fieldOfStudy}
               disabled={isLoading}
               required={isProfileUpdated}
-              {...getInputProps()}
             />
           );
         }}
@@ -194,52 +233,58 @@ export const UpdateProfileForm: React.FC<{
         />
       )}
 
-      <Autocomplete
-        items={germanCities}
-        itemToString={(germanCities) => (germanCities ? germanCities.name : "")}
-        onChange={handleCity}
-      >
-        {(props) => {
-          const { getInputProps, getRef } = props;
-          return (
-            <TextInputField
-              label="Kota"
-              required={isProfileUpdated}
-              placeholder="Domisili"
-              ref={getRef}
-              disabled={isLoading}
-              description="Lokasi domisili anda di Jerman"
-              {...getInputProps()}
-            />
-          );
-        }}
-      </Autocomplete>
+      <div className="flex flex-col gap-5 md:flex-row">
+        <Autocomplete
+          items={germanCities}
+          itemToString={(germanCities) =>
+            germanCities ? germanCities.name : ""
+          }
+          onChange={handleCity}
+        >
+          {(props) => {
+            const { getInputProps, getRef } = props;
+            return (
+              <TextInputField
+                label="Kota"
+                required={isProfileUpdated}
+                placeholder="Braunschweig, Berlin, München, dll."
+                ref={getRef}
+                width="100%"
+                disabled={isLoading}
+                description="Lokasi domisili anda di Jerman"
+                {...getInputProps()}
+              />
+            );
+          }}
+        </Autocomplete>
 
-      <SelectField
-        required={isProfileUpdated}
-        disabled={true}
-        value={bundesland}
-        label="Negara Bagian"
-        description="Negara bagian menyesuaikan kota/domisili anda."
-      >
-        <option value="">Negara Bagian</option>
-        <option value="Baden-Württemberg">Baden-Württemberg</option>
-        <option value="Bayern">Bayern</option>
-        <option value="Berlin">Berlin</option>
-        <option value="Brandenburg">Brandenburg</option>
-        <option value="Bremen">Bremen</option>
-        <option value="Hamburg">Hamburg</option>
-        <option value="Hessen">Hessen</option>
-        <option value="Mecklenburg-Vorpommern">Mecklenburg-Vorpommern</option>
-        <option value="Niedersachsen">Niedersachsen</option>
-        <option value="Nordrhein-Westfalen">Nordrhein-Westfalen</option>
-        <option value="Rheinland-Pfalz">Rheinland-Pfalz</option>
-        <option value="Saarland">Saarland</option>
-        <option value="Sachsen">Sachsen</option>
-        <option value="Sachsen-Anhalt">Sachsen-Anhalt</option>
-        <option value="Schleswig-Holstein">Schleswig-Holstein</option>
-        <option value="Thüringen">Thüringen</option>
-      </SelectField>
+        <SelectField
+          required={isProfileUpdated}
+          disabled={true}
+          value={bundesland}
+          width="100%"
+          label="Negara Bagian"
+          description="Negara bagian menyesuaikan kota/domisili anda."
+        >
+          <option value="">Negara Bagian</option>
+          <option value="Baden-Württemberg">Baden-Württemberg</option>
+          <option value="Bayern">Bayern</option>
+          <option value="Berlin">Berlin</option>
+          <option value="Brandenburg">Brandenburg</option>
+          <option value="Bremen">Bremen</option>
+          <option value="Hamburg">Hamburg</option>
+          <option value="Hessen">Hessen</option>
+          <option value="Mecklenburg-Vorpommern">Mecklenburg-Vorpommern</option>
+          <option value="Niedersachsen">Niedersachsen</option>
+          <option value="Nordrhein-Westfalen">Nordrhein-Westfalen</option>
+          <option value="Rheinland-Pfalz">Rheinland-Pfalz</option>
+          <option value="Saarland">Saarland</option>
+          <option value="Sachsen">Sachsen</option>
+          <option value="Sachsen-Anhalt">Sachsen-Anhalt</option>
+          <option value="Schleswig-Holstein">Schleswig-Holstein</option>
+          <option value="Thüringen">Thüringen</option>
+        </SelectField>
+      </div>
 
       <SelectField
         label="PPI Cabang"
@@ -261,11 +306,24 @@ export const UpdateProfileForm: React.FC<{
       <FormError message={error} />
       <FormSuccess message={success} />
 
+      <div className="py-3">
+        <p className="text-sm font-semibold text-gray-500">
+          Last Updated: {lastUpdated}
+        </p>
+        {ableToUpdate ? null : (
+          <p className="pt-2 text-sm text-gray-500">
+            Demi alasan keamanan, anda hanya diperbolehkan memperbarui profil
+            sekali setiap <span className="font-bold">3 hari</span>.
+          </p>
+        )}
+      </div>
+
       <Button
         onClick={() => setIsOpen(true)}
         isLoading={isLoading}
+        disabled={ableToUpdate ? false : true}
         appearance="primary"
-        className="mt-6"
+        className="mt-6 disabled:cursor-not-allowed"
       >
         Save
       </Button>
@@ -308,13 +366,21 @@ export const UpdateProfileForm: React.FC<{
                     Updating Profile
                   </Dialog.Title>
                   <div className="py-5">
-                    <p className="text-sm text-gray-500">
-                      For security reasons, you are only allowed to update your
-                      profile once every{" "}
-                      <span className="font-bold">7 days</span>.
+                    <div className="flex w-full flex-row items-center justify-center gap-4">
+                      <InformationCircleIcon className="h-12 w-12 text-blue-500" />
+                      <p className="text-sm text-gray-500">
+                        Demi alasan keamanan, anda hanya diperbolehkan
+                        memperbarui profil sekali setiap{" "}
+                        <span className="font-bold">3 hari</span>.
+                      </p>
+                    </div>
+
+                    <p className="pt-2 text-sm text-gray-500">
+                      Pastikan data yang anda masukkan sudah benar dan sesuai
+                      sebelum melanjutkan.
                     </p>
-                    <p className="text-sm text-gray-500">
-                      Are you sure you want to update your profile?
+                    <p className="pt-10 text-sm font-semibold text-gray-500">
+                      Apakah anda yakin ingin memperbarui profil anda?
                     </p>
                   </div>
                   <div className="mt-4 flex justify-between">
@@ -329,7 +395,7 @@ export const UpdateProfileForm: React.FC<{
                       onClick={handleClick}
                       isLoading={isLoading}
                       className="bg-blue-500"
-                      intent="danger"
+                      intent="success"
                       appearance="primary"
                     >
                       Update

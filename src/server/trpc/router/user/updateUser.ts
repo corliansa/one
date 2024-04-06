@@ -13,6 +13,7 @@ export const updateUser = protectedProcedure
       expectedGraduation: z.date().optional(),
       studySpecialization: z.string().optional(),
       bundesland: z.string().optional(),
+      updatedAt: z.date(),
     }),
   )
   .mutation(
@@ -28,6 +29,7 @@ export const updateUser = protectedProcedure
         studySpecialization,
         expectedGraduation,
         bundesland,
+        updatedAt,
       },
     }) => {
       const userId = ctx.session.user.id;
@@ -46,6 +48,7 @@ export const updateUser = protectedProcedure
           studySpecialization,
           expectedGraduation,
           bundesland,
+          updatedAt,
         },
       });
     },

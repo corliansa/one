@@ -1,6 +1,6 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import { Base, Protected } from "../../Components";
+import { Base, Protected, Card } from "../../Components";
 import { trpc } from "../../utils/trpc";
 import { UserForm } from "./UserForm";
 import { FormError } from "../../Components/ui";
@@ -29,8 +29,12 @@ export const User: NextPage<{ userId: string }> = ({ userId }) => {
           <div className="py-4">
             {!isLoading && user && (
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <UserInfo user={user} />
-                <UserForm user={user} />
+                <Card>
+                  <UserInfo user={user} />
+                </Card>
+                <Card>
+                  <UserForm user={user} />
+                </Card>
               </div>
             )}
           </div>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button, TextInputField, Combobox, Checkbox } from "evergreen-ui";
+import { Button, TextInputField, Combobox } from "evergreen-ui";
 import type { University } from "../../types";
 import { Universities } from "../../Components/optionsList/de-university-list";
 import { trpc } from "../../utils/trpc";
@@ -29,7 +29,6 @@ export const VerifyFormUni: React.FC = () => {
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [checkedPrivacy, setCheckedPrivacy] = useState(false);
   const queryClient = trpc.useUtils();
   const generateAndSendTokenMutation =
     trpc.token.generateAndSendVerificationToken.useMutation();
@@ -70,10 +69,6 @@ export const VerifyFormUni: React.FC = () => {
       return setError("Email must be from the selected university.");
     }
 
-    if (!checkedPrivacy) {
-      return setError("Please agree to the terms and conditions.");
-    }
-
     await updateUserUniEmailAndUni.mutateAsync({
       universityEmail,
       universityName: university.name,
@@ -110,8 +105,6 @@ export const VerifyFormUni: React.FC = () => {
           setUniversity={setUniversity}
           universityEmail={universityEmail}
           setUniversityEmail={setUniversityEmail}
-          checkedPrivacy={checkedPrivacy}
-          setCheckedPrivacy={setCheckedPrivacy}
           handleSubmit={handleSubmit}
           isLoading={
             updateUserUniEmailAndUni.isLoading ||
@@ -124,7 +117,7 @@ export const VerifyFormUni: React.FC = () => {
     );
   } else {
     return (
-      <div className="flex flex-col justify-center">
+      <div className="flex flex-col justify-center gap-10">
         <h1 className="pb-3 text-center text-2xl font-semibold">
           Verifikasi Status Student
         </h1>
@@ -139,8 +132,6 @@ interface VerifyFormProps {
   setUniversity: React.Dispatch<React.SetStateAction<University | null>>;
   universityEmail: string;
   setUniversityEmail: React.Dispatch<React.SetStateAction<string>>;
-  checkedPrivacy: boolean;
-  setCheckedPrivacy: React.Dispatch<React.SetStateAction<boolean>>;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
   isLoading: boolean;
   error: string;
@@ -152,8 +143,6 @@ const VerifyForm: React.FC<VerifyFormProps> = ({
   setUniversity,
   universityEmail,
   setUniversityEmail,
-  checkedPrivacy,
-  setCheckedPrivacy,
   handleSubmit,
   isLoading,
   error,
@@ -191,16 +180,10 @@ const VerifyForm: React.FC<VerifyFormProps> = ({
             setUniversityEmail(e.target.value)
           }
         />
-
-        <Checkbox
-          label="Dengan ini, anda setuju dengan kebijakan privasi kami dan memberikan informasi secara jujur."
-          checked={checkedPrivacy}
-          disabled={isLoading}
-          onChange={(e) => setCheckedPrivacy(e.target.checked)}
-        />
-
-        <FormError message={error} />
-        <FormSuccess message={success} />
+        <div className="w-full py-5">
+          <FormError message={error} />
+          <FormSuccess message={success} />
+        </div>
         <Button isLoading={isLoading} appearance="primary">
           Verifikasi Email Universitas
         </Button>

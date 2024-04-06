@@ -18,11 +18,18 @@ export const Users: NextPage = () => {
   const columns: GridColDef[] = [
     { field: "name", headerName: "Name", width: 200 },
     { field: "email", headerName: "Email", width: 200 },
-    { field: "role", headerName: "Role", width: 100 },
-    { field: "occupation", headerName: "Occupation", width: 100 },
-    { field: "location", headerName: "Location", width: 150 },
+    // { field: "role", headerName: "Role", width: 100 },
+    { field: "occupation", headerName: "Status Pendidikan", width: 100 },
+    { field: "location", headerName: "Domisili", width: 150 },
+    { field: "bundesland", headerName: "Negara Bagian", width: 150 },
     { field: "ppicabang", headerName: "PPI Cabang", width: 200 },
     { field: "fieldOfStudy", headerName: "Field Of Study", width: 200 },
+    { field: "verification", headerName: "Verified", width: 100 },
+    {
+      field: "studySpecialization",
+      headerName: "Study Specialization",
+      width: 200,
+    },
   ];
 
   // grid row params type (refer docs)

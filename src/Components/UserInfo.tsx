@@ -1,4 +1,3 @@
-import { Card } from "./Card";
 import { capitalize } from "../utils/capitalize";
 import type { RouterOutputs } from "../utils/trpc";
 
@@ -37,15 +36,17 @@ export const UserInfo: React.FC<UserInfoProps> = ({ user }) => {
     { label: "PPI Cabang", value: user.ppicabang ?? "N/A" },
   ];
   return (
-    <Card className="flex w-fit flex-col gap-2">
-      <h2 className="text-2xl font-semibold">{user.name}</h2>
+    <>
+      <div className="flex w-full flex-col gap-2">
+        <h2 className="mb-4 text-2xl font-semibold">{user.name}</h2>
 
-      {userInfo.map(({ label, value }) => (
-        <div key={label}>
-          <span className="font-bold">{label}: </span>
-          {value}
-        </div>
-      ))}
-    </Card>
+        {userInfo.map(({ label, value }) => (
+          <div key={label}>
+            <span className="font-bold">{label}: </span>
+            {value}
+          </div>
+        ))}
+      </div>
+    </>
   );
 };
