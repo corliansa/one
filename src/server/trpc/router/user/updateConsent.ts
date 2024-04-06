@@ -4,7 +4,7 @@ import { protectedProcedure } from "../../trpc";
 export const updateConsent = protectedProcedure
   .input(
     z.object({
-      agreedToTermsAndCond: z.boolean(),
+      agreedToTermsAndCond: z.boolean().optional(),
       forwardDataThirdParty: z.boolean().optional(),
       subscribeNewsletterEmail: z.boolean().optional(),
     }),
