@@ -7,6 +7,7 @@ import { ListPPICabang } from "../../Components/optionsList/ListPPICabang";
 import { FormError, FormSuccess } from "../../Components/ui";
 import { Dialog, Transition } from "@headlessui/react";
 import { germanCities, studiengangsListe } from "../../Components/optionsList";
+import { InformationCircleIcon } from "@heroicons/react/24/outline";
 
 export const UpdateProfileForm: React.FC<{
   user: RouterOutputs["user"]["getUser"];
@@ -28,6 +29,7 @@ export const UpdateProfileForm: React.FC<{
   const [studySpecialization, setStudySpecialization] = useState(
     user.studySpecialization ?? "",
   );
+  const [ableToUpdate, setAbleToUpdate] = useState(false); //
 
   // error states
   const [error, setError] = useState("");
@@ -37,6 +39,8 @@ export const UpdateProfileForm: React.FC<{
   const [isOpen, setIsOpen] = useState(false);
 
   const isProfileUpdated = !user.updated;
+
+  const lastUpdated = user.updatedAt.toString();
 
   const queryClient = trpc.useUtils();
 
@@ -54,6 +58,23 @@ export const UpdateProfileForm: React.FC<{
 
   type Studiengang = {
     name: string;
+  };
+
+  // handle update profile
+  const handleAbleToUpdate = () => {
+    const lastUpdated = user.updatedAt;
+    const dateNow = new Date();
+    const diffTime = Math.abs(dateNow.getTime() - lastUpdated.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    if (diffDays >= 3) {
+      setAbleToUpdate(true);
+    } else {
+      if (user.role === "ADMIN") {
+        // TODO: Update and check if user is superadmin
+        setAbleToUpdate(true);
+      }
+      setAbleToUpdate(false);
+    }
   };
 
   const handleFieldOfStudy = (selectedFieldOfStudy: Studiengang) => {
@@ -85,26 +106,36 @@ export const UpdateProfileForm: React.FC<{
     }
   }, [location]); // Depend on location and germanCities to re-run
 
+  useEffect(() => {
+    handleAbleToUpdate();
+  }, []);
+
   const handleClick = async () => {
-    await updateUser({
-      name,
-      birthDate: birthDate ? new Date(birthDate) : undefined,
-      occupation,
-      location,
-      ppicabang,
-      fieldOfStudy,
-      studySpecialization,
-      expectedGraduation: [
-        "bachelor",
-        "master",
-        "doctor",
-        "ausbildung",
-      ].includes(occupation)
-        ? new Date(expectedGraduation)
-        : undefined,
-      bundesland,
-      updatedAt: new Date(),
-    });
+    if (ableToUpdate) {
+      await updateUser({
+        name,
+        birthDate: birthDate ? new Date(birthDate) : undefined,
+        occupation,
+        location,
+        ppicabang,
+        fieldOfStudy,
+        studySpecialization,
+        expectedGraduation: [
+          "bachelor",
+          "master",
+          "doctor",
+          "ausbildung",
+        ].includes(occupation)
+          ? new Date(expectedGraduation)
+          : undefined,
+        bundesland,
+        updatedAt: new Date(),
+      });
+    } else {
+      setError(
+        "Anda hanya diperbolehkan memperbarui profil sekali setiap 7 hari.",
+      );
+    }
   };
 
   return (
@@ -113,7 +144,6 @@ export const UpdateProfileForm: React.FC<{
         <TextInputField
           label="Name"
           value={name}
-          marginBottom={8}
           width="100%"
           disabled={isLoading}
           required={isProfileUpdated}
@@ -124,7 +154,6 @@ export const UpdateProfileForm: React.FC<{
         <TextInputField
           label="Birth Date"
           type="date"
-          marginBottom={8}
           width="100%"
           disabled={isLoading}
           value={birthDate}
@@ -140,7 +169,6 @@ export const UpdateProfileForm: React.FC<{
         description="Jika anda masih dalam proses pendidikan, pilih status pendidikan saat ini."
         value={occupation}
         disabled={isLoading}
-        marginBottom={8}
         required={isProfileUpdated}
         onChange={(e) => setOccupation(e.target.value)}
       >
@@ -170,7 +198,6 @@ export const UpdateProfileForm: React.FC<{
               description="Bidang Studi dalam bahasa Jerman. Jika tidak ada di daftar bidang studi, silahkan tulis sendiri."
               ref={getRef}
               value={fieldOfStudy}
-              marginBottom={8}
               disabled={isLoading}
               required={isProfileUpdated}
             />
@@ -184,7 +211,6 @@ export const UpdateProfileForm: React.FC<{
         hint="Maksimum 50 karakter."
         isInvalid={studySpecialization.length > 50}
         disabled={isLoading}
-        marginBottom={8}
         value={studySpecialization}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           setStudySpecialization(e.target.value)
@@ -197,7 +223,6 @@ export const UpdateProfileForm: React.FC<{
           type="date"
           disabled={isLoading}
           value={expectedGraduation}
-          marginBottom={8}
           required={
             isProfileUpdated &&
             ["bachelor", "master", "doctor", "ausbildung"].includes(occupation)
@@ -223,7 +248,6 @@ export const UpdateProfileForm: React.FC<{
                 label="Kota"
                 required={isProfileUpdated}
                 placeholder="Braunschweig, Berlin, München, dll."
-                marginBottom={8}
                 ref={getRef}
                 width="100%"
                 disabled={isLoading}
@@ -240,7 +264,6 @@ export const UpdateProfileForm: React.FC<{
           value={bundesland}
           width="100%"
           label="Negara Bagian"
-          marginBottom={8}
           description="Negara bagian menyesuaikan kota/domisili anda."
         >
           <option value="">Negara Bagian</option>
@@ -267,7 +290,6 @@ export const UpdateProfileForm: React.FC<{
         label="PPI Cabang"
         required={isProfileUpdated}
         value={ppicabang}
-        marginBottom={8}
         disabled={isLoading}
         description="PPI Cabang terdekat dari lokasi domisili anda di Jerman"
         onChange={(e) => setPpiCabang(e.target.value)}
@@ -284,11 +306,24 @@ export const UpdateProfileForm: React.FC<{
       <FormError message={error} />
       <FormSuccess message={success} />
 
+      <div className="py-3">
+        <p className="text-sm font-semibold text-gray-500">
+          Last Updated: {lastUpdated}
+        </p>
+        {ableToUpdate ? null : (
+          <p className="pt-2 text-sm text-gray-500">
+            Demi alasan keamanan, anda hanya diperbolehkan memperbarui profil
+            sekali setiap <span className="font-bold">3 hari</span>.
+          </p>
+        )}
+      </div>
+
       <Button
         onClick={() => setIsOpen(true)}
         isLoading={isLoading}
+        disabled={ableToUpdate ? false : true}
         appearance="primary"
-        className="mt-6"
+        className="mt-6 disabled:cursor-not-allowed"
       >
         Save
       </Button>
@@ -331,13 +366,21 @@ export const UpdateProfileForm: React.FC<{
                     Updating Profile
                   </Dialog.Title>
                   <div className="py-5">
-                    <p className="text-sm text-gray-500">
-                      For security reasons, you are only allowed to update your
-                      profile once every{" "}
-                      <span className="font-bold">7 days</span>.
+                    <div className="flex w-full flex-row items-center justify-center gap-4">
+                      <InformationCircleIcon className="h-12 w-12 text-blue-500" />
+                      <p className="text-sm text-gray-500">
+                        Demi alasan keamanan, anda hanya diperbolehkan
+                        memperbarui profil sekali setiap{" "}
+                        <span className="font-bold">3 hari</span>.
+                      </p>
+                    </div>
+
+                    <p className="pt-2 text-sm text-gray-500">
+                      Pastikan data yang anda masukkan sudah benar dan sesuai
+                      sebelum melanjutkan.
                     </p>
-                    <p className="text-sm text-gray-500">
-                      Are you sure you want to update your profile?
+                    <p className="pt-10 text-sm font-semibold text-gray-500">
+                      Apakah anda yakin ingin memperbarui profil anda?
                     </p>
                   </div>
                   <div className="mt-4 flex justify-between">
@@ -352,7 +395,7 @@ export const UpdateProfileForm: React.FC<{
                       onClick={handleClick}
                       isLoading={isLoading}
                       className="bg-blue-500"
-                      intent="danger"
+                      intent="success"
                       appearance="primary"
                     >
                       Update

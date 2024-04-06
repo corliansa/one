@@ -29,11 +29,11 @@ export const PPICabangGraph: React.FC<Stat> = ({ ppiCabangStats }: Stat) => {
     <div className="flex flex-col items-center justify-center">
       <div style={{ width: "100%", height: 300 }}>
         <ResponsiveContainer>
-          <BarChart data={displayedStats}>
+          <BarChart data={displayedStats} barGap={0} barCategoryGap={0}>
             <XAxis dataKey="label" />
             <YAxis />
             <Tooltip />
-            <Bar dataKey="count" barSize={50} fill="#8CB9BD" />
+            <Bar dataKey="count" barSize={30} fill="#8CB9BD" />
           </BarChart>
         </ResponsiveContainer>
       </div>

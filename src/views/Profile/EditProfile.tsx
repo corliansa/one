@@ -17,7 +17,7 @@ export const Edit: NextPage = () => {
           <Protected redirectTo="/">
             {!isLoading && user && (
               <div className="flex w-full">
-                <Card>
+                <Card className="">
                   <UpdateProfileForm user={user} />
                 </Card>
               </div>

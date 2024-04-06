@@ -9,6 +9,7 @@ import {
 } from "../../../../Components/optionsList";
 import { Autocomplete } from "evergreen-ui";
 import { FormError } from "../../../../Components/ui";
+import Link from "next/link";
 
 type UpdateProfileFormFirstLoginProps = {
   user: RouterOutputs["user"]["getUser"];
@@ -27,9 +28,11 @@ export const UpdateProfileFormFirstLogin: React.FC<
   const [location, setLocation] = useState("");
   const [bundesland, setBundesland] = useState("");
   const [fieldOfStudy, setFieldOfStudy] = useState("");
-  const [checkedPrivacy, setCheckedPrivacy] = useState(false);
   const [formError, setFormError] = useState("");
   const [studySpecialization, setStudySpecialization] = useState("");
+
+  const [checkedPrivacy, setCheckedPrivacy] = useState(false);
+  const [checkedDataForwards, setCheckedDataForwards] = useState(false);
 
   // useContext is deprecated, use useUtils instead
   const queryClient = trpc.useUtils();
@@ -107,6 +110,8 @@ export const UpdateProfileFormFirstLogin: React.FC<
       ].includes(occupation)
         ? new Date(expectedGraduation)
         : undefined,
+      agreedToTermsAndCond: checkedPrivacy,
+      forwardDataThirdParty: checkedDataForwards,
     });
   };
 
@@ -139,7 +144,7 @@ export const UpdateProfileFormFirstLogin: React.FC<
 
         <SelectField
           label="Status Pendidikan Saat Ini"
-          description="Jika anda masih dalam proses pendidikan, pilih status pendidikan saat ini."
+          description="Pilih status pendidikan saat ini."
           value={occupation}
           disabled={isLoading}
           required={isProfileUpdated}
@@ -158,20 +163,17 @@ export const UpdateProfileFormFirstLogin: React.FC<
             studiengangsListe ? studiengangsListe.name : ""
           }
           onChange={handleFieldOfStudy}
-          onInputValueChange={(inputValue) => {
-            setFieldOfStudy(inputValue);
-          }}
         >
           {(props) => {
             const { getInputProps, getRef } = props;
             return (
               <TextInputField
+                {...getInputProps()}
                 label="Bidang Studi"
                 description="Bidang Studi dalam bahasa Jerman. Jika tidak ada di daftar bidang studi, silahkan tulis sendiri."
                 ref={getRef}
                 disabled={isLoading}
                 required={isProfileUpdated}
-                {...getInputProps()}
               />
             );
           }}
@@ -273,12 +275,55 @@ export const UpdateProfileFormFirstLogin: React.FC<
           })}
         </SelectField>
 
-        <Checkbox
-          label="Dengan ini, anda setuju dengan kebijakan privasi kami."
-          checked={checkedPrivacy}
-          disabled={isLoading}
-          onChange={(e) => setCheckedPrivacy(e.target.checked)}
-        />
+        <div className="py-3">
+          <Checkbox
+            label={
+              <h1 className="font-bold">
+                Setuju dengan syarat dan ketentuan yang berlaku. yang berlaku *
+              </h1>
+            }
+            checked={checkedPrivacy}
+            disabled={isLoading}
+            required={true}
+            marginBottom={8}
+            onChange={(e) => setCheckedPrivacy(e.target.checked)}
+          />
+          <p className="text-xs leading-relaxed text-gray-500">
+            Dengan ini, anda setuju dengan syarat dan ketentuan yang berlaku di
+            Sensus PPI Jerman. Dimohon untuk membaca syarat dan ketentuan yang
+            berlaku dengan seksama sebelum melanjutkan. Syarat dan ketentuan
+            dapat dilihat{" "}
+            <Link
+              href="/terms-and-conditions"
+              className="text-blue-500 transition hover:text-blue-300"
+            >
+              disini
+            </Link>
+            .
+          </p>
+        </div>
+
+        <div className="py-3">
+          <Checkbox
+            label={
+              <h1 className="font-bold">
+                Setuju untuk meneruskan data ke pihak ketiga
+              </h1>
+            }
+            checked={checkedDataForwards}
+            disabled={isLoading}
+            required={false}
+            marginBottom={8}
+            onChange={(e) => setCheckedDataForwards(e.target.checked)}
+          />
+          <p className="text-xs leading-relaxed text-gray-500">
+            Dengan ini, anda setuju jika data yang anda masukkan akan diteruskan
+            ke PPI Jerman Cabang terdekat dari domisili anda di Jerman. Selain
+            itu, data yang anda masukkan akan digunakan untuk keperluan internal
+            PPI Jerman dan tidak akan disebarkan ke pihak ketiga tanpa
+            persetujuan anda
+          </p>
+        </div>
 
         <FormError message={formError} />
 

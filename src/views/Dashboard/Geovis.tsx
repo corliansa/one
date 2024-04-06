@@ -2,21 +2,73 @@ import React, { useState } from "react";
 import { GermanySVGPath } from "./GermanyPath";
 import { GermanyOutline } from "./GermanyOutline";
 import { AnimatePresence, motion } from "framer-motion";
+import { trpc } from "../../utils/trpc";
+import { useEffect } from "react";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, Text } from "recharts";
+
+const xLabels = ["Ausbildung", "Bachelor", "Master", "Doctor", "Professor"];
+
+interface TooltipState {
+  show: boolean;
+  data: { name: string | undefined; value: number | undefined }[];
+  x: number;
+  y: number;
+}
 
 export const GeoVis: React.FC<{ width: string }> = ({ width }) => {
-  const [tooltip, setTooltip] = useState({
+  const [tooltip, setTooltip] = useState<TooltipState>({
     show: false,
-    data: "",
+    data: [],
     x: 0,
     y: 0,
   });
 
-  const handleMouseOver = (
+  const [hoveredBundesland, setHoveredBundesland] = useState("");
+
+  const { data: occupationStats, isSuccess } =
+    trpc.internal.getStudentOccupationStats.useQuery(
+      {
+        bundesland: hoveredBundesland,
+      },
+      { enabled: !!hoveredBundesland },
+    );
+
+  useEffect(() => {
+    if (hoveredBundesland && isSuccess && occupationStats) {
+      const tooltipContent = [
+        {
+          name: xLabels[0],
+          value: occupationStats[0],
+        },
+        {
+          name: xLabels[1],
+          value: occupationStats[1],
+        },
+        {
+          name: xLabels[2],
+          value: occupationStats[2],
+        },
+        {
+          name: xLabels[3],
+          value: occupationStats[3],
+        },
+        {
+          name: xLabels[4],
+          value: occupationStats[4],
+        },
+      ];
+
+      setTooltip((prev) => ({ ...prev, show: true, data: tooltipContent }));
+    }
+  }, [hoveredBundesland, isSuccess, occupationStats]);
+
+  const handleMouseOver = async (
     e: React.MouseEvent<SVGPathElement, MouseEvent>,
-    id: string,
+    bundesland: string,
   ) => {
     const { clientX: x, clientY: y } = e;
-    setTooltip({ show: true, data: id, x, y });
+    setHoveredBundesland(bundesland);
+    setTooltip((prev) => ({ ...prev, x, y }));
   };
 
   const handleMouseLeave = () => {
@@ -60,12 +112,21 @@ export const GeoVis: React.FC<{ width: string }> = ({ width }) => {
             className="pointer-events-none fixed rounded-md bg-white p-2 shadow-md"
             style={{ left: tooltip.x, top: tooltip.y }}
           >
-            <div>
-              <strong>State:</strong> {tooltip.data}
-            </div>
-            <div>
-              <strong>Population:</strong> {tooltip.data}
-            </div>
+            <BarChart
+              data={tooltip.data}
+              width={400}
+              height={300}
+              margin={{ left: 0 }}
+              barGap={1}
+              barCategoryGap={1}
+              barSize={5}
+            >
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Legend />
+              <Text scaleToFit textAnchor="middle" width={20} angle={45} />
+              <Bar dataKey="value" barSize={50} fill="#8CB9BD" />
+            </BarChart>
           </motion.div>
         )}
       </AnimatePresence>

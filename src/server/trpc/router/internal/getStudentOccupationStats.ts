@@ -1,18 +1,61 @@
 import { protectedProcedure } from "../../trpc";
+import { z } from "zod";
 
-export const getStudentOccupationStats = protectedProcedure.query(
-  async ({ ctx: { prisma } }) => {
+export const getStudentOccupationStats = protectedProcedure
+  .input(
+    z.object({
+      bundesland: z.string(),
+    }),
+  )
+  .query(async ({ ctx: { prisma }, input: { bundesland } }) => {
     const promises = [];
 
-    // Count bachelor, master, ausbildung, doctor, and researcher students
-    promises.push(prisma.user.count({ where: { occupation: "bachelor" } }));
-    promises.push(prisma.user.count({ where: { occupation: "master" } }));
-    promises.push(prisma.user.count({ where: { occupation: "ausbildung" } }));
-    promises.push(prisma.user.count({ where: { occupation: "doctor" } }));
-    promises.push(prisma.user.count({ where: { occupation: "researcher" } }));
+    promises.push(
+      prisma.user.count({
+        where: {
+          occupation: "bachelor",
+          bundesland: bundesland,
+        },
+      }),
+    );
+
+    promises.push(
+      prisma.user.count({
+        where: {
+          occupation: "master",
+          bundesland: bundesland,
+        },
+      }),
+    );
+
+    promises.push(
+      prisma.user.count({
+        where: {
+          occupation: "ausbildung",
+          bundesland: bundesland,
+        },
+      }),
+    );
+
+    promises.push(
+      prisma.user.count({
+        where: {
+          occupation: "doctor",
+          bundesland: bundesland,
+        },
+      }),
+    );
+
+    promises.push(
+      prisma.user.count({
+        where: {
+          occupation: "professor",
+          bundesland: bundesland,
+        },
+      }),
+    );
 
     const result = await Promise.all(promises);
 
     return result;
-  },
-);
+  });
