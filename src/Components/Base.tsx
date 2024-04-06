@@ -6,6 +6,7 @@ import {
   CheckIcon,
   CheckCircleIcon,
   // ChartBarIcon,
+  CogIcon,
   FolderIcon,
   // HomeIcon,
   // InboxIcon,
@@ -70,6 +71,12 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
       roles: ["ADMIN", "USER"],
     },
     {
+      name: "Settings",
+      href: "/settings",
+      icon: CogIcon,
+      roles: ["ADMIN", "USER"],
+    },
+    {
       name: "Verify",
       href: "/verify",
       icon: CheckCircleIcon,
@@ -83,7 +90,7 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
   ]);
   const [userNavigation] = useState([
     { name: "Your Profile", href: "/profile" },
-    // { name: "Settings", href: "#" },
+    { name: "Settings", href: "/settings" },
   ]);
   const { data: sessionData } = useSession();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -191,7 +198,7 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
         </Transition.Root>
 
         {/* Static sidebar for desktop */}
-        <div className="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col bg-slate-50">
+        <div className="hidden bg-slate-50 md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex flex-grow flex-col overflow-y-auto border-r border-gray-200 bg-slate-50 pt-5">
             <div className="flex flex-shrink-0 items-center px-4">
@@ -236,7 +243,7 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
           </div>
         </div>
 
-        <div className="md:pl-64 bg-slate-50 min-h-screen">
+        <div className="min-h-screen bg-slate-50 md:pl-64">
           <div className="mx-auto flex max-w-[95%] flex-col md:px-8 xl:px-0">
             <div className="sticky top-0 z-10 flex h-16 flex-shrink-0 border-b border-gray-200 bg-slate-50">
               <button
@@ -335,7 +342,9 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
                 <div className="px-4 sm:px-6 md:px-0">
                   <h1 className="text-3xl font-bold text-gray-900">{title}</h1>
                 </div>
-                <div className="px-4 sm:px-6 md:px-0 min-h-screen">{children}</div>
+                <div className="min-h-screen px-4 sm:px-6 md:px-0">
+                  {children}
+                </div>
               </div>
               <Footer />
             </main>
