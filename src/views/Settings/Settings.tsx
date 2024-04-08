@@ -29,7 +29,7 @@ export const Settings: NextPage = () => {
   const [isLoadingUpdate, setIsLoadingUpdate] = useState(false);
 
   const [agreedToTermsAndCond, setAgreedToTermsAndCond] = useState<boolean>(
-    user?.agreedToTermsAndCond ?? false,
+    user?.agreedToTermsAndCond ?? true,
   );
   const [forwardDataThirdParty, setForwardDataThirdParty] = useState<boolean>(
     user?.forwardDataThirdParty ?? false,
