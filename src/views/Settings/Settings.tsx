@@ -18,9 +18,15 @@ const ToggleSwitch: React.FC<{
   label: string;
   checked: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}> = ({ label, checked, onChange }) => (
+  disabled?: boolean;
+}> = ({ label, checked, onChange, disabled = false }) => (
   <Pane display="flex" alignItems="center" marginBottom={16}>
-    <Switch checked={checked} onChange={onChange} marginRight={16} />
+    <Switch
+      checked={checked}
+      onChange={onChange}
+      marginRight={16}
+      disabled={disabled}
+    />
     <div className="font-medium text-gray-700">{label}</div>
   </Pane>
 );
@@ -111,6 +117,7 @@ export const Settings: NextPage = () => {
                     label="I agree to the Terms and Conditions"
                     checked={agreedToTermsAndCond}
                     onChange={(e) => setAgreedToTermsAndCond(e.target.checked)}
+                    disabled={true}
                   />
                   <ToggleSwitch
                     label="Consent to forward data to third parties"
