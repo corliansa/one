@@ -10,6 +10,7 @@ import {
   majorScale,
   toaster,
   Switch,
+  Dialog,
   ConfirmIcon,
 } from "evergreen-ui";
 
@@ -26,6 +27,7 @@ const ToggleSwitch: React.FC<{
 
 export const Settings: NextPage = () => {
   const { data: user, isLoading: isLoadingUser } = trpc.user.getUser.useQuery();
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isLoadingUpdate, setIsLoadingUpdate] = useState(false);
 
   const [agreedToTermsAndCond, setAgreedToTermsAndCond] = useState<boolean>(
@@ -38,6 +40,7 @@ export const Settings: NextPage = () => {
     useState<boolean>(user?.subscribeNewsletterEmail ?? false);
 
   const updateConsentMutation = trpc.user.updateConsent.useMutation();
+  const deleteUserMutation = trpc.user.deleteUserById.useMutation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,6 +61,25 @@ export const Settings: NextPage = () => {
           console.error("Failed to update settings:", error);
           toaster.danger("Failed to update settings. Please try again.");
           setIsLoadingUpdate(false);
+        },
+      },
+    );
+  };
+
+  const handleDeleteAccount = async (userId: string) => {
+    setIsDeleteDialogOpen(false); // Close the confirmation dialog
+    await deleteUserMutation.mutateAsync(
+      { userId },
+      {
+        onSuccess: () => {
+          localStorage.removeItem("token");
+          toaster.notify("Account deleted successfully.");
+          // Redirect to login page
+          window.location.href = "/";
+        },
+        onError: (error) => {
+          console.error("Failed to delete account:", error);
+          toaster.danger("Failed to delete account. Please try again.");
         },
       },
     );
@@ -113,11 +135,32 @@ export const Settings: NextPage = () => {
                     Update Settings
                   </Button>
                 </form>
+                <Button
+                  appearance="minimal"
+                  intent="danger"
+                  onClick={() => setIsDeleteDialogOpen(true)}
+                  style={{ marginTop: "20px", color: "#d73a49" }}
+                >
+                  Delete Account
+                </Button>
               </Pane>
             </div>
           )}
         </Protected>
       </Base>
+      <Dialog
+        isShown={isDeleteDialogOpen}
+        title="Delete Account"
+        intent="danger"
+        onCloseComplete={() => setIsDeleteDialogOpen(false)}
+        onConfirm={() => user && handleDeleteAccount(user.id)} // checking is user is defined before calling
+        confirmLabel="Delete Forever"
+        cancelLabel="Cancel"
+        //position={Position.BOTTOM}
+      >
+        Deleting your account is irreversible. You will lose all your data. Are
+        you sure?
+      </Dialog>
     </>
   );
 };
