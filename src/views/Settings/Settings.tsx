@@ -11,7 +11,6 @@ import {
   toaster,
   Switch,
   Dialog,
-  ConfirmIcon,
 } from "evergreen-ui";
 
 const ToggleSwitch: React.FC<{
@@ -104,7 +103,12 @@ export const Settings: NextPage = () => {
           {!isLoadingUser && user && (
             <div
               className="settings-container"
-              style={{ maxWidth: "800px", margin: "0 auto" }}
+              style={{
+                maxWidth: "800px",
+                marginLeft: "0",
+                marginRight: "auto",
+                padding: "20px",
+              }}
             >
               <Pane
                 padding={majorScale(3)}
@@ -135,7 +139,6 @@ export const Settings: NextPage = () => {
                     appearance="primary"
                     intent="success"
                     type="submit"
-                    iconAfter={ConfirmIcon}
                     className="mt-5 w-full p-4 md:w-1/3"
                     isLoading={isLoadingUpdate}
                   >
@@ -143,10 +146,11 @@ export const Settings: NextPage = () => {
                   </Button>
                 </form>
                 <Button
-                  appearance="minimal"
+                  appearance="secondary"
                   intent="danger"
+                  className="mt-5 w-full p-4 md:w-1/3"
                   onClick={() => setIsDeleteDialogOpen(true)}
-                  style={{ marginTop: "20px", color: "#d73a49" }}
+                  style={{ marginTop: "20px", color: "#e64051" }}
                 >
                   Delete Account
                 </Button>
