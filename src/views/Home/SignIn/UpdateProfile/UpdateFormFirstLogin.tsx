@@ -24,6 +24,9 @@ export const UpdateProfileFormFirstLogin: React.FC<
   );
   const [expectedGraduation, setExpectedGraduation] = useState("");
   const [ppicabang, setPpiCabang] = useState("");
+  const [gender, setGender] = useState("");
+  const [address, setAddress] = useState("");
+  const [zipCode, setZipCode] = useState("");
   const [occupation, setOccupation] = useState("");
   const [location, setLocation] = useState("");
   const [bundesland, setBundesland] = useState("");
@@ -98,6 +101,9 @@ export const UpdateProfileFormFirstLogin: React.FC<
       birthDate: birthDate ? new Date(birthDate) : undefined,
       occupation,
       location,
+      address,
+      zipCode,
+      gender,
       ppicabang,
       bundesland,
       fieldOfStudy,
@@ -120,7 +126,7 @@ export const UpdateProfileFormFirstLogin: React.FC<
   // TODO: Make component reusable
 
   return (
-    <div className="flex w-full flex-col flex-wrap">
+    <div className="flex w-full flex-col">
       <form onSubmit={handleSubmit}>
         <TextInputField
           label="Nama"
@@ -141,6 +147,18 @@ export const UpdateProfileFormFirstLogin: React.FC<
             setBirthDate(e.target.value)
           }
         />
+        <SelectField
+          label="Jenis Kelamin"
+          value={gender}
+          disabled={isLoading}
+          required={isProfileUpdated}
+          onChange={(e) => setGender(e.target.value)}
+        >
+          <option value="">Pilih Jenis Kelamin</option>
+          <option value="Laki-Laki">Laki-Laki</option>
+          <option value="Perempuan">Perempuan</option>
+          <option value="Unspecified">Memilih untuk tidak mengatakan.</option>
+        </SelectField>
 
         <SelectField
           label="Status Pendidikan Saat Ini"
@@ -210,6 +228,34 @@ export const UpdateProfileFormFirstLogin: React.FC<
           />
         )}
 
+        <div className="flex w-full flex-col gap-5 md:flex-row">
+          <TextInputField
+            label="Alamat (Jalan, Nomor Rumah)"
+            description="Alamat tempat tinggal di Jerman"
+            placeholder="Braunschweigerstraße 53"
+            required={isProfileUpdated}
+            disabled={isLoading}
+            value={address}
+            width="100%"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setAddress(e.target.value)
+            }
+          />
+
+          <TextInputField
+            label="Kode Pos"
+            description="Kode Pos tempat tinggal di Jerman"
+            placeholder="38106"
+            required={isProfileUpdated}
+            disabled={isLoading}
+            value={zipCode}
+            width="100%"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setZipCode(e.target.value)
+            }
+          />
+        </div>
+
         <Autocomplete
           items={germanCities}
           itemToString={(germanCities) =>
@@ -226,7 +272,7 @@ export const UpdateProfileFormFirstLogin: React.FC<
                 placeholder="Domisili"
                 ref={getRef}
                 disabled={isLoading}
-                description="Lokasi domisili anda di Jerman"
+                description="Lokasi domisili kota anda di Jerman"
                 {...getInputProps()}
               />
             );
