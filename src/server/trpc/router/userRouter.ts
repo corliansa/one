@@ -12,6 +12,7 @@ import { getUserUniEmail } from "./user/getUserUniversityEmail";
 import { getUserUniEmailAndId } from "./user/getUserUniversityEmailAndId";
 import { updateUserUniEmailAndUni } from "./user/updateUserUniEmailAndUni";
 import { updateConsent } from "./user/updateConsent";
+import { deleteUserById } from "./user/deleteUserById";
 
 export const userRouter = router({
   getSession,
@@ -27,4 +28,5 @@ export const userRouter = router({
   getUserUniEmailAndId,
   updateUserUniEmailAndUni,
   updateConsent,
+  deleteUserById,
 });
