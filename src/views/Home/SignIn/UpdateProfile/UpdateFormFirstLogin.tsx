@@ -182,8 +182,7 @@ export const UpdateProfileFormFirstLogin: React.FC<
           <option value="ausbildung">Ausbildung</option>
           <option value="bachelor">Bachelor</option>
           <option value="master">Master</option>
-          <option value="doctor">Doctor</option>
-          <option value="professor">Professor</option>
+          <option value="doctor">Doctoral</option>
         </SelectField>
 
         <Autocomplete
@@ -220,29 +219,27 @@ export const UpdateProfileFormFirstLogin: React.FC<
           }
         />
 
-        {occupation === "professor" ? null : (
-          <TextInputField
-            label="Perkiraan Tanggal Kelulusan"
-            type="date"
-            disabled={isLoading}
-            value={expectedGraduation}
-            required={
-              isProfileUpdated &&
-              ["bachelor", "master", "doctor", "ausbildung"].includes(
-                occupation,
-              )
-            }
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setExpectedGraduation(e.target.value)
-            }
-          />
-        )}
+        <TextInputField
+          label="Perkiraan Tanggal Kelulusan"
+          type="date"
+          disabled={isLoading}
+          value={expectedGraduation}
+          required={
+            isProfileUpdated &&
+            ["bachelor", "master", "doctoral", "ausbildung"].includes(
+              occupation,
+            )
+          }
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setExpectedGraduation(e.target.value)
+          }
+        />
 
         <FormField
           width="100%"
           marginBottom={20}
           label="Afiliasi"
-          description="Instansi Pendidikan Terkait, Institusi Pendidikan, Organisasi, Afiliasi, dan lainnya. (Dalam bentuk tags)"
+          description="Institusi Pendidikan, Organisasi, Afiliasi, dan lainnya. (Dalam bentuk tags)"
         >
           <TagInput
             width="100%"

@@ -82,7 +82,12 @@ export const Settings: NextPage = () => {
     );
   };
 
-  if (isLoadingUser) return <Spinner />;
+  if (isLoadingUser)
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <Spinner />
+      </div>
+    );
 
   return (
     <>

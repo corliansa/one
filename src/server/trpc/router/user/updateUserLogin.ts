@@ -57,6 +57,14 @@ export const updateUserLogin = protectedProcedure
         subscribeNewsletterEmail,
       },
     }) => {
+      if (occupation === "ausbildung") {
+        await ctx.prisma.user.update({
+          where: { id },
+          data: {
+            verification: "VERIFIED",
+          },
+        });
+      }
       return await ctx.prisma.user.update({
         where: { id },
         data: {
