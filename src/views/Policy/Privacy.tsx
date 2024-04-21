@@ -23,8 +23,8 @@ export const Privacy = () => {
           </h1>
           <div className="flex flex-col gap-2 pb-10">
             <h2 className="text-2xl font-semibold text-gray-900">
-              Informasi tentang perlindungan data dalam aplikasi web "Sensus PPI
-              Jerman"
+              Informasi tentang perlindungan data dalam aplikasi web &quot;Sensus PPI
+              Jerman&quot;
             </h2>
             <p>
               Perlindungan data dalam “Sensus PPI Jerman” dilaksanakan
@@ -45,7 +45,7 @@ export const Privacy = () => {
               Indonesia di Jerman sangatlah penting.
             </p>
             <div className="py-3">
-              <p>Tujuan didirikan "Sensus PPI Jerman" ialah untuk:</p>
+              <p>Tujuan didirikan &quot;Sensus PPI Jerman&quot; ialah untuk:</p>
               <ol className="flex list-inside list-decimal flex-col gap-2 py-2 pl-4">
                 <li>Pendataan pelajar Indonesia di Jerman yang aktual</li>
                 <li>Pembentukan basis data pelajar Indonesia di Jerman</li>
@@ -164,7 +164,7 @@ export const Privacy = () => {
                   types of data processing.
                 </li>
                 <li>
-                  Informed - the person must be told what they're consenting to.
+                  Informed - the person must be told what they&apos;re consenting to.
                 </li>
                 <li>Unambiguous - language must be clear and simple.</li>
                 <li>

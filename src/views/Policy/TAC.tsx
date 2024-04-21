@@ -22,8 +22,8 @@ export const TermsAndConditions: React.FC = () => {
             Syarat dan Ketentuan - Sensus PPI Jerman
           </h1>
           <p>
-            Syarat dan ketentuan ("Perjanjian") ini menetapkan syarat dan
-            ketentuan umum penggunaan Anda atas situs web{" "}
+            Syarat dan ketentuan (&quot;Perjanjian&quot;) ini menetapkan syarat
+            dan ketentuan umum penggunaan Anda atas situs web{" "}
             <a
               href="https://sensus.ppijerman.org"
               target="_blank"
@@ -32,15 +32,17 @@ export const TermsAndConditions: React.FC = () => {
             >
               sensus.ppijerman.org
             </a>{" "}
-            ("Situs Web" atau "Layanan") dan produk serta layanan terkait apa
-            pun (secara kolektif, "Layanan"). Perjanjian ini secara hukum
-            mengikat antara Anda ("Pengguna", "Anda" atau "milik Anda") dan
-            Vereinigung Indonesischer Studenten e.V. (berbisnis sebagai "PPI
-            Jerman", "kami", "kami", atau "milik kami"). Jika Anda memasuki
-            Perjanjian ini atas nama bisnis atau entitas hukum lain, Anda
-            menyatakan bahwa Anda memiliki wewenang untuk mengikat entitas
-            tersebut pada Perjanjian ini, dalam hal ini istilah "Pengguna",
-            "Anda", atau "milik Anda" akan merujuk kepada entitas tersebut. Jika
+            (&quot;Situs Web&quot; atau &quot;Layanan&quot;) dan produk serta
+            layanan terkait apa pun (secara kolektif, &quot;Layanan&quot;).
+            Perjanjian ini secara hukum mengikat antara Anda
+            (&quot;Pengguna&quot;, &quot;Anda&quot; atau &quot;milik Anda&quot;)
+            dan Vereinigung Indonesischer Studenten e.V. (berbisnis sebagai
+            &quot;PPI Jerman&quot;, &quot;kami&quot;, &quot;kami&quot;, atau
+            &quot;milik kami&quot;). Jika Anda memasuki Perjanjian ini atas nama
+            bisnis atau entitas hukum lain, Anda menyatakan bahwa Anda memiliki
+            wewenang untuk mengikat entitas tersebut pada Perjanjian ini, dalam
+            hal ini istilah &quot;Pengguna&quot;, &quot;Anda&quot;, atau
+            &quot;milik Anda&quot; akan merujuk kepada entitas tersebut. Jika
             Anda tidak memiliki wewenang tersebut, atau jika Anda tidak setuju
             dengan syarat-syarat Perjanjian ini, Anda tidak boleh menerima
             Perjanjian ini dan tidak dapat mengakses dan menggunakan Situs Web

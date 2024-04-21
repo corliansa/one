@@ -9,8 +9,6 @@ import {
   XAxis,
   YAxis,
   Legend,
-  RadialBar,
-  RadialBarChart,
 } from "recharts";
 
 const xLabels = ["Ausbildung", "Bachelor", "Master", "Doctor", "Professor"];
