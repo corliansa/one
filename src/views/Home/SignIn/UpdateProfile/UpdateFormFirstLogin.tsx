@@ -166,7 +166,6 @@ export const UpdateProfileFormFirstLogin: React.FC<
           <option value="">Pilih Jenis Kelamin</option>
           <option value="Laki-Laki">Laki-Laki</option>
           <option value="Perempuan">Perempuan</option>
-          <option value="Unspecified">Memilih untuk tidak mengatakan.</option>
         </SelectField>
       </div>
       <div className="">
@@ -239,7 +238,7 @@ export const UpdateProfileFormFirstLogin: React.FC<
           width="100%"
           marginBottom={20}
           label="Afiliasi"
-          description="Institusi Pendidikan, Organisasi, Afiliasi, dan lainnya. (Dalam bentuk tags)"
+          description="Institusi Pendidikan (Kampus), Organisasi, Afiliasi, dan lainnya. (Dalam bentuk tags)"
         >
           <TagInput
             width="100%"

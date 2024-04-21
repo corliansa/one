@@ -177,7 +177,6 @@ export const UpdateProfileForm: React.FC<{
         <option value="">Pilih Jenis Kelamin</option>
         <option value="Laki-Laki">Laki-Laki</option>
         <option value="Perempuan">Perempuan</option>
-        <option value="Unspecified">Memilih untuk tidak mengatakan.</option>
       </SelectField>
 
       <SelectField
