@@ -1,17 +1,9 @@
 import React, { useState } from "react";
 import Head from "next/head";
 import type { NextPage } from "next";
-import { Base, Protected } from "../../Components";
+import { Base, Card, Protected } from "../../Components";
 import { trpc } from "../../utils/trpc";
-import {
-  Button,
-  Spinner,
-  Pane,
-  majorScale,
-  toaster,
-  Switch,
-  Dialog,
-} from "evergreen-ui";
+import { Button, Spinner, Pane, toaster, Switch, Dialog } from "evergreen-ui";
 
 const ToggleSwitch: React.FC<{
   label: string;
@@ -90,7 +82,12 @@ export const Settings: NextPage = () => {
     );
   };
 
-  if (isLoadingUser) return <Spinner />;
+  if (isLoadingUser)
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <Spinner />
+      </div>
+    );
 
   return (
     <>
@@ -100,22 +97,9 @@ export const Settings: NextPage = () => {
       </Head>
       <Base title="Settings">
         <Protected redirectTo="/">
-          {!isLoadingUser && user && (
-            <div
-              className="settings-container"
-              style={{
-                maxWidth: "800px",
-                marginLeft: "0",
-                marginRight: "auto",
-                padding: "20px",
-              }}
-            >
-              <Pane
-                padding={majorScale(3)}
-                background="#F1F2F6"
-                borderRadius={8}
-                elevation={1}
-              >
+          <div className="py-4">
+            {!isLoadingUser && user && (
+              <Card className="max-w-[600px]">
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <ToggleSwitch
                     label="I agree to the Terms and Conditions"
@@ -135,15 +119,17 @@ export const Settings: NextPage = () => {
                       setSubscribeNewsletterEmail(e.target.checked)
                     }
                   />
-                  <Button
-                    appearance="primary"
-                    intent="success"
-                    type="submit"
-                    className="mt-5 w-full p-4 md:w-1/3"
-                    isLoading={isLoadingUpdate}
-                  >
-                    Update Settings
-                  </Button>
+                  <div className="pt-1">
+                    <Button
+                      appearance="primary"
+                      intent="success"
+                      type="submit"
+                      className="mt-5 w-full p-4 md:w-1/3"
+                      isLoading={isLoadingUpdate}
+                    >
+                      Update Settings
+                    </Button>
+                  </div>
                 </form>
                 <Button
                   appearance="secondary"
@@ -154,9 +140,9 @@ export const Settings: NextPage = () => {
                 >
                   Delete Account
                 </Button>
-              </Pane>
-            </div>
-          )}
+              </Card>
+            )}
+          </div>
         </Protected>
       </Base>
       <Dialog

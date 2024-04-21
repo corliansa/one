@@ -1,4 +1,5 @@
 export const studiengangsListe = [
+  { name: "Others" },
   { name: "(Musiktheater-)Regie" },
   { name: "(Quer-)Flöte" },
   {
