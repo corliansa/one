@@ -857,10 +857,10 @@ export const Universities = [
   },
   {
     alpha_two_code: "DE",
-    web_pages: ["http://www.fh-trier.de/"],
+    web_pages: ["http://www.hochschule-trier.de/"],
     "state-province": null,
     name: "Fachhochschule Trier, Hochschule f\u00fcr Technik, Wirtschaft und Gestaltung",
-    domains: ["fh-trier.de"],
+    domains: ["hochschule-trier.de"],
     country: "Germany",
   },
   {
