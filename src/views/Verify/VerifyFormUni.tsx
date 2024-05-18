@@ -17,6 +17,8 @@ export const VerifyFormUni: React.FC = () => {
     session?.user?.universityEmail || "",
   );
   const [university, setUniversity] = useState<University | null>(null);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
   // function that updates the name only
   useEffect(() => {
     if (session?.user?.universityName) {
@@ -77,15 +79,20 @@ export const VerifyFormUni: React.FC = () => {
     const sendResult = await handleSendVerificationEmail();
     if (sendResult) {
       setError("");
-      return setSuccess(
+      setSuccess(
         "Verification email sent successfully. Please check your email.",
       );
     } else {
       setSuccess("");
-      return setError(
+      setError(
         "ERROR: Something Went Wrong! \nFailed to send verification email.",
       );
     }
+
+    setIsButtonDisabled(true); // Disable the button
+    setTimeout(() => {
+      setIsButtonDisabled(false); // Enable the button after 60 seconds
+    }, 60000);
   };
 
   if (session?.user?.verification === "UNVERIFIED") {
@@ -112,6 +119,7 @@ export const VerifyFormUni: React.FC = () => {
           }
           error={error}
           success={success}
+          isButtonDisabled={isButtonDisabled}
         />
       </>
     );
@@ -136,6 +144,7 @@ interface VerifyFormProps {
   isLoading: boolean;
   error: string;
   success: string;
+  isButtonDisabled: boolean;
 }
 
 const VerifyForm: React.FC<VerifyFormProps> = ({
@@ -147,6 +156,7 @@ const VerifyForm: React.FC<VerifyFormProps> = ({
   isLoading,
   error,
   success,
+  isButtonDisabled,
 }) => (
   <>
     <form onSubmit={handleSubmit}>
@@ -184,9 +194,18 @@ const VerifyForm: React.FC<VerifyFormProps> = ({
           <FormError message={error} />
           <FormSuccess message={success} />
         </div>
-        <Button isLoading={isLoading} appearance="primary">
+        <Button
+          isLoading={isLoading}
+          appearance="primary"
+          disabled={isButtonDisabled}
+        >
           Verifikasi Email Universitas
         </Button>
+        {isButtonDisabled && (
+          <p className="text-sm text-gray-500">
+            Tidak dapat email verifikasi? Kirim ulang setelah 60.
+          </p>
+        )}
       </div>
     </form>
   </>

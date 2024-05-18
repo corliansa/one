@@ -127,6 +127,7 @@ model UniversityEmailVerificationToken {
   expires  DateTime
   userId   String?  // field to store user id
   user     User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lastSentAt DateTime @default(now())
 
   @@unique([email, token])
 }
