@@ -18,6 +18,8 @@ export const VerifyFormUni: React.FC = () => {
   );
   const [university, setUniversity] = useState<University | null>(null);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [lastSentAt, setLastSentAt] = useState<Date | null>(null);
+  const [remainingTime, setRemainingTime] = useState<number | null>(null);
 
   // function that updates the name only
   useEffect(() => {
@@ -45,8 +47,37 @@ export const VerifyFormUni: React.FC = () => {
       id: user.id,
       email: universityEmail,
     });
+
+    if (result && result.lastSentAt) {
+      setLastSentAt(new Date(result.lastSentAt));
+    }
     return result;
   };
+
+  useEffect(() => {
+    if (lastSentAt) {
+      const updateRemainingTime = () => {
+        const now = new Date();
+        const timeLeft =
+          60 - Math.floor((now.getTime() - lastSentAt.getTime()) / 1000);
+        if (timeLeft > 0) {
+          setRemainingTime(timeLeft);
+          setIsButtonDisabled(true);
+        } else {
+          setRemainingTime(null);
+          setIsButtonDisabled(false);
+        }
+      };
+
+      updateRemainingTime(); // Initial call to set the state immediately
+      const intervalId = setInterval(updateRemainingTime, 1000); // Update every second
+
+      return () => clearInterval(intervalId); // Cleanup the interval on component unmount
+    } else {
+      setIsButtonDisabled(false);
+      setRemainingTime(null);
+    }
+  }, [lastSentAt]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -77,22 +108,23 @@ export const VerifyFormUni: React.FC = () => {
     });
 
     const sendResult = await handleSendVerificationEmail();
-    if (sendResult) {
+    if (sendResult && sendResult.success) {
       setError("");
       setSuccess(
         "Verification email sent successfully. Please check your email.",
       );
+    } else if (sendResult && !sendResult.success) {
+      setSuccess("");
+      setError(
+        sendResult.message ||
+          "ERROR: Something Went Wrong! Failed to send verification email.",
+      );
     } else {
       setSuccess("");
       setError(
-        "ERROR: Something Went Wrong! \nFailed to send verification email.",
+        "ERROR: Something Went Wrong! Failed to send verification email.",
       );
     }
-
-    setIsButtonDisabled(true); // Disable the button
-    setTimeout(() => {
-      setIsButtonDisabled(false); // Enable the button after 60 seconds
-    }, 60000);
   };
 
   if (session?.user?.verification === "UNVERIFIED") {
@@ -120,6 +152,7 @@ export const VerifyFormUni: React.FC = () => {
           error={error}
           success={success}
           isButtonDisabled={isButtonDisabled}
+          remainingTime={remainingTime}
         />
       </>
     );
@@ -145,6 +178,7 @@ interface VerifyFormProps {
   error: string;
   success: string;
   isButtonDisabled: boolean;
+  remainingTime: number | null;
 }
 
 const VerifyForm: React.FC<VerifyFormProps> = ({
@@ -157,6 +191,7 @@ const VerifyForm: React.FC<VerifyFormProps> = ({
   error,
   success,
   isButtonDisabled,
+  remainingTime,
 }) => (
   <>
     <form onSubmit={handleSubmit}>
@@ -199,11 +234,14 @@ const VerifyForm: React.FC<VerifyFormProps> = ({
           appearance="primary"
           disabled={isButtonDisabled}
         >
-          Verifikasi Email Universitas
+          {isButtonDisabled
+            ? `Wait ${remainingTime}s`
+            : "Verifikasi Email Universitas"}
         </Button>
         {isButtonDisabled && (
           <p className="text-sm text-gray-500">
-            Tidak dapat email verifikasi? Kirim ulang setelah 60.
+            Tidak dapat email verifikasi? Kirim ulang setelah {remainingTime}{" "}
+            detik.
           </p>
         )}
       </div>

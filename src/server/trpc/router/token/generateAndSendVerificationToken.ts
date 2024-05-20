@@ -28,6 +28,7 @@ export const generateAndSendVerificationToken = protectedProcedure
         return {
           success: false,
           message: `Please wait ${60 - timeSinceLastSent} seconds before requesting new verification email.`,
+          lastSentAt: existingToken.lastSentAt,
         };
       }
     }
@@ -1217,6 +1218,7 @@ export const generateAndSendVerificationToken = protectedProcedure
       return {
         success: true,
         message: "Verification token generated and email sent successfully.",
+        lastSentAt: now,
       };
     } catch {
       return {
