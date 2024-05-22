@@ -111,7 +111,7 @@ export const VerifyFormUni: React.FC = () => {
     if (sendResult && sendResult.success) {
       setError("");
       setSuccess(
-        "Verification email sent successfully. Please check your email.",
+        "Verification email sent successfully. Please check your email and potentially spam folder.",
       );
     } else if (sendResult && !sendResult.success) {
       setSuccess("");
