@@ -385,10 +385,10 @@ export const Universities = [
   },
   {
     alpha_two_code: "DE",
-    web_pages: ["http://www.fh-frankfurt.de/"],
+    web_pages: ["http://www.frankfurt-university.de/"],
     "state-province": null,
     name: "Fachhochschule Frankfurt am Main",
-    domains: ["fh-frankfurt.de"],
+    domains: ["frankfurt-university.de"],
     country: "Germany",
   },
   {
@@ -1177,10 +1177,10 @@ export const Universities = [
   },
   {
     alpha_two_code: "DE",
-    web_pages: ["http://www.hs-zigr.de/"],
+    web_pages: ["http://www.hszg.de/"],
     "state-province": null,
     name: "Hochschule Zittau/G\u00f6rlitz (FH)",
-    domains: ["hs-zigr.de"],
+    domains: ["hszg.de"],
     country: "Germany",
   },
   {
