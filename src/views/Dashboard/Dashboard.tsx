@@ -18,6 +18,7 @@ export const Dashboard: NextPage = () => {
     // { name: "rejectedUsers", count: data?.[3] ?? 0 },
     // { name: "activeUsers", count: data?.[4] ?? 0 },
     // { name: "inactiveUsers", count: data?.[5] ?? 0 },
+    { name: "Info belum lengkap", count: data?.[6] ?? 0 },
   ];
 
   useMemo(() => {

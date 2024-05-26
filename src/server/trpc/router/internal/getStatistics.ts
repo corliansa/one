@@ -9,6 +9,7 @@ export const getStatistics = protectedProcedure.query(
     promises.push(prisma.user.count({ where: { verification: "REJECTED" } }));
     promises.push(prisma.user.count({ where: { status: "ACTIVE" } }));
     promises.push(prisma.user.count({ where: { status: "INACTIVE" } }));
+    promises.push(prisma.user.count({ where: { updated: false }}))
     const result = await Promise.all(promises);
 
     return result;
