@@ -21,6 +21,9 @@ export const Users: NextPage = () => {
     // { field: "role", headerName: "Role", width: 100 },
     { field: "occupation", headerName: "Status Pendidikan", width: 100 },
     { field: "location", headerName: "Domisili", width: 150 },
+    { field: "address", headerName: "Alamat", width: 200 },
+    { field: "zipCode", headerName: "Kode Pos", width: 100 },
+
     { field: "bundesland", headerName: "Negara Bagian", width: 150 },
     { field: "ppicabang", headerName: "PPI Cabang", width: 200 },
     { field: "fieldOfStudy", headerName: "Field Of Study", width: 200 },
@@ -28,6 +31,11 @@ export const Users: NextPage = () => {
     {
       field: "studySpecialization",
       headerName: "Study Specialization",
+      width: 200,
+    },
+    {
+      field: "updatedAt",
+      headerName: "Last Updated",
       width: 200,
     },
   ];
