@@ -388,7 +388,7 @@ export const Universities = [
     web_pages: ["http://www.frankfurt-university.de/"],
     "state-province": null,
     name: "Fachhochschule Frankfurt am Main",
-    domains: ["frankfurt-university.de"],
+    domains: ["frankfurt-university.de", "stud.fra-uas.de"],
     country: "Germany",
   },
   {
@@ -1180,7 +1180,7 @@ export const Universities = [
     web_pages: ["http://www.hszg.de/"],
     "state-province": null,
     name: "Hochschule Zittau/G\u00f6rlitz (FH)",
-    domains: ["hszg.de"],
+    domains: ["hszg.de", "stud.hszg.de"],
     country: "Germany",
   },
   {
