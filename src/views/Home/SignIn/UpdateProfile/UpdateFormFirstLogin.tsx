@@ -337,7 +337,7 @@ export const UpdateProfileFormFirstLogin: React.FC<
           description="PPI Cabang terdekat dari domisili anda di Jerman"
           onChange={(e) => setPpiCabang(e.target.value)}
         >
-          <option value="">Pilih PPI Cabang terdekat.</option>
+          <option value="">Pilih PPI Cabang terdekat</option>
           {ListPPICabang.map((ppi) => {
             return (
               <option key={ppi.value} value={ppi.value}>
