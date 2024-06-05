@@ -1941,7 +1941,7 @@ export const Universities = [
     alpha_two_code: "DE",
     web_pages: ["http://www.uni-hannover.de/"],
     "state-province": null,
-    name: "Universit\u00e4t Hannover",
+    name: "Leibniz Universit\u00e4t Hannover",
     domains: ["uni-hannover.de"],
     country: "Germany",
   },
