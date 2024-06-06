@@ -1,38 +1,52 @@
+import { z } from "zod";
 import { protectedProcedure } from "../../trpc";
 
-export const getStatistics = protectedProcedure.query(
-  async ({ ctx: { prisma } }) => {
-    const users = await prisma.user.count();
+export const getStatistics = protectedProcedure
+  .input(
+    z.object({
+      bundesland: z.string(),
+    }),
+  )
+  .query(async ({ ctx: { prisma }, input: { bundesland } }) => {
+    const users = await prisma.user.count({
+      where: { bundesland },
+    });
     const verified = await prisma.user.count({
-      where: { verification: "VERIFIED" },
+      where: { verification: "VERIFIED", bundesland },
     });
     const unverified = await prisma.user.count({
-      where: { verification: "UNVERIFIED" },
+      where: { verification: "UNVERIFIED", bundesland },
     });
     const rejected = await prisma.user.count({
-      where: { verification: "REJECTED" },
+      where: { verification: "REJECTED", bundesland },
     });
-    const active = await prisma.user.count({ where: { status: "ACTIVE" } });
-    const inactive = await prisma.user.count({ where: { status: "INACTIVE" } });
-    const updated = await prisma.user.count({ where: { updated: false } });
+    const active = await prisma.user.count({
+      where: { status: "ACTIVE", bundesland },
+    });
+    const inactive = await prisma.user.count({
+      where: { status: "INACTIVE", bundesland },
+    });
+    const updated = await prisma.user.count({
+      where: { updated: false, bundesland },
+    });
     const vocation = await prisma.user.count({
-      where: { occupation: "ausbildung" },
+      where: { occupation: "ausbildung", bundesland },
     });
     const bachelor = await prisma.user.count({
-      where: { occupation: "bachelor" },
+      where: { occupation: "bachelor", bundesland },
     });
     const master = await prisma.user.count({ where: { occupation: "master" } });
     const doctorand = await prisma.user.count({
-      where: { occupation: "doctor" }, // i.e. doctorand
+      where: { occupation: "doctor", bundesland }, // i.e. doctorand
     });
     const professor = await prisma.user.count({
-      where: { occupation: "professor" },
+      where: { occupation: "professor", bundesland },
     });
     const female = await prisma.user.count({
-      where: { gender: "Perempuan" },
+      where: { gender: "Perempuan", bundesland },
     });
     const male = await prisma.user.count({
-      where: { gender: "Laki-Laki" },
+      where: { gender: "Laki-Laki", bundesland },
     });
 
     return {
@@ -51,5 +65,4 @@ export const getStatistics = protectedProcedure.query(
       female,
       male,
     };
-  },
-);
+  });

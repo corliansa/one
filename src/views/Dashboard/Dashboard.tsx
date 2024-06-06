@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useContext, useMemo } from "react";
 import { type NextPage } from "next";
 import Head from "next/head";
 import { Base, Card, Protected } from "../../Components";
@@ -6,11 +6,15 @@ import { trpc } from "../../utils/trpc";
 import { PPICabangGraph } from "./PPICabangGraph";
 import { GeoVis } from "./Geovis";
 import { UserStatistics } from "./Statistics";
+import { FederalStateContext } from "../../pages/dashboard/FederalStateContext";
 
 export const Dashboard: NextPage = () => {
-  const { data } = trpc.internal.getStatistics.useQuery();
+  const federalState = useContext(FederalStateContext);
+  const { data } = trpc.internal.getStatistics.useQuery({
+    bundesland: federalState ?? "%%",
+  });
   const { data: ppiCabangStats } = trpc.internal.getPPICabangStats.useQuery();
-
+  console.log("PPI Cabang Stats: ", ppiCabangStats);
   const stats = [
     { name: "Total Pengguna", count: data?.users },
     { name: "Pengguna Terverifikasi", count: data?.verified },
@@ -52,9 +56,11 @@ export const Dashboard: NextPage = () => {
                   <UserStatistics stats={stats} />
                 </Card>
               </Protected>
-              <Card>
-                <PPICabangGraph ppiCabangStats={ppiCabangStats} />
-              </Card>
+              {!federalState && (
+                <Card>
+                  <PPICabangGraph ppiCabangStats={ppiCabangStats} />
+                </Card>
+              )}
             </div>
             <Card className="flex flex-col items-center">
               <h1 className="mb-5 text-2xl font-semibold">
