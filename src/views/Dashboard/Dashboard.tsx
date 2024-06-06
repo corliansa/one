@@ -6,7 +6,7 @@ import { trpc } from "../../utils/trpc";
 import { PPICabangGraph } from "./PPICabangGraph";
 import { GeoVis } from "./Geovis";
 import { UserStatistics } from "./Statistics";
-import { FederalStateContext } from "../../pages/dashboard/FederalStateContext";
+import { FederalStateContext } from "./FederalStateContext";
 
 export const Dashboard: NextPage = () => {
   const federalState = useContext(FederalStateContext);
