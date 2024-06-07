@@ -14,7 +14,6 @@ export const Dashboard: NextPage = () => {
     bundesland: federalState,
   });
   const { data: ppiCabangStats } = trpc.internal.getPPICabangStats.useQuery();
-  console.log("PPI Cabang Stats: ", ppiCabangStats);
   const stats = [
     { name: "Total Pengguna", count: data?.users },
     { name: "Pengguna Terverifikasi", count: data?.verified },
@@ -64,7 +63,7 @@ export const Dashboard: NextPage = () => {
             </div>
             <Card className="flex flex-col items-center">
               <h1 className="mb-5 text-2xl font-semibold">
-                Demografi Mahasiswa Indonesia di Jerman
+                {federalState ?? "Demografi Mahasiswa Indonesia di Jerman"}
               </h1>
               <GeoVis width="100%" />
             </Card>

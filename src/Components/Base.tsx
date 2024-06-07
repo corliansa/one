@@ -25,7 +25,7 @@ function classNames(...classes: string[]) {
 }
 
 /**
- * Base component for the application.
+ * Base component for the application. Contains sidebar.
  *
  * @component
  * @param {React.ReactNode} children - The content of the component.
@@ -33,7 +33,10 @@ function classNames(...classes: string[]) {
  * @returns {React.ReactElement} The rendered Base component.
  */
 
-export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
+export const Base: React.FC<{
+  children?: React.ReactNode;
+  title?: string;
+}> = ({
   children = (
     <div className="py-4">
       <div className="h-96 rounded-lg border-4 border-dashed border-gray-200" />
@@ -198,7 +201,7 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
         </Transition.Root>
 
         {/* Static sidebar for desktop */}
-        <div className="hidden bg-slate-50 md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
+        <div className="hidden bg-slate-50 transition-all duration-500 hover:w-64 md:fixed md:inset-y-0 md:flex md:w-[65px] md:flex-col ">
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex flex-grow flex-col overflow-y-auto border-r border-gray-200 bg-slate-50 pt-5">
             <div className="flex flex-shrink-0 items-center px-4">
@@ -223,7 +226,7 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
                         router.pathname === item.href
                           ? "bg-gray-100 text-gray-900"
                           : "text-gray-600 hover:bg-gray-50 hover:text-gray-900",
-                        "group flex items-center rounded-md px-2 py-2 text-sm font-medium",
+                        "group flex items-center whitespace-nowrap rounded-md px-2 py-2 text-sm font-medium",
                       )}
                     >
                       <item.icon
@@ -231,7 +234,7 @@ export const Base: React.FC<{ children?: React.ReactNode; title?: string }> = ({
                           router.pathname === item.href
                             ? "text-gray-500"
                             : "text-gray-400 group-hover:text-gray-500",
-                          "mr-3 h-6 w-6 flex-shrink-0",
+                          "ml-1 mr-5 h-6 w-6 flex-shrink-0",
                         )}
                         aria-hidden="true"
                       />
