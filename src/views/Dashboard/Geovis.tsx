@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { GermanySVGPath } from "./GermanyPath";
 import { GermanyOutline } from "./GermanyOutline";
 import { AnimatePresence, motion } from "framer-motion";
 import { trpc } from "../../utils/trpc";
 import { BarChart, Bar, XAxis, YAxis, Legend } from "recharts";
 import { useRouter } from "next/router";
+import { FederalStateContext } from "./FederalStateContext";
 
 const xLabels = ["Ausbildung", "Bachelor", "Master", "Doctor", "Professor"];
 
@@ -15,6 +16,7 @@ interface TooltipState {
 export const GeoVis: React.FC<{ width: string }> = ({ width }) => {
   const [tooltip, setTooltip] = useState<TooltipState>({ data: [] });
   const [hoveredBundesland, setHoveredBundesland] = useState("");
+  const bundesland = useContext(FederalStateContext);
   const router = useRouter();
 
   const { data: occupationStats, isSuccess } =
@@ -56,9 +58,13 @@ export const GeoVis: React.FC<{ width: string }> = ({ width }) => {
                 key={id}
                 id={path.id}
                 d={path.d}
-                className="duration-3000 fill-blue-400 stroke-white stroke-[1px] transition hover:fill-red-200"
+                className={`duration-3000 cursor-pointer ${bundesland === path.id ? "fill-green-400" : "fill-blue-400"} stroke-white stroke-[1px] transition hover:fill-red-200`}
                 onMouseOver={() => handleMouseOver(path.id)}
-                onClick={() => router.push(`/dashboard/${path.id}`)}
+                onClick={() =>
+                  bundesland === path.id
+                    ? router.push("/dashboard")
+                    : router.push(`/dashboard/${path.id}`)
+                }
               />
             ))}
           </g>

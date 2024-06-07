@@ -1,3 +1,5 @@
+import CountUp from "react-countup";
+
 type StatisticOutput = {
   stats: {
     name: string;
@@ -16,7 +18,9 @@ export const UserStatistics: React.FC<StatisticOutput> = ({
           className="flex flex-col items-center justify-center rounded-lg bg-white/20 p-4 text-center"
         >
           <div className="text-xl font-bold">{stat.name}</div>
-          <div className="text-4xl font-bold">{stat.count ?? 0}</div>
+          <div className="text-4xl font-bold">
+            <CountUp end={stat.count ?? 0} duration={2} />
+          </div>
         </div>
       ))}
     </div>
