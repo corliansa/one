@@ -11,7 +11,7 @@ import { FederalStateContext } from "./FederalStateContext";
 export const Dashboard: NextPage = () => {
   const federalState = useContext(FederalStateContext);
   const { data } = trpc.internal.getStatistics.useQuery({
-    bundesland: federalState ?? "%%",
+    bundesland: federalState,
   });
   const { data: ppiCabangStats } = trpc.internal.getPPICabangStats.useQuery();
   console.log("PPI Cabang Stats: ", ppiCabangStats);
