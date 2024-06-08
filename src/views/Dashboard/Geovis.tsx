@@ -1,15 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { GermanySVGPath } from "./GermanyPath";
 import { GermanyOutline } from "./GermanyOutline";
 import { AnimatePresence, motion } from "framer-motion";
 import { trpc } from "../../utils/trpc";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Legend,
-} from "recharts";
+import { BarChart, Bar, XAxis, YAxis, Legend } from "recharts";
+import { useRouter } from "next/router";
+import { FederalStateContext } from "./FederalStateContext";
 
 const xLabels = ["Ausbildung", "Bachelor", "Master", "Doctor", "Professor"];
 
@@ -20,6 +16,8 @@ interface TooltipState {
 export const GeoVis: React.FC<{ width: string }> = ({ width }) => {
   const [tooltip, setTooltip] = useState<TooltipState>({ data: [] });
   const [hoveredBundesland, setHoveredBundesland] = useState("");
+  const bundesland = useContext(FederalStateContext);
+  const router = useRouter();
 
   const { data: occupationStats, isSuccess } =
     trpc.internal.getStudentOccupationStats.useQuery(
@@ -42,7 +40,10 @@ export const GeoVis: React.FC<{ width: string }> = ({ width }) => {
   };
 
   return (
-    <div className="flex w-full flex-col">
+    <div
+      className="flex w-full flex-col items-center"
+      onMouseLeave={() => setHoveredBundesland("")}
+    >
       <div className="max-w-[400px]">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -57,8 +58,13 @@ export const GeoVis: React.FC<{ width: string }> = ({ width }) => {
                 key={id}
                 id={path.id}
                 d={path.d}
-                className="duration-3000 fill-blue-400 stroke-white stroke-[1px] transition hover:fill-red-200"
+                className={`duration-3000 cursor-pointer ${bundesland === path.id ? "fill-green-400" : "fill-blue-400"} stroke-white stroke-[1px] transition hover:fill-red-200`}
                 onMouseOver={() => handleMouseOver(path.id)}
+                onClick={() =>
+                  bundesland === path.id
+                    ? router.push("/dashboard")
+                    : router.push(`/dashboard/${path.id}`)
+                }
               />
             ))}
           </g>
@@ -66,7 +72,7 @@ export const GeoVis: React.FC<{ width: string }> = ({ width }) => {
         </svg>
       </div>
 
-      <div className="flex flex-col justify-center">
+      <div className="flex flex-col justify-center py-5">
         <AnimatePresence>
           {hoveredBundesland && (
             <motion.div

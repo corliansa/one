@@ -1,9 +1,9 @@
-import { capitalize } from "../../utils/capitalize";
+import CountUp from "react-countup";
 
 type StatisticOutput = {
   stats: {
     name: string;
-    count: number;
+    count: number | undefined;
   }[];
 };
 
@@ -15,12 +15,12 @@ export const UserStatistics: React.FC<StatisticOutput> = ({
       {stats.map((stat) => (
         <div
           key={stat.name}
-          className="flex flex-col items-center justify-center rounded-lg bg-white/20 p-4"
+          className="flex flex-col items-center justify-center rounded-lg bg-white/20 p-4 text-center"
         >
-          <div className="text-xl font-bold">
-            {capitalize(stat.name).replace(/(users)/, " $1")}
+          <div className="text-xl font-bold">{stat.name}</div>
+          <div className="text-4xl font-bold">
+            <CountUp end={stat.count ?? 0} duration={2} />
           </div>
-          <div className="text-4xl font-bold">{stat.count}</div>
         </div>
       ))}
     </div>

@@ -5,14 +5,14 @@ import { trpc } from "../../utils/trpc";
 
 export const Admins: NextPage = () => {
   const { data: admins, isLoading } = trpc.internal.getAdmins.useQuery();
-  
+
   return (
     <>
       <Head>
         <title>ONE | Admins</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Base title="Admins list"  >
+      <Base title="Admins list">
         <div className="py-4">
           <Protected redirectTo="/">
             {!isLoading && admins && (
