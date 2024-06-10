@@ -1,26 +1,29 @@
-import { useContext, useMemo } from "react";
 import { type NextPage } from "next";
 import Head from "next/head";
+import { useContext, useMemo } from "react";
+import { Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 import { Base, Card, Protected } from "../../Components";
 import { trpc } from "../../utils/trpc";
-import { PPICabangGraph } from "./PPICabangGraph";
-import { GeoVis } from "./Geovis";
-import { UserStatistics } from "./Statistics";
 import { FederalStateContext } from "./FederalStateContext";
-import { Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
+import { GeoVis } from "./Geovis";
+import { PPICabangGraph } from "./PPICabangGraph";
+import { UserStatistics } from "./Statistics";
 
 export const Dashboard: NextPage = () => {
   const federalState = useContext(FederalStateContext);
   const { data } = trpc.internal.getStatistics.useQuery({
     bundesland: federalState,
   });
+  const { data: adminData } = trpc.internal.getAdminStatistics.useQuery({
+    bundesland: federalState,
+  });
   const { data: ppiCabangStats } = trpc.internal.getPPICabangStats.useQuery();
 
   const statsAdmin = [
-    { name: "Total Pengguna", count: data?.users },
-    { name: "Pengguna Terverifikasi", count: data?.verified },
-    { name: "Belum Terverifikasi", count: data?.unverified },
-    { name: "Info belum lengkap", count: data?.updated },
+    { name: "Total Pengguna", count: adminData?.users },
+    { name: "Pengguna Terverifikasi", count: adminData?.verified },
+    { name: "Belum Terverifikasi", count: adminData?.unverified },
+    { name: "Info belum lengkap", count: adminData?.updated },
   ];
   const stats = [
     { name: "Ausbildung / Vokasi", count: data?.vocation },
@@ -33,7 +36,6 @@ export const Dashboard: NextPage = () => {
   const graphStats = [
     { name: "Laki-laki", value: data?.male, fill: "#0336FF" },
     { name: "Perempuan", value: data?.female, fill: "#FF0266" },
-    { name: "Tidak disebut", value: data?.unspecified, fill: "gray" },
   ];
 
   useMemo(() => {
