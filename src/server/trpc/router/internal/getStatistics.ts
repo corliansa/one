@@ -50,6 +50,7 @@ export const getStatistics = protectedProcedure
     const male = await prisma.user.count({
       where: { gender: "Laki-Laki", bundesland },
     });
+    const unspecified = users - (male + female);
 
     return {
       users,
@@ -66,5 +67,6 @@ export const getStatistics = protectedProcedure
       professor,
       female,
       male,
+      unspecified,
     };
   });

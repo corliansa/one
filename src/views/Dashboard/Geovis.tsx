@@ -80,22 +80,22 @@ export const GeoVis: React.FC<{ width: string }> = ({ width }) => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="pointer-events-none flex flex-col items-center justify-center rounded-md bg-white p-2 shadow-md"
+              className="pointer-events-none mt-5 flex flex-col items-center justify-center rounded-md bg-white shadow-md"
             >
               <h1 className="text-xl font-semibold">{hoveredBundesland}</h1>
               <BarChart
                 data={tooltip.data}
-                width={400}
+                width={525}
                 height={300}
                 margin={{ left: 20, right: 20, top: 5, bottom: 5 }}
                 barGap={2}
                 barCategoryGap={1}
-                barSize={20}
+                barSize={40}
               >
                 <XAxis dataKey="name" />
                 <YAxis />
                 <Legend />
-                <Bar dataKey="value" fill="#8CB9BD" />
+                <Bar dataKey="value" fill="#8CB9BD" legendType="none" />
               </BarChart>
             </motion.div>
           )}

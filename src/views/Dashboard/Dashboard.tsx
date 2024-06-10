@@ -7,6 +7,7 @@ import { PPICabangGraph } from "./PPICabangGraph";
 import { GeoVis } from "./Geovis";
 import { UserStatistics } from "./Statistics";
 import { FederalStateContext } from "./FederalStateContext";
+import { Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 
 export const Dashboard: NextPage = () => {
   const federalState = useContext(FederalStateContext);
@@ -27,8 +28,12 @@ export const Dashboard: NextPage = () => {
     { name: "Master / S2", count: data?.master },
     { name: "PhD / S3", count: data?.doctorand },
     { name: "Profesor", count: data?.professor },
-    { name: "Laki-laki", count: data?.male },
-    { name: "Perempuan", count: data?.female },
+  ];
+
+  const graphStats = [
+    { name: "Laki-laki", value: data?.male, fill: "#0336FF" },
+    { name: "Perempuan", value: data?.female, fill: "#FF0266" },
+    { name: "Tidak disebut", value: data?.unspecified, fill: "gray" },
   ];
 
   useMemo(() => {
@@ -48,23 +53,43 @@ export const Dashboard: NextPage = () => {
           {/* added a warning verification if user is unverified */}
         </Protected>
         <Protected redirectTo="/">
-          <div className="mt-4 flex w-full flex-col gap-10 lg:flex-row">
-            <div className="flex flex-col gap-6">
+          <div className="mt-4 flex w-full flex-col gap-10 2xl:flex-row">
+            <div className="flex flex-wrap justify-between gap-y-5 2xl:basis-2/3">
               <Protected roles={["ADMIN"]}>
-                <Card className="">
+                <Card className=" basis-full">
                   <UserStatistics stats={statsAdmin} />
                 </Card>
+                <Card className="flex basis-full md:basis-[300px]">
+                  <div className="h-[300px] w-full">
+                    <ResponsiveContainer>
+                      <PieChart>
+                        <Pie
+                          data={graphStats}
+                          dataKey="value"
+                          nameKey="name"
+                          cx="50%"
+                          cy="50%"
+                          outerRadius={70}
+                          fill="#8884d8"
+                          label
+                        />
+                        <Tooltip />
+                        <Legend align="center" verticalAlign="bottom" />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  </div>
+                </Card>
               </Protected>
-              <Card className="">
+              <Card className="basis-full md:basis-[calc(100%-320px)]">
                 <UserStatistics stats={stats} />
               </Card>
               {!federalState && (
-                <Card>
+                <Card className="basis-full">
                   <PPICabangGraph ppiCabangStats={ppiCabangStats} />
                 </Card>
               )}
             </div>
-            <Card className="flex flex-col items-center">
+            <Card className="flex flex-col items-center 2xl:basis-1/3">
               <h1 className="mb-5 text-2xl font-semibold">
                 {federalState ?? "Demografi Mahasiswa Indonesia di Jerman"}
               </h1>

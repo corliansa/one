@@ -246,7 +246,7 @@ export const Base: React.FC<{
           </div>
         </div>
 
-        <div className="min-h-screen bg-slate-50 md:pl-64">
+        <div className="min-h-screen bg-slate-50 md:pl-16 2xl:pl-64">
           <div className="mx-auto flex max-w-[95%] flex-col md:px-8 xl:px-0">
             <div className="sticky top-0 z-10 flex h-16 flex-shrink-0 border-b border-gray-200 bg-slate-50">
               <button
