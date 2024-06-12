@@ -1,7 +1,7 @@
-import { getAdmins } from "./internal/getAdmins";
 import { router } from "../trpc";
-import { getStatistics } from "./internal/getStatistics";
+import { getAdmins } from "./internal/getAdmins";
 import { getPPICabangStats } from "./internal/getPPICabangStats";
+import { getAdminStatistics, getStatistics } from "./internal/getStatistics";
 import { getStudentOccupationStats } from "./internal/getStudentOccupationStats";
 
 export const internalRouter = router({
@@ -9,4 +9,5 @@ export const internalRouter = router({
   getAdmins,
   getPPICabangStats,
   getStudentOccupationStats,
+  getAdminStatistics,
 });

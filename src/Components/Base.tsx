@@ -1,10 +1,9 @@
-import { Fragment, useState } from "react";
 import { Dialog, Menu, Transition } from "@headlessui/react";
 import {
   AcademicCapIcon,
   Bars3BottomLeftIcon,
-  CheckIcon,
   CheckCircleIcon,
+  CheckIcon,
   // ChartBarIcon,
   CogIcon,
   FolderIcon,
@@ -15,9 +14,10 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { signOut, useSession } from "next-auth/react";
-import { Protected, Logo, Footer } from ".";
-import { useRouter } from "next/router";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { Fragment, useState } from "react";
+import { Footer, Logo, Protected } from ".";
 import { VerifyWarning } from "./VerifyWarning";
 
 function classNames(...classes: string[]) {
@@ -100,7 +100,7 @@ export const Base: React.FC<{
 
   return (
     <Protected redirectTo="/">
-      <div className="h-full">
+      <div className=" h-full">
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog
             as="div"
@@ -201,7 +201,7 @@ export const Base: React.FC<{
         </Transition.Root>
 
         {/* Static sidebar for desktop */}
-        <div className="hidden bg-slate-50 transition-all duration-500 hover:w-64 md:fixed md:inset-y-0 md:flex md:w-[65px] md:flex-col ">
+        <div className="z-50 hidden bg-slate-50 transition-all duration-500 hover:w-64 md:fixed md:inset-y-0 md:flex md:w-[65px] md:flex-col">
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex flex-grow flex-col overflow-y-auto border-r border-gray-200 bg-slate-50 pt-5">
             <div className="flex flex-shrink-0 items-center px-4">
@@ -246,7 +246,7 @@ export const Base: React.FC<{
           </div>
         </div>
 
-        <div className="min-h-screen bg-slate-50 md:pl-64">
+        <div className="min-h-screen bg-slate-50 md:pl-16 2xl:pl-64">
           <div className="mx-auto flex max-w-[95%] flex-col md:px-8 xl:px-0">
             <div className="sticky top-0 z-10 flex h-16 flex-shrink-0 border-b border-gray-200 bg-slate-50">
               <button
