@@ -61,27 +61,27 @@ export const Dashboard: NextPage = () => {
                 <Card className=" basis-full">
                   <UserStatistics stats={statsAdmin} />
                 </Card>
-                <Card className="flex basis-full md:basis-[300px]">
-                  <div className="h-[300px] w-full">
-                    <ResponsiveContainer>
-                      <PieChart>
-                        <Pie
-                          data={graphStats}
-                          dataKey="value"
-                          nameKey="name"
-                          cx="50%"
-                          cy="50%"
-                          outerRadius={70}
-                          fill="#8884d8"
-                          label
-                        />
-                        <Tooltip />
-                        <Legend align="center" verticalAlign="bottom" />
-                      </PieChart>
-                    </ResponsiveContainer>
-                  </div>
-                </Card>
               </Protected>
+              <Card className="flex basis-full md:basis-[300px]">
+                <div className="h-[300px] w-full">
+                  <ResponsiveContainer>
+                    <PieChart>
+                      <Pie
+                        data={graphStats}
+                        dataKey="value"
+                        nameKey="name"
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={70}
+                        fill="#8884d8"
+                        label
+                      />
+                      <Tooltip />
+                      <Legend align="center" verticalAlign="bottom" />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+              </Card>
               <Card className="basis-full md:basis-[calc(100%-320px)]">
                 <UserStatistics stats={stats} />
               </Card>
