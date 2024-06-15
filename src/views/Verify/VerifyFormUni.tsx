@@ -1,11 +1,12 @@
-import { useState, useEffect } from "react";
-import { Button, TextInputField, Combobox } from "evergreen-ui";
+import { useState, useEffect, ChangeEvent } from "react";
+import { Button, TextInputField, TextInput, Autocomplete } from "evergreen-ui";
 import type { University } from "../../types";
 import { Universities } from "../../Components/optionsList/de-university-list";
 import { trpc } from "../../utils/trpc";
 import { FormError } from "../../Components/ui/FormError";
 import { FormSuccess } from "../../Components/ui/FormSuccess";
 import { useSession } from "next-auth/react";
+import { FormWarning } from "../../Components/ui/FormWarning";
 
 const universityList: University[] = Universities as University[];
 
@@ -16,7 +17,7 @@ export const VerifyFormUni: React.FC = () => {
   const [universityEmail, setUniversityEmail] = useState(
     session?.user?.universityEmail || "",
   );
-  const [university, setUniversity] = useState<University | null>(null);
+  const [universityName, setUniversity] = useState<string | null>(null);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [lastSentAt, setLastSentAt] = useState<Date | null>(null);
   const [remainingTime, setRemainingTime] = useState<number | null>(null);
@@ -27,12 +28,13 @@ export const VerifyFormUni: React.FC = () => {
       const initialUniversity = universityList.find(
         (u) => u.name === session?.user?.universityName,
       );
-      setUniversity(initialUniversity || null);
+      setUniversity(initialUniversity?.name || null);
     }
   }, [session?.user?.universityName]);
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [warning, setWarning] = useState("");
   const queryClient = trpc.useUtils();
   const generateAndSendTokenMutation =
     trpc.token.generateAndSendVerificationToken.useMutation();
@@ -85,15 +87,17 @@ export const VerifyFormUni: React.FC = () => {
     // reset
     setError("");
     setSuccess("");
+    setWarning("");
 
     if (session?.user?.verification === "VERIFIED") {
       return setError("User is already verified.");
     }
 
-    if (!university) {
+    if (!universityName) {
       return setError("Please select a university.");
     }
 
+    const university = universityList.find((u) => u.name === universityName);
     if (
       universityEmail &&
       university &&
@@ -101,10 +105,15 @@ export const VerifyFormUni: React.FC = () => {
     ) {
       return setError("Email must be from the selected university.");
     }
+    if (!university && universityName && universityName.trim() !== "") {
+      return setWarning(
+        "University not found. Are you sure this is your university?",
+      );
+    }
 
     await updateUserUniEmailAndUni.mutateAsync({
       universityEmail,
-      universityName: university.name,
+      universityName: universityName,
     });
 
     const sendResult = await handleSendVerificationEmail();
@@ -140,6 +149,7 @@ export const VerifyFormUni: React.FC = () => {
           waktu <span className="font-bold">10 menit</span>.
         </p>
         <VerifyForm
+          universityName={universityName ?? ""}
           universityList={universityList}
           setUniversity={setUniversity}
           universityEmail={universityEmail}
@@ -153,6 +163,7 @@ export const VerifyFormUni: React.FC = () => {
           success={success}
           isButtonDisabled={isButtonDisabled}
           remainingTime={remainingTime}
+          warning={warning}
         />
       </>
     );
@@ -170,7 +181,7 @@ export const VerifyFormUni: React.FC = () => {
 
 interface VerifyFormProps {
   universityList: University[];
-  setUniversity: React.Dispatch<React.SetStateAction<University | null>>;
+  setUniversity: React.Dispatch<React.SetStateAction<string | null>>;
   universityEmail: string;
   setUniversityEmail: React.Dispatch<React.SetStateAction<string>>;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
@@ -179,6 +190,8 @@ interface VerifyFormProps {
   success: string;
   isButtonDisabled: boolean;
   remainingTime: number | null;
+  universityName: string;
+  warning: string;
 }
 
 const VerifyForm: React.FC<VerifyFormProps> = ({
@@ -190,8 +203,10 @@ const VerifyForm: React.FC<VerifyFormProps> = ({
   isLoading,
   error,
   success,
+  warning,
   isButtonDisabled,
   remainingTime,
+  universityName,
 }) => (
   <>
     <form onSubmit={handleSubmit}>
@@ -199,19 +214,33 @@ const VerifyForm: React.FC<VerifyFormProps> = ({
         <label className="text-sm font-medium">
           Pilih universitas anda saat ini
         </label>
-        <Combobox
-          placeholder="Universitas"
-          items={universityList}
-          itemToString={(universityList) =>
-            universityList ? universityList.name : ""
-          }
-          disabled={isLoading}
-          width="100%"
-          onChange={(selected: University) => {
-            setUniversity(selected);
-            console.log(selected);
+        <Autocomplete
+          items={universityList.map((u) => u.name)}
+          onChange={(university) => {
+            setUniversity(university);
           }}
-        />
+          isFilterDisabled={isLoading}
+        >
+          {(props) => {
+            const { getInputProps, getRef, openMenu } = props;
+            return (
+              <TextInput
+                placeholder="Leibniz Universität Hannover"
+                ref={getRef}
+                {...getInputProps({
+                  onFocus: () => {
+                    openMenu();
+                  },
+                  onChange: (e: ChangeEvent<HTMLInputElement>) =>
+                    setUniversity(e.target.value ?? ""),
+                  value: universityName,
+                })}
+                disabled={isLoading}
+                width="100%"
+              />
+            );
+          }}
+        </Autocomplete>
         <TextInputField
           marginTop={8}
           marginBottom={24}
@@ -228,6 +257,7 @@ const VerifyForm: React.FC<VerifyFormProps> = ({
         <div className="w-full py-5">
           <FormError message={error} />
           <FormSuccess message={success} />
+          <FormWarning message={warning} />
         </div>
         <Button
           isLoading={isLoading}
